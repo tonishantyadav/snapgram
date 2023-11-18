@@ -1,7 +1,7 @@
-import "../index.css";
+import { Heading } from "@chakra-ui/react";
 
 const HomePage = () => {
-  return <div className="text-3xl font-bold underline">Hello Snapgram!</div>;
+  return <Heading>Hello World</Heading>;
 };
 
 export default HomePage;
