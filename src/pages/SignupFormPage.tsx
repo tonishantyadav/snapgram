@@ -1,23 +1,34 @@
 import {
   Button,
-  Checkbox,
   Flex,
   FormControl,
   FormLabel,
   Heading,
+  Image,
   Input,
+  Show,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import "../index.css";
 
 const SignupFormPage = () => {
   return (
     <Stack direction="row" minH="100vh">
-      <Flex flex={1} bg="purpleBg"></Flex>
+      <Show above="xl">
+        <Flex flex={1}>
+          <video autoPlay muted loop height="auto">
+            <source src="/assets/signup.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </Flex>
+      </Show>
       <Flex p={8} flex={1} align="center" justify="center">
         <Stack spacing={4} w="full" maxW="md">
-          <Heading size="xl">Create a new account</Heading>
+          <Image src="/assets/logo.svg" />
+          <Heading size="sm" textAlign="center" paddingTop={5}>
+            Welcome! Join our community to access exclusive content and
+            features. Sign up now!
+          </Heading>
           <FormControl id="name">
             <FormLabel>Name</FormLabel>
             <Input type="text" variant="filled" />
@@ -34,15 +45,7 @@ const SignupFormPage = () => {
             <FormLabel>Password</FormLabel>
             <Input type="password" variant="filled" />
           </FormControl>
-          <Stack spacing={6}>
-            <Stack
-              direction={{ base: "column", sm: "row" }}
-              align="start"
-              justify="space-between"
-            >
-              <Checkbox>Remember me</Checkbox>
-              <Text color="purple.300">Forgot password?</Text>
-            </Stack>
+          <Stack paddingTop={3}>
             <Button variant="solid" bg="purpleBg">
               Sign up
             </Button>
