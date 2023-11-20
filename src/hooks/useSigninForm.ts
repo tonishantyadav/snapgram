@@ -9,7 +9,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const useSigninForm = () =>
-  useForm<FormData>({ resolver: zodResolver(schema) });
+const useSigninForm = () => useForm<FormData>({ resolver: zodResolver(schema) });
 
 export default useSigninForm;
+  

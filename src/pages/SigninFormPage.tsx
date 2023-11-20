@@ -7,6 +7,7 @@ import {
   HStack,
   Heading,
   Input,
+  Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -24,6 +25,8 @@ const SigninFormPage = () => {
   const onSubmit = (formData: FieldValues) => {
     console.log(formData);
   };
+
+  const isLoading = false;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +68,7 @@ const SigninFormPage = () => {
                 </Link>
               </Stack>
               <Button variant="solid" bg="purpleBg" type="submit">
-                Sign in
+                {isLoading ? <Spinner /> : "Sign in"}
               </Button>
               <HStack justify="center">
                 <Text>Don't have an account?</Text>
