@@ -10,8 +10,6 @@ export const appwriteConfig = {
   saveCollectionId: import.meta.env.VITE_APPWRITE_SAVE_COLLECTION_ID,
 };
 
-console.log(appwriteConfig);
-
 export const client = new Client();
 client.setEndpoint(appwriteConfig.url);
 client.setProject(appwriteConfig.projectId);
