@@ -16,7 +16,7 @@ import {
 import { useEffect } from "react";
 import { FieldValues } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateUserAccount, useSignupForm } from "../hooks";
+import { useCreateAccount, useSignupForm } from "../hooks";
 
 const SignupFormPage = () => {
   const {
@@ -24,7 +24,7 @@ const SignupFormPage = () => {
     handleSubmit,
     formState: { errors },
   } = useSignupForm();
-  const account = useCreateUserAccount();
+  const account = useCreateAccount();
   const navigate = useNavigate();
   const toast = useToast();
 
