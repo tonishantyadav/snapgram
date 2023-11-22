@@ -11,9 +11,11 @@ import {
   Spinner,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { FieldValues } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserAccount, useSignupForm } from "../hooks";
 
 const SignupFormPage = () => {
@@ -22,10 +24,12 @@ const SignupFormPage = () => {
     handleSubmit,
     formState: { errors },
   } = useSignupForm();
-  const createUserAccount = useCreateUserAccount();
+  const account = useCreateUserAccount();
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const onSubmit = (data: FieldValues) => {
-    createUserAccount.mutate({
+    account.mutate({
       name: data.name,
       email: data.email,
       username: data.username,
@@ -33,10 +37,22 @@ const SignupFormPage = () => {
     });
   };
 
+  useEffect(() => {
+    if (account.isSuccess) {
+      navigate("/");
+    } else if (account.isError) {
+      toast({
+        title: "Account not created",
+        description: "Your account has not been created",
+        status: "error",
+        isClosable: true,
+        duration: 3000,
+      });
+    }
+  }, [account.isSuccess, account.isError]);
+
   return (
     <>
-      {createUserAccount.isError && <Text>Error occurred</Text>}
-      {createUserAccount.isSuccess && <Text>Account is created</Text>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction="row" minH="100vh">
           <Show above="xl">
@@ -103,7 +119,7 @@ const SignupFormPage = () => {
               </FormControl>
               <Stack paddingTop={3} spacing={5}>
                 <Button bg="purpleBg" type="submit">
-                  {createUserAccount.isPending ? <Spinner /> : "Sign up"}
+                  {account.isLoading ? <Spinner /> : "Sign up"}
                 </Button>
                 <HStack justify="center">
                   <Text textAlign="center">Have an account?</Text>

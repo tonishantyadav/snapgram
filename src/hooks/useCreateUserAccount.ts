@@ -8,8 +8,11 @@ const useCreateUserAccount = () => {
   return useMutation({
     mutationFn: (user: INewUser) =>
       account.create(ID.unique(), user.email, user.password, user.name),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData<INewUser[]>(["accounts"], (accounts) => [
+        variables,
+        ...(accounts || []),
+      ]);
     },
   });
 };
