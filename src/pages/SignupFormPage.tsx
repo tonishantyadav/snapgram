@@ -16,7 +16,7 @@ import {
 import { useEffect } from "react";
 import { FieldValues } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateAccount, useSignupForm } from "../hooks";
+import { useCreateUser, useSignupForm } from "../hooks";
 
 const SignupFormPage = () => {
   const {
@@ -24,12 +24,12 @@ const SignupFormPage = () => {
     handleSubmit,
     formState: { errors },
   } = useSignupForm();
-  const account = useCreateAccount();
+  const user = useCreateUser();
   const navigate = useNavigate();
   const toast = useToast();
 
   const onSubmit = (data: FieldValues) => {
-    account.mutate({
+    user.mutate({
       name: data.name,
       email: data.email,
       username: data.username,
@@ -38,9 +38,9 @@ const SignupFormPage = () => {
   };
 
   useEffect(() => {
-    if (account.isSuccess) {
+    if (user.isSuccess) {
       navigate("/");
-    } else if (account.isError) {
+    } else if (user.isError) {
       toast({
         title: "Account not created",
         description: "Your account has not been created",
@@ -49,7 +49,7 @@ const SignupFormPage = () => {
         duration: 3000,
       });
     }
-  }, [account.isSuccess, account.isError]);
+  }, [user.isSuccess, user.isError]);
 
   return (
     <>
@@ -119,7 +119,7 @@ const SignupFormPage = () => {
               </FormControl>
               <Stack paddingTop={3} spacing={5}>
                 <Button bg="purpleBg" type="submit">
-                  {account.isLoading ? <Spinner /> : "Sign up"}
+                  {user.isLoading ? <Spinner /> : "Sign up"}
                 </Button>
                 <HStack justify="center">
                   <Text textAlign="center">Have an account?</Text>

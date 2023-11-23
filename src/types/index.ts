@@ -4,16 +4,7 @@ export interface INavLink {
   label: string;
 }
 
-export interface IUpdateUser {
-  userId: string;
-  name: string;
-  bio: string;
-  imageId: string;
-  imageUrl: URL | string;
-  file: File[];
-}
-
-export interface INewPost {
+export interface Post {
   userId: string;
   caption: string;
   file: File[];
@@ -21,7 +12,7 @@ export interface INewPost {
   tags?: string;
 }
 
-export interface IUpdatePost {
+export interface UpdatePost {
   postId: string;
   caption: string;
   imageId: string;
@@ -31,18 +22,21 @@ export interface IUpdatePost {
   tags?: string;
 }
 
-export interface IUser {
-  id: string;
+export interface User {
+  id?: string;
   name: string;
   username: string;
   email: string;
-  imageUrl: string;
-  bio: string;
+  password: string;
+  image?: string;
+  bio?: string;
 }
 
-export interface INewUser {
+export interface UpdateUser {
+  userId: string;
   name: string;
-  email: string;
-  username: string;
-  password: string;
+  bio: string;
+  imageId: string;
+  imageUrl: URL | string;
+  file: File[];
 }

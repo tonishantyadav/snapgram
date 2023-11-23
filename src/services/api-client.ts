@@ -1,9 +1,9 @@
 import { ID } from "appwrite";
 import { account, appwriteConfig, database } from "../appwrite/config";
-import { INewUser } from "../types";
+import { User } from "../types";
 
 class ApiClient {
-  createUserAccount = async (user: INewUser) => {
+  createUser = async (user: User) => {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
     } catch (error: any) {
@@ -11,13 +11,13 @@ class ApiClient {
     }
   };
 
-  saveUserAccountToDb = async (account: INewUser) => {
+  saveUserToDB = async (user: User) => {
     try {
       await database.createDocument(
         appwriteConfig.databaseId,
         appwriteConfig.userCollectionId,
         ID.unique(),
-        account
+        user
       );
     } catch (error: any) {
       throw new Error("Saving user to database failed: " + error.message);
