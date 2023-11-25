@@ -8,10 +8,10 @@ const useCreateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (user: User) => apiClient.createUser(user),
-    onSuccess: (_, user) => {
-      apiClient.saveUserToDB(user);
-      queryClient.setQueryData(["users"], user);
+    mutationFn: (data: User) => apiClient.createUser(data),
+    onSuccess: (_, data) => {
+      apiClient.saveUserToDB(data);
+      queryClient.setQueryData(["users"], data);
     },
   });
 };

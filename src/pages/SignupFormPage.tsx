@@ -11,45 +11,23 @@ import {
   Spinner,
   Stack,
   Text,
-  useToast,
-} from "@chakra-ui/react";
-import { useEffect } from "react";
-import { FieldValues } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { useCreateUser, useSignupForm } from "../hooks";
+} from '@chakra-ui/react';
+import { FieldValues } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { useForm, useSignup } from '../hooks';
+import { SignupFormSchema } from '../utils/validation';
 
 const SignupFormPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useSignupForm();
-  const user = useCreateUser();
-  const navigate = useNavigate();
-  const toast = useToast();
+  } = useForm(SignupFormSchema);
+  const { handleSignup, isSignedUp } = useSignup();
 
-  const onSubmit = (data: FieldValues) => {
-    user.mutate({
-      name: data.name,
-      email: data.email,
-      username: data.username,
-      password: data.password,
-    });
+  const onSubmit = (formData: FieldValues) => {
+    handleSignup(formData);
   };
-
-  useEffect(() => {
-    if (user.isSuccess) {
-      navigate("/");
-    } else if (user.isError) {
-      toast({
-        title: "Account not created",
-        description: "Your account has not been created",
-        status: "error",
-        isClosable: true,
-        duration: 3000,
-      });
-    }
-  }, [user.isSuccess, user.isError]);
 
   return (
     <>
@@ -73,13 +51,18 @@ const SignupFormPage = () => {
           <Flex p={8} flex={1} align="center" justify="center">
             <Stack spacing={4} w="full" maxW="md">
               <Image src="/assets/logo.svg" />
-              <Heading size="sm" textAlign="center" paddingTop={5}>
+              <Heading
+                size="sm"
+                textAlign="center"
+                paddingTop={5}
+                color="gray.200"
+              >
                 Welcome! Join our community to access exclusive content and
                 features. Sign up now!
               </Heading>
               <FormControl id="name">
                 <FormLabel>Name</FormLabel>
-                <Input type="text" variant="filled" {...register("name")} />
+                <Input type="text" variant="filled" {...register('name')} />
                 {errors.name && (
                   <Text color="red.300" paddingTop={2}>
                     {errors.name.message}
@@ -88,7 +71,7 @@ const SignupFormPage = () => {
               </FormControl>
               <FormControl id="username">
                 <FormLabel>Username</FormLabel>
-                <Input type="text" variant="filled" {...register("username")} />
+                <Input type="text" variant="filled" {...register('username')} />
                 {errors.username && (
                   <Text color="red.300" paddingTop={2}>
                     {errors.username.message}
@@ -97,7 +80,7 @@ const SignupFormPage = () => {
               </FormControl>
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" variant="filled" {...register("email")} />
+                <Input type="email" variant="filled" {...register('email')} />
                 {errors.email && (
                   <Text color="red.300" paddingTop={2}>
                     {errors.email.message}
@@ -109,7 +92,7 @@ const SignupFormPage = () => {
                 <Input
                   type="password"
                   variant="filled"
-                  {...register("password")}
+                  {...register('password')}
                 />
                 {errors.password && (
                   <Text color="red.300" paddingTop={2}>
@@ -119,7 +102,7 @@ const SignupFormPage = () => {
               </FormControl>
               <Stack paddingTop={3} spacing={5}>
                 <Button bg="purpleBg" type="submit">
-                  {user.isLoading ? <Spinner /> : "Sign up"}
+                  {isSignedUp ? <Spinner /> : 'Sign up'}
                 </Button>
                 <HStack justify="center">
                   <Text textAlign="center">Have an account?</Text>

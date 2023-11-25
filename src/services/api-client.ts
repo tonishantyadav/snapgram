@@ -1,6 +1,6 @@
 import { ID } from "appwrite";
 import { account, appwriteConfig, database } from "../appwrite/config";
-import { User } from "../types";
+import { SigninFormData, User } from "../types";
 
 class ApiClient {
   createUser = async (user: User) => {
@@ -13,7 +13,7 @@ class ApiClient {
 
   saveUserToDB = async (user: User) => {
     try {
-      await database.createDocument(
+      return await database.createDocument(
         appwriteConfig.databaseId,
         appwriteConfig.userCollectionId,
         ID.unique(),
@@ -21,6 +21,14 @@ class ApiClient {
       );
     } catch (error: any) {
       throw new Error("Saving user to database failed: " + error.message);
+    }
+  };
+
+  userSignin = async (user: SigninFormData) => {
+    try {
+      await account.createEmailSession(user.email, user.password);
+    } catch (error: any) {
+      throw new Error("User signin failed: " + error.message);
     }
   };
 }

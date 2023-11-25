@@ -40,3 +40,22 @@ export interface UpdateUser {
   imageUrl: URL | string;
   file: File[];
 }
+
+export interface SignupFormData {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface SigninFormData {
+  email: string;
+  password: string;
+}
+
+export const INITIAL_USER = {
+  name: "",
+  email: "",
+  username: "",
+  password: "",
+};

@@ -10,23 +10,23 @@ import {
   Spinner,
   Stack,
   Text,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { useSigninForm } from "../hooks";
-import { FieldValues } from "react-hook-form";
+} from '@chakra-ui/react';
+import { FieldValues } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { useForm, useSignin } from '../hooks';
+import { SigninFormSchema } from '../utils/validation';
 
 const SigninFormPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useSigninForm();
+  } = useForm(SigninFormSchema);
+  const { handleSignin, isSignedIn } = useSignin();
 
   const onSubmit = (formData: FieldValues) => {
-    console.log(formData);
+    handleSignin(formData);
   };
-
-  const isLoading = false;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +36,7 @@ const SigninFormPage = () => {
             <Heading size="xl">Sign in to your account</Heading>
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
-              <Input type="email" variant="filled" {...register("email")} />
+              <Input type="email" variant="filled" {...register('email')} />
               {errors.email && (
                 <Text color="red.300" paddingTop={2}>
                   {errors.email.message}
@@ -48,7 +48,7 @@ const SigninFormPage = () => {
               <Input
                 type="password"
                 variant="filled"
-                {...register("password")}
+                {...register('password')}
               />
               {errors.password && (
                 <Text color="red.300" paddingTop={2}>
@@ -58,7 +58,7 @@ const SigninFormPage = () => {
             </FormControl>
             <Stack spacing={6}>
               <Stack
-                direction={{ base: "column", sm: "row" }}
+                direction={{ base: 'column', sm: 'row' }}
                 align="start"
                 justify="space-between"
               >
@@ -68,7 +68,7 @@ const SigninFormPage = () => {
                 </Link>
               </Stack>
               <Button variant="solid" bg="purpleBg" type="submit">
-                {isLoading ? <Spinner /> : "Sign in"}
+                {isSignedIn ? <Spinner /> : 'Sign in'}
               </Button>
               <HStack justify="center">
                 <Text>Don't have an account?</Text>
