@@ -3,10 +3,10 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import ApiClient from '../services/api-client';
-import { SigninFormData } from '../types';
+import AppwriteApi from '../appwrite/appwriteApi';
+import { AuthUser } from '../types';
 
-const apiClient = new ApiClient();
+const apiClient = new AppwriteApi();
 
 const useSignin = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const useSignin = () => {
       toast({
         title: 'Sign in failed',
         description:
-          'Sign in unsuccessful. Please check your email and password and try again',
+          'Sign in unsuccessfull. Please check your email and password and try again',
         status: 'error',
         isClosable: true,
         duration: 3000,
@@ -31,7 +31,7 @@ const useSignin = () => {
   }, [signinMutation.isSuccess, signinMutation.isError, navigate, toast]);
 
   const handleSignin = (formData: FieldValues) => {
-    signinMutation.mutate(formData as SigninFormData);
+    signinMutation.mutate(formData as AuthUser);
   };
 
   return { handleSignin, isSignedIn: signinMutation.isLoading };

@@ -2,19 +2,15 @@ import { useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { useCreateUser, useSignin } from '.';
-import { INITIAL_USER, SignupFormData } from '../types';
+import { AuthUser } from '../types';
+import { INITIAL_USER_DATA } from '../store';
 
 const useSignup = () => {
   const user = useCreateUser();
   const toast = useToast();
   const { handleSignin } = useSignin();
-  const [data, setData] = useState<FieldValues>(INITIAL_USER);
+  const [data, setData] = useState<FieldValues>(INITIAL_USER_DATA);
   const [isSignedUp, setIsSignedUp] = useState(false);
-
-  const handleSignup = (formData: FieldValues) => {
-    setData(formData);
-    user.mutate(formData as SignupFormData);
-  };
 
   useEffect(() => {
     if (user.isSuccess) {
@@ -24,7 +20,7 @@ const useSignup = () => {
       toast({
         title: 'Sign up failed',
         description:
-          'Sign up failed. Please use different name or email and try again after sometime',
+          'Sign up failed. Please use different name or email and try again',
         status: 'error',
         isClosable: true,
         duration: 3000,
@@ -32,6 +28,11 @@ const useSignup = () => {
       });
     }
   }, [user.isSuccess, user.isError]);
+
+  const handleSignup = (formData: FieldValues) => {
+    setData(formData);
+    user.mutate(formData as AuthUser);
+  };
 
   return { handleSignup, isSignedUp: user.isLoading };
 };

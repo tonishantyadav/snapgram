@@ -1,17 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import ApiClient from "../services/api-client";
-import { User } from "../types";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import AppwriteApi from '../appwrite/appwriteApi';
+import { AuthUser } from '../types';
 
-const apiClient = new ApiClient();
+const apiClient = new AppwriteApi();
 
 const useCreateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: User) => apiClient.createUser(data),
+    mutationFn: (data: AuthUser) => apiClient.userSignup(data),
     onSuccess: (_, data) => {
       apiClient.saveUserToDB(data);
-      queryClient.setQueryData(["users"], data);
+      queryClient.setQueryData(['users'], data);
     },
   });
 };

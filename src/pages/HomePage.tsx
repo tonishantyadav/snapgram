@@ -1,7 +1,10 @@
-import { Heading } from "@chakra-ui/react";
+import { Heading } from '@chakra-ui/react';
+import useAuth from '../hooks/useAuth';
 
 const HomePage = () => {
-  return <Heading>Hello World</Heading>;
+  const { user, isAuthenticated } = useAuth();
+
+  return <>{isAuthenticated && <Heading>{user?.name}</Heading>}</>;
 };
 
 export default HomePage;
