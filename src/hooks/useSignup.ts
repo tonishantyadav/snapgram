@@ -1,12 +1,21 @@
 import { useToast } from '@chakra-ui/react';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { useCreateUser, useSignin } from '.';
-import { AuthUser } from '../types';
+import { useSignin } from '.';
+import AppwriteApi from '../appwrite/appwriteApi';
 import { INITIAL_USER_DATA } from '../store';
+import { AuthUser } from '../types';
+
+const api = new AppwriteApi();
 
 const useSignup = () => {
-  const user = useCreateUser();
+  const user = useMutation({
+    mutationFn: (data: AuthUser) => api.userSignup(data),
+    onSuccess: (_, data) => {
+      api.saveUserToDB(data);
+    },
+  });
   const toast = useToast();
   const { handleSignin } = useSignin();
   const [data, setData] = useState<FieldValues>(INITIAL_USER_DATA);

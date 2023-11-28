@@ -3,13 +3,10 @@ import { useEffect } from 'react';
 import AppwriteApi from '../appwrite/appwriteApi';
 import useAuthStore, { INITIAL_USER_DATA } from '../store';
 
-const apiClient = new AppwriteApi();
+const api = new AppwriteApi();
 
 const useAuth = () => {
-  const { data, isSuccess, isError } = useQuery(
-    ['user'],
-    apiClient.getCurrentUser
-  );
+  const { data, isSuccess, isError } = useQuery(['user'], api.getCurrentUser);
   const { user, isAuthenticated, setUser, setIsAuthenticated } = useAuthStore();
 
   useEffect(() => {

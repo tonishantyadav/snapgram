@@ -6,12 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import AppwriteApi from '../appwrite/appwriteApi';
 import { AuthUser } from '../types';
 
-const apiClient = new AppwriteApi();
+const api = new AppwriteApi();
 
 const useSignin = () => {
   const navigate = useNavigate();
   const toast = useToast();
-  const signinMutation = useMutation(apiClient.userSignin);
+  const signinMutation = useMutation(api.userSignin);
 
   useEffect(() => {
     if (signinMutation.isSuccess) {
