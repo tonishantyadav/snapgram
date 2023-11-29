@@ -7,18 +7,18 @@ export const INITIAL_USER_DATA = {
   username: '',
 };
 
-interface AuthStore {
+interface UserStore {
   user: User | null;
   isAuthenticated: boolean;
   setUser: (user: User | null) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
-const useAuthStore = create<AuthStore>((set) => ({
+const useUserStore = create<UserStore>((set) => ({
   user: INITIAL_USER_DATA,
   isAuthenticated: false,
   setUser: (user) => set({ user }),
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 }));
 
-export default useAuthStore;
+export default useUserStore;

@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import AppwriteApi from '../appwrite/appwriteApi';
-import useAuthStore, { INITIAL_USER_DATA } from '../store';
+import useUserStore, { INITIAL_USER_DATA } from '../store';
 
 const api = new AppwriteApi();
 
-const useAuth = () => {
+const useUser = () => {
   const { data, isSuccess, isError } = useQuery(['user'], api.getCurrentUser);
-  const { user, isAuthenticated, setUser, setIsAuthenticated } = useAuthStore();
+  const { user, isAuthenticated, setUser, setIsAuthenticated } = useUserStore();
 
   useEffect(() => {
     if (isSuccess) {
@@ -26,4 +26,4 @@ const useAuth = () => {
   return { user, isAuthenticated };
 };
 
-export default useAuth;
+export default useUser;

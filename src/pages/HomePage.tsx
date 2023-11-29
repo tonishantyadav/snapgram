@@ -1,8 +1,8 @@
 import { Heading } from '@chakra-ui/react';
-import useAuth from '../hooks/useAuth';
+import useUser from '../hooks/useUser';
 
 const HomePage = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useUser();
 
   return <>{isAuthenticated && <Heading>{user?.name}</Heading>}</>;
 };
