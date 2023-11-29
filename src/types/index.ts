@@ -1,15 +1,16 @@
-export interface User {
+export interface BaseUser {
   name: string;
   email: string;
   username: string;
 }
 
-export interface AuthUser extends User {
+export interface AuthUser extends BaseUser {
   password: string;
 }
 
-export interface UserProfile extends User {
-  imageId: string | null;
-  image: string | null;
-  bio: string | null;
+export interface User extends BaseUser {
+  id: string;
+  imageId?: string;
+  image?: string;
+  bio?: string;
 }

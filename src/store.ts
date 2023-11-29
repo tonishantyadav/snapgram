@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { User } from './types';
 
 export const INITIAL_USER_DATA = {
+  id: '',
   name: '',
   email: '',
   username: '',

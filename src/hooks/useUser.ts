@@ -12,6 +12,7 @@ const useUser = () => {
   useEffect(() => {
     if (isSuccess) {
       setUser({
+        id: data.$id,
         name: data.name,
         email: data.email,
         username: data.username,
