@@ -22,7 +22,7 @@ const theme = extendTheme({
       800: '#121212',
       900: '#111',
     },
-    purple: '#833ab4',
+    purpleBg: '#833ab4',
   },
 });
 

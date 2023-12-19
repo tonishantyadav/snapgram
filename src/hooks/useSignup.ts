@@ -11,7 +11,7 @@ const api = new AppwriteApi();
 
 const useSignup = () => {
   const user = useMutation({
-    mutationFn: (data: AuthUser) => api.userSignup(data),
+    mutationFn: (data: AuthUser) => api.register(data),
     onSuccess: (_, data) => {
       api.saveUserToDB(data);
     },

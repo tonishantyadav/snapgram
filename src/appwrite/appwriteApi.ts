@@ -1,9 +1,9 @@
 import { ID, Query } from 'appwrite';
-import { account, appwriteConfig, avatars, database } from './config';
 import { AuthUser } from '../types';
+import { account, appwriteConfig, avatars, database } from './config';
 
 class AppwriteApi {
-  userSignup = async (user: AuthUser) => {
+  register = async (user: AuthUser) => {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
     } catch (error: any) {
@@ -11,11 +11,19 @@ class AppwriteApi {
     }
   };
 
-  userSignin = async (user: AuthUser) => {
+  login = async (user: AuthUser) => {
     try {
       await account.createEmailSession(user.email, user.password);
     } catch (error: any) {
       throw new Error('User signin failed: ' + error.message);
+    }
+  };
+
+  logout = async () => {
+    try {
+      await account.deleteSession('current');
+    } catch (error: any) {
+      throw new Error('User signout failed: ' + error.message);
     }
   };
 
