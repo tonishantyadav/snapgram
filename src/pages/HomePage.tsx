@@ -27,13 +27,13 @@ const HomePage = () => {
       }}
     >
       <Show above="md">
-        <GridItem area="sidebar" bg="red">
+        <GridItem area="sidebar">
           <Heading>Hello Aside</Heading>
         </GridItem>
       </Show>
       <GridItem area="main">
         <Button onClick={handleSignout}>Logout</Button>
-        {isAuthenticated ? <Heading>{user?.name}</Heading> : <></>}
+        {isAuthenticated ? <Heading>{user?.name}</Heading> : null}
       </GridItem>
     </Grid>
   );
