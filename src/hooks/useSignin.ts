@@ -18,22 +18,27 @@ const useSignin = () => {
   useEffect(() => {
     const handleUser = async () => {
       try {
-        const userData = await api.getCurrentUser();
+        const userData = await api.getCurrentUserDetails();
         setUser({
           id: userData.$id,
           name: userData.name,
           email: userData.email,
           username: userData.username,
+          image: userData.image,
         });
         setIsAuthenticated(true);
+        localStorage.setItem('userData', JSON.stringify(userData));
+        localStorage.setItem('userAuthenticated', JSON.stringify(true));
       } catch (error) {
         setUser(INITIAL_USER_DATA);
         setIsAuthenticated(false);
+        localStorage.setItem('userData', JSON.stringify(null));
+        localStorage.setItem('userAuthenticated', JSON.stringify(false));
       }
     };
 
     if (signinMutation.isSuccess) {
-      localStorage.setItem('userSession', 'true');
+      localStorage.setItem('userSession', JSON.stringify(true));
       handleUser();
       navigate('/');
     } else if (signinMutation.isError) {

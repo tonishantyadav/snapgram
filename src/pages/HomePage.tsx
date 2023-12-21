@@ -7,8 +7,10 @@ const HomePage = () => {
   const userSession = localStorage.getItem('userSession');
 
   useEffect(() => {
-    if (userSession === 'false') navigate('/signin');
-  }, [userSession]);
+    if (userSession) {
+      if (!JSON.parse(userSession)) navigate('/signin');
+    }
+  }, [userSession, navigate]);
 
   return (
     <Grid

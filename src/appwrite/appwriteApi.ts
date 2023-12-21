@@ -47,7 +47,7 @@ class AppwriteApi {
     }
   };
 
-  getCurrentUser = async () => {
+  getCurrentUserDetails = async () => {
     try {
       const userAccount = await account.get();
 

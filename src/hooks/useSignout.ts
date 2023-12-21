@@ -17,7 +17,9 @@ const useSignout = () => {
     if (signoutMutation.isSuccess) {
       setUser(null);
       setIsAuthenticated(false);
-      localStorage.setItem('userSession', 'false');
+      localStorage.setItem('userSession', JSON.stringify(false));
+      localStorage.setItem('userData', JSON.stringify(null));
+      localStorage.setItem('userAuthenticated', JSON.stringify(false));
       navigate('/signin');
     } else if (signoutMutation.isError) {
       toast({

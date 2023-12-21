@@ -21,14 +21,15 @@ import { FaBookmark, FaEdit } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
 import { IoMdLogOut } from 'react-icons/io';
 import { Link } from 'react-router-dom';
-import useSignout from '../hooks/useSignout';
-import useUserStore from '../store';
+import { useSignout, useUser } from '../hooks';
 
 const Settings = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user, isAuthenticated } = useUserStore();
+  const { user, isAuthenticated } = useUser();
   const { handleSignout } = useSignout();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = useTheme();
+
+  if (!user && !isAuthenticated) return null;
 
   return (
     <>
@@ -45,7 +46,7 @@ const Settings = () => {
           <DrawerCloseButton />
           <DrawerHeader>
             <HStack>
-              <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+              <Avatar name="Dan Abrahmov" src={user?.image} />
               {isAuthenticated && (
                 <Flex direction="column" padding={2}>
                   <Heading size="sm">{user?.name}</Heading>

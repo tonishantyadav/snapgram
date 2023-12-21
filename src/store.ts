@@ -16,7 +16,7 @@ interface UserStore {
 }
 
 const useUserStore = create<UserStore>((set) => ({
-  user: INITIAL_USER_DATA,
+  user: null,
   isAuthenticated: false,
   setUser: (user) => set({ user }),
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
