@@ -4,27 +4,43 @@ import { useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import AppwriteApi from '../appwrite/appwriteApi';
-import useUserStore from '../store';
+import useUserStore, { INITIAL_USER_DATA } from '../store';
 import { AuthUser } from '../types';
 
 const api = new AppwriteApi();
 
 const useSignin = () => {
+  const { setUser, setIsAuthenticated } = useUserStore();
   const navigate = useNavigate();
   const toast = useToast();
   const signinMutation = useMutation(api.login);
-  const { setIsAuthenticated } = useUserStore();
 
   useEffect(() => {
+    const handleUser = async () => {
+      try {
+        const userData = await api.getCurrentUser();
+        setUser({
+          id: userData.$id,
+          name: userData.name,
+          email: userData.email,
+          username: userData.username,
+        });
+        setIsAuthenticated(true);
+      } catch (error) {
+        setUser(INITIAL_USER_DATA);
+        setIsAuthenticated(false);
+      }
+    };
+
     if (signinMutation.isSuccess) {
-      setIsAuthenticated(true);
       localStorage.setItem('userSession', 'true');
+      handleUser();
       navigate('/');
     } else if (signinMutation.isError) {
       toast({
         title: 'Sign in failed',
         description:
-          'Sign in unsuccessfull. Please check your email and password and try again',
+          'Sign in unsuccessful. Please check your email and password and try again',
         status: 'error',
         isClosable: true,
         duration: 3000,
@@ -32,7 +48,14 @@ const useSignin = () => {
       });
       navigate('/signin');
     }
-  }, [signinMutation.isSuccess, signinMutation.isError]);
+  }, [
+    signinMutation.isSuccess,
+    signinMutation.isError,
+    setUser,
+    setIsAuthenticated,
+    navigate,
+    toast,
+  ]);
 
   const handleSignin = (formData: FieldValues) => {
     signinMutation.mutate(formData as AuthUser);

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Divider,
   Drawer,
@@ -8,14 +9,25 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
+  HStack,
   Heading,
+  Text,
+  VStack,
   useDisclosure,
   useTheme,
 } from '@chakra-ui/react';
+import { FaBookmark, FaEdit } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
+import { IoMdLogOut } from 'react-icons/io';
+import { Link } from 'react-router-dom';
+import useSignout from '../hooks/useSignout';
+import useUserStore from '../store';
 
 const Settings = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user, isAuthenticated } = useUserStore();
+  const { handleSignout } = useSignout();
   const theme = useTheme();
 
   return (
@@ -32,11 +44,46 @@ const Settings = () => {
         >
           <DrawerCloseButton />
           <DrawerHeader>
-            <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+            <HStack>
+              <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+              {isAuthenticated && (
+                <Flex direction="column" padding={2}>
+                  <Heading size="sm">{user?.name}</Heading>
+                  <Text fontSize="small" color="gray">
+                    @{user?.username}
+                  </Text>
+                </Flex>
+              )}
+            </HStack>
           </DrawerHeader>
           <Divider />
           <DrawerBody>
-            <Heading>Your Profile</Heading>
+            <VStack spacing={4} align="stretch">
+              <Box h="40px">
+                <Button variant="link">
+                  <HStack>
+                    <FaEdit />
+                    <Link to="/profile">Edit profile</Link>
+                  </HStack>
+                </Button>
+              </Box>
+              <Box h="40px">
+                <Button variant="link">
+                  <HStack>
+                    <FaBookmark />
+                    <Link to="/save-post">Save posts</Link>
+                  </HStack>
+                </Button>
+              </Box>
+            </VStack>
+            <Flex direction="column">
+              <Button colorScheme="red" variant="solid" onClick={handleSignout}>
+                <HStack>
+                  <IoMdLogOut />
+                  <Text>Logout</Text>
+                </HStack>
+              </Button>
+            </Flex>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

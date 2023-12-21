@@ -1,12 +1,8 @@
-import { Button, Grid, GridItem, Heading, Show } from '@chakra-ui/react';
+import { Grid, GridItem, Heading, Show } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../hooks';
-import useSignout from '../hooks/useSignout';
 
 const HomePage = () => {
-  const { user, isAuthenticated } = useUser();
-  const { handleSignout } = useSignout();
   const navigate = useNavigate();
   const userSession = localStorage.getItem('userSession');
 
@@ -31,10 +27,7 @@ const HomePage = () => {
           <Heading>Hello Aside</Heading>
         </GridItem>
       </Show>
-      <GridItem area="main">
-        <Button onClick={handleSignout}>Logout</Button>
-        {isAuthenticated ? <Heading>{user?.name}</Heading> : null}
-      </GridItem>
+      <GridItem area="main"></GridItem>
     </Grid>
   );
 };
