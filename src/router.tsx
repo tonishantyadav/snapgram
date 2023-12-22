@@ -1,8 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import {
-  Layout,
   ErrorPage,
   HomePage,
+  Layout,
+  ProfilePage,
+  SavePostsPage,
   SigninFormPage,
   SignupFormPage,
 } from './pages';
@@ -16,6 +18,8 @@ const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/signin', element: <SigninFormPage /> },
       { path: '/signup', element: <SignupFormPage /> },
+      { path: '/profile', element: <ProfilePage /> },
+      { path: '/save-posts', element: <SavePostsPage /> },
     ],
   },
 ]);

@@ -1,5 +1,7 @@
-export { default as Layout } from "./Layout";
-export { default as HomePage } from "./HomePage";
-export { default as SigninFormPage } from "./SigninFormPage";
-export { default as SignupFormPage } from "./SignupFormPage";
-export { default as ErrorPage } from "./ErrorPage";
+export { default as ErrorPage } from './ErrorPage';
+export { default as HomePage } from './HomePage';
+export { default as Layout } from './Layout';
+export { default as ProfilePage } from './ProfilePage';
+export { default as SavePostsPage } from './SavePostsPage';
+export { default as SigninFormPage } from './SigninFormPage';
+export { default as SignupFormPage } from './SignupFormPage';

@@ -7,7 +7,7 @@ class AppwriteApi {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
     } catch (error: any) {
-      throw new Error('User account creation is failed: ' + error.message);
+      throw new Error('User registration failed: ' + error.message);
     }
   };
 
@@ -43,7 +43,7 @@ class AppwriteApi {
         }
       );
     } catch (error: any) {
-      throw new Error('Saving user to database failed: ' + error.message);
+      throw new Error('Saving user details failed: ' + error.message);
     }
   };
 

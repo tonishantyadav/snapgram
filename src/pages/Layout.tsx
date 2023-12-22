@@ -1,21 +1,45 @@
-import { Hide } from '@chakra-ui/react';
+import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
 const Layout = () => {
   const location = useLocation();
-  const path = location.pathname;
+  const showSidebar = useBreakpointValue({
+    base: false,
+    md: true,
+    lg: true,
+  });
 
-  return (
-    <div>
-      {path !== '/signup' && path !== '/signin' && (
-        <Hide above="sm">
-          <Navbar />
-        </Hide>
-      )}
-      <Outlet />
-    </div>
-  );
+  if (showSidebar) {
+    return (
+      <Grid
+        templateAreas={{
+          md: `'sidebar main'`,
+          lg: `'sidebar main'`,
+        }}
+        templateColumns={{
+          base: '1fr',
+          md: '400px 1fr',
+          lg: '400px 1fr',
+        }}
+      >
+        <GridItem area="sidebar">
+          <Sidebar />
+        </GridItem>
+        <GridItem area="main">
+          <Outlet />
+        </GridItem>
+      </Grid>
+    );
+  } else {
+    return (
+      <>
+        {location.pathname === '/' && <Navbar />}
+        <Outlet />
+      </>
+    );
+  }
 };
 
 export default Layout;

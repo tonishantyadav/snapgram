@@ -46,7 +46,7 @@ const Settings = () => {
           <DrawerCloseButton />
           <DrawerHeader>
             <HStack>
-              <Avatar name="Dan Abrahmov" src={user?.image} />
+              <Avatar name={user?.name} src={user?.image} />
               {isAuthenticated && (
                 <Flex direction="column" padding={2}>
                   <Heading size="sm">{user?.name}</Heading>
@@ -72,7 +72,7 @@ const Settings = () => {
                 <Button variant="link">
                   <HStack>
                     <FaBookmark />
-                    <Link to="/save-post">Save posts</Link>
+                    <Link to="/save-posts">Save posts</Link>
                   </HStack>
                 </Button>
               </Box>
