@@ -101,7 +101,13 @@ const SignupFormPage = () => {
                 )}
               </FormControl>
               <Stack paddingTop={3} spacing={5}>
-                <Button bg="purpleBg" type="submit">
+                <Button
+                  bg="purpleBg"
+                  type="submit"
+                  _hover={{
+                    background: 'lightPurpleBg',
+                  }}
+                >
                   {isSignedUp ? <Spinner /> : 'Sign up'}
                 </Button>
                 <HStack justify="center">

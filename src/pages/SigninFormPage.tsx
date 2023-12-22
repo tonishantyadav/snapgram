@@ -67,7 +67,14 @@ const SigninFormPage = () => {
                   <Text color="purple.300">Forgot password?</Text>
                 </Link>
               </Stack>
-              <Button variant="solid" bg="purpleBg" type="submit">
+              <Button
+                variant="solid"
+                bg="purpleBg"
+                type="submit"
+                _hover={{
+                  background: 'lightPurpleBg',
+                }}
+              >
                 {isSignedIn ? <Spinner /> : 'Sign in'}
               </Button>
               <HStack justify="center">

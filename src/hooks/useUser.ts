@@ -13,7 +13,7 @@ const useUser = () => {
       const parseUserAuthenticated = JSON.parse(userAuthenticated);
       if (parsedUserData && parseUserAuthenticated) {
         setUser({
-          id: parsedUserData.id,
+          id: parsedUserData.$id,
           name: parsedUserData.name,
           username: parsedUserData.username,
           email: parsedUserData.email,
