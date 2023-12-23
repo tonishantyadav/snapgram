@@ -19,7 +19,6 @@ const useSignin = () => {
     const handleUser = async () => {
       try {
         const userData = await api.getCurrentUserDetails();
-        console.log('Data: ', userData.$id);
 
         setUser({
           id: userData.$id,
