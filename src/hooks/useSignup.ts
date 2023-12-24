@@ -10,7 +10,7 @@ import { AuthUser } from '../types';
 const api = new AppwriteApi();
 
 const useSignup = () => {
-  const user = useMutation({
+  const userMutation = useMutation({
     mutationFn: (data: AuthUser) => api.register(data),
     onSuccess: (_, data) => {
       api.saveUserToDB(data);
@@ -22,28 +22,28 @@ const useSignup = () => {
   const [isSignedUp, setIsSignedUp] = useState(false);
 
   useEffect(() => {
-    if (user.isSuccess) {
+    if (userMutation.isSuccess) {
       setIsSignedUp(!isSignedUp);
       handleSignin(data);
-    } else if (user.isError) {
+    } else if (userMutation.isError) {
       toast({
         title: 'Sign up failed',
         description:
-          'Sign up failed. Please use different name or email and try again',
+          'Sign up failed. Please use different name or email and try again!',
         status: 'error',
         isClosable: true,
         duration: 3000,
         position: 'top',
       });
     }
-  }, [user.isSuccess, user.isError]);
+  }, [userMutation.isSuccess, userMutation.isError]);
 
   const handleSignup = (formData: FieldValues) => {
     setData(formData);
-    user.mutate(formData as AuthUser);
+    userMutation.mutate(formData as AuthUser);
   };
 
-  return { handleSignup, isSignedUp: user.isLoading };
+  return { handleSignup, isSignedUp: userMutation.isLoading };
 };
 
 export default useSignup;

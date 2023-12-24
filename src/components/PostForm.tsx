@@ -11,6 +11,7 @@ import {
   Heading,
   Image,
   Input,
+  Spinner,
   Stack,
   Text,
   Textarea,
@@ -18,7 +19,8 @@ import {
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { FileDropzone } from '.';
-import { useForm } from '../hooks';
+import { useCreatePost, useForm, useUser } from '../hooks';
+import { Post } from '../types';
 import { PostFormSchema } from '../utils/validation';
 
 const PostForm = () => {
@@ -28,13 +30,26 @@ const PostForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm(PostFormSchema);
+  const { user } = useUser();
+  const { isPostCreationLoading, handleCreatePost } = useCreatePost();
 
   const handleFileUpload = (acceptedFiles: File[]) => {
     setUploadFile(acceptedFiles);
   };
 
   const onSubmit = (formData: FieldValues) => {
-    // Handle the form submit
+    const userId = user?.id || ''; // Handle the case where user?.id is undefined
+
+    // Assuming formData contains the necessary 'caption' property
+    const postData: Post = {
+      userId,
+      caption: formData.caption as string, // Assuming 'caption' is a required property
+      file: uploadFile,
+      location: formData.location as string, // Assuming 'location' is optional
+      tags: formData.tags as string, // Assuming 'tags' is optional
+    };
+
+    handleCreatePost(postData);
   };
 
   return (
@@ -125,7 +140,7 @@ const PostForm = () => {
               type="submit"
               isDisabled={!uploadFile.length ? true : false}
             >
-              Submit
+              {isPostCreationLoading ? <Spinner /> : 'Submit'}
             </Button>
           </ButtonGroup>
         </CardFooter>

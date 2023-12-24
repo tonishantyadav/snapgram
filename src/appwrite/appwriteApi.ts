@@ -1,33 +1,33 @@
 import { ID, Query } from 'appwrite';
-import { AuthUser } from '../types';
-import { account, appwriteConfig, avatars, database } from './config';
+import { AuthUser, Post } from '../types';
+import { account, appwriteConfig, avatars, database, storage } from './config';
 
 class AppwriteApi {
-  register = async (user: AuthUser) => {
+  async register(user: AuthUser) {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
     } catch (error: any) {
-      throw new Error('User registration failed: ' + error.message);
+      throw new Error(`User registration failed: ${error.message}`);
     }
-  };
+  }
 
-  login = async (user: AuthUser) => {
+  async login(user: AuthUser) {
     try {
       await account.createEmailSession(user.email, user.password);
     } catch (error: any) {
-      throw new Error('User signin failed: ' + error.message);
+      throw new Error(`User sign-in failed: ${error.message}`);
     }
-  };
+  }
 
-  logout = async () => {
+  async logout() {
     try {
       await account.deleteSession('current');
     } catch (error: any) {
-      throw new Error('User signout failed: ' + error.message);
+      throw new Error(`User sign-out failed: ${error.message}`);
     }
-  };
+  }
 
-  saveUserToDB = async (user: AuthUser) => {
+  async saveUserToDB(user: AuthUser) {
     const avatar = avatars.getInitials(user.name);
 
     try {
@@ -43,15 +43,15 @@ class AppwriteApi {
         }
       );
     } catch (error: any) {
-      throw new Error('Saving user details failed: ' + error.message);
+      throw new Error(`Saving user details failed: ${error.message}`);
     }
-  };
+  }
 
-  getCurrentUserDetails = async () => {
+  async getCurrentUserDetails() {
     try {
       const userAccount = await account.get();
 
-      if (!userAccount) throw Error;
+      if (!userAccount) throw new Error('User account not found.');
 
       const currentUser = await database.listDocuments(
         appwriteConfig.databaseId,
@@ -59,14 +59,92 @@ class AppwriteApi {
         [Query.equal('email', userAccount.email)]
       );
 
-      if (!currentUser) throw Error;
+      if (!currentUser) throw new Error('Current user not found.');
 
-      const response = currentUser.documents[0];
-      return response;
+      return currentUser.documents[0];
     } catch (error: any) {
-      throw new Error('Get current user details failed: ' + error.message);
+      throw new Error(`Fetching current user details failed: ${error.message}`);
     }
-  };
+  }
+
+  async createPost(post: Post) {
+    try {
+      console.log('post from client: ', post);
+
+      const file = await this.uploadFile(post.file[0]);
+      console.log('file: ', file);
+
+      if (!file) throw new Error('File upload failed.');
+
+      const fileURL = await this.getFilePreview(file.$id);
+      console.log('fileURL: ', fileURL);
+
+      if (!fileURL) {
+        await this.deleteUploadFile(file.$id);
+        throw new Error('File URL retrieval failed.');
+      }
+
+      const tags = post.tags?.replace(/ /g, '').split(',') || [];
+      console.log('tags: ', tags);
+
+      const newPost = await database.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        ID.unique(),
+        {
+          creator: post.userId,
+          caption: post.caption,
+          image: fileURL,
+          imageId: file.$id,
+          location: post.location,
+          tags: tags,
+        }
+      );
+      console.log('newPost: ', newPost);
+
+      if (!newPost) {
+        await this.deleteUploadFile(file.$id);
+        throw new Error('Post creation failed.');
+      }
+    } catch (error: any) {
+      throw new Error(`Post creation failed: ${error.message}`);
+    }
+  }
+
+  async uploadFile(file: File) {
+    try {
+      return await storage.createFile(
+        appwriteConfig.storageId,
+        ID.unique(),
+        file
+      );
+    } catch (error: any) {
+      throw new Error(`File upload failed: ${error.message}`);
+    }
+  }
+
+  async getFilePreview(fileId: string) {
+    try {
+      return await storage.getFilePreview(
+        appwriteConfig.storageId,
+        fileId,
+        2000,
+        2000,
+        'top',
+        100
+      );
+    } catch (error: any) {
+      throw new Error(`Fetching file URL failed: ${error.message}`);
+    }
+  }
+
+  async deleteUploadFile(fileId: string) {
+    try {
+      await storage.deleteFile(appwriteConfig.storageId, fileId);
+    } catch (error: any) {
+      throw new Error(`File deletion failed: ${error.message}`);
+    }
+  }
 }
 
 export default AppwriteApi;

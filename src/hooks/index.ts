@@ -1,3 +1,4 @@
+export { default as useCreatePost } from './useCreatePost';
 export { default as useFileUpload } from './useFileUpload';
 export { default as useForm } from './useForm';
 export { default as useSignin } from './useSignin';
