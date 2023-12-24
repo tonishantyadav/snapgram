@@ -11,8 +11,6 @@ interface FileDropzoneProps {
 const FileDropzone = ({ uploadFile, onFileUpload }: FileDropzoneProps) => {
   const { getRootProps, getInputProps } = useFileUpload(onFileUpload);
 
-  console.log(uploadFile);
-
   return (
     <Box
       p={4}

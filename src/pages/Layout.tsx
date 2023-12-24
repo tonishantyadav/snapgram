@@ -28,7 +28,7 @@ const Layout = () => {
             <GridItem area="sidebar">
               <Sidebar />
             </GridItem>
-            <GridItem area="main" h="100vh">
+            <GridItem area="main" h="100%">
               <Divider orientation="vertical" />
             </GridItem>
             <GridItem area="main">
