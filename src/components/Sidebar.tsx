@@ -31,7 +31,7 @@ const Sidebar = () => {
         <VStack spacing={4} align="stretch">
           {sidebarLinks.map((sideBarLink) => (
             <Box h="40px" key={sideBarLink.route}>
-              <Button variant="ghost" colorScheme="purple">
+              <Button variant="ghost" borderRadius="20px">
                 <HStack gap={3}>
                   <Image src={sideBarLink.imgURL} />
                   <Link to={sideBarLink.route}>{sideBarLink.label}</Link>
@@ -43,14 +43,16 @@ const Sidebar = () => {
       </Box>
       <Flex direction="column" padding={5} gap={4}>
         <Box>
-          <Button
-            bg="purpleBg"
-            width="100%"
-            borderRadius="50px"
-            _hover={{ backgroundColor: 'lightPurpleBg' }}
-          >
-            <Text>Post</Text>
-          </Button>
+          <Link to="/create-post">
+            <Button
+              bg="purpleBg"
+              width="100%"
+              borderRadius="50px"
+              _hover={{ backgroundColor: 'lightPurpleBg' }}
+            >
+              <Text>Post</Text>
+            </Button>
+          </Link>
         </Box>
         <Box>
           <Popover placement="bottom-start">
@@ -85,15 +87,17 @@ const Sidebar = () => {
               border="unset"
             >
               <Flex direction="column" gap={2}>
-                <Button
-                  borderRadius="50px"
-                  _hover={{
-                    background: 'green.400',
-                  }}
-                  width="100%"
-                >
-                  Profile
-                </Button>
+                <Link to={`/profile/${user?.id}`}>
+                  <Button
+                    borderRadius="50px"
+                    _hover={{
+                      background: 'cyan.600',
+                    }}
+                    width="100%"
+                  >
+                    Profile
+                  </Button>
+                </Link>
                 <Button
                   borderRadius="50px"
                   _hover={{

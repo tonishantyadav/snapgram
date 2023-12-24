@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import {
+  CreatePostPage,
   ErrorPage,
   HomePage,
   Layout,
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: '/signin', element: <SigninFormPage /> },
       { path: '/signup', element: <SignupFormPage /> },
       { path: '/profile/:id', element: <ProfilePage /> },
+      { path: '/create-post', element: <CreatePostPage /> },
       { path: '/save-posts', element: <SavePostsPage /> },
     ],
   },
