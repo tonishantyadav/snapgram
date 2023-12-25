@@ -3,6 +3,41 @@ import { AuthUser, Post } from '../types';
 import { account, appwriteConfig, avatars, database, storage } from './config';
 
 class AppwriteApi {
+  async getCurrentUserDetails() {
+    try {
+      const userAccount = await account.get();
+
+      if (!userAccount) throw new Error('User account not found.');
+
+      const currentUser = await database.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,
+        [Query.equal('email', userAccount.email)]
+      );
+
+      if (!currentUser) throw new Error('Current user not found.');
+
+      return currentUser.documents[0];
+    } catch (error: any) {
+      throw new Error(`Fetching current user details failed: ${error.message}`);
+    }
+  }
+
+  async getFilePreview(fileId: string) {
+    try {
+      return await storage.getFilePreview(
+        appwriteConfig.storageId,
+        fileId,
+        2000,
+        2000,
+        'top',
+        100
+      );
+    } catch (error: any) {
+      throw new Error(`Fetching file URL failed: ${error.message}`);
+    }
+  }
+
   async register(user: AuthUser) {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
@@ -47,37 +82,13 @@ class AppwriteApi {
     }
   }
 
-  async getCurrentUserDetails() {
-    try {
-      const userAccount = await account.get();
-
-      if (!userAccount) throw new Error('User account not found.');
-
-      const currentUser = await database.listDocuments(
-        appwriteConfig.databaseId,
-        appwriteConfig.userCollectionId,
-        [Query.equal('email', userAccount.email)]
-      );
-
-      if (!currentUser) throw new Error('Current user not found.');
-
-      return currentUser.documents[0];
-    } catch (error: any) {
-      throw new Error(`Fetching current user details failed: ${error.message}`);
-    }
-  }
-
   async createPost(post: Post) {
     try {
-      console.log('post from client: ', post);
-
       const file = await this.uploadFile(post.file[0]);
-      console.log('file: ', file);
 
       if (!file) throw new Error('File upload failed.');
 
       const fileURL = await this.getFilePreview(file.$id);
-      console.log('fileURL: ', fileURL);
 
       if (!fileURL) {
         await this.deleteUploadFile(file.$id);
@@ -85,7 +96,6 @@ class AppwriteApi {
       }
 
       const tags = post.tags?.replace(/ /g, '').split(',') || [];
-      console.log('tags: ', tags);
 
       const newPost = await database.createDocument(
         appwriteConfig.databaseId,
@@ -100,7 +110,6 @@ class AppwriteApi {
           tags: tags,
         }
       );
-      console.log('newPost: ', newPost);
 
       if (!newPost) {
         await this.deleteUploadFile(file.$id);
@@ -120,21 +129,6 @@ class AppwriteApi {
       );
     } catch (error: any) {
       throw new Error(`File upload failed: ${error.message}`);
-    }
-  }
-
-  async getFilePreview(fileId: string) {
-    try {
-      return await storage.getFilePreview(
-        appwriteConfig.storageId,
-        fileId,
-        2000,
-        2000,
-        'top',
-        100
-      );
-    } catch (error: any) {
-      throw new Error(`Fetching file URL failed: ${error.message}`);
     }
   }
 

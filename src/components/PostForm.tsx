@@ -25,6 +25,8 @@ import { PostFormSchema } from '../utils/validation';
 
 const PostForm = () => {
   const [uploadFile, setUploadFile] = useState<File[]>([]);
+  const [postData, setPostData] = useState<Post | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -37,18 +39,22 @@ const PostForm = () => {
     setUploadFile(acceptedFiles);
   };
 
+  const handleFormData = (formData: FieldValues) => {
+    if (user?.id && uploadFile.length > 0) {
+      setPostData({
+        userId: user.id,
+        caption: formData.caption,
+        file: uploadFile,
+        location: formData.location,
+        tags: formData.tags,
+      });
+    } else {
+      setPostData(null);
+    }
+  };
+
   const onSubmit = (formData: FieldValues) => {
-    const userId = user?.id || ''; // Handle the case where user?.id is undefined
-
-    // Assuming formData contains the necessary 'caption' property
-    const postData: Post = {
-      userId,
-      caption: formData.caption as string, // Assuming 'caption' is a required property
-      file: uploadFile,
-      location: formData.location as string, // Assuming 'location' is optional
-      tags: formData.tags as string, // Assuming 'tags' is optional
-    };
-
+    handleFormData(formData);
     handleCreatePost(postData);
   };
 

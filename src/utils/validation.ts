@@ -16,13 +16,7 @@ export const SigninFormSchema = z.object({
 });
 
 export const PostFormSchema = z.object({
-  caption: z
-    .string()
-    .min(2, 'Caption is too short')
-    .max(255, 'Caption is too long'),
-  location: z
-    .string()
-    .min(2, 'Location is too short')
-    .max(255, 'Location is too long'),
-  tags: z.string().max(255, 'Tags are too long'),
+  caption: z.string().max(2200, 'Caption is too long'),
+  location: z.string().max(2200, 'Location is too long'),
+  tags: z.string().max(2200, 'Tags are too long'),
 });

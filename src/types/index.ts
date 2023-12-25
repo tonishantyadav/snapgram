@@ -20,5 +20,5 @@ export interface Post {
   caption: string;
   file: File[];
   location?: string;
-  tags?: string
+  tags?: string;
 }
