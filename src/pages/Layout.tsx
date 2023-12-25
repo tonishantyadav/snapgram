@@ -1,4 +1,4 @@
-import { Divider, Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
+import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar, Sidebar } from '../components';
 
@@ -21,15 +21,12 @@ const Layout = () => {
             }}
             templateColumns={{
               base: '1fr',
-              md: '300px 1fr',
-              lg: '350px 1fr',
+              md: '200px 1fr',
+              lg: '300px 1fr',
             }}
           >
             <GridItem area="sidebar">
               <Sidebar />
-            </GridItem>
-            <GridItem area="main" h="100vh">
-              <Divider orientation="vertical" />
             </GridItem>
             <GridItem area="main">
               <Outlet />

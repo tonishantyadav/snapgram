@@ -20,8 +20,8 @@ const router = createBrowserRouter([
       { path: '/signin', element: <SigninFormPage /> },
       { path: '/signup', element: <SignupFormPage /> },
       { path: '/profile/:id', element: <ProfilePage /> },
-      { path: '/create-post', element: <CreatePostPage /> },
-      { path: '/save-posts', element: <SavePostsPage /> },
+      { path: '/create', element: <CreatePostPage /> },
+      { path: '/saved', element: <SavePostsPage /> },
     ],
   },
 ]);

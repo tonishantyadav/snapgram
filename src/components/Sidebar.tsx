@@ -5,114 +5,87 @@ import {
   Flex,
   HStack,
   Image,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FaGear } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../constants';
-import { useSignout, useUser } from '../hooks';
+import { useUser } from '../hooks';
 
 const Sidebar = () => {
   const { user, isAuthenticated } = useUser();
-  const { handleSignout } = useSignout();
+  const location = useLocation();
 
   if (!user && !isAuthenticated) return null;
 
   return (
-    <Flex direction="column">
-      <Box paddingY={6} paddingLeft={5}>
-        <Image src="/assets/logo.svg" alt="logo" width="250px" />
+    <Flex direction="column" bg="none">
+      <Box paddingY={6} paddingLeft={5} as={Link} to="/">
+        <Image
+          src="/assets/logo.svg"
+          alt="logo"
+          width={{
+            base: '100px',
+            md: '150px',
+            lg: '200px',
+          }}
+        />
       </Box>
-      <Box flex={1} paddingY={2} paddingLeft={3}>
-        <VStack spacing={4} align="stretch">
-          {sidebarLinks.map((sideBarLink) => (
-            <Box h="40px" key={sideBarLink.route}>
-              <Button variant="ghost" borderRadius="20px">
-                <HStack gap={3}>
-                  <Image src={sideBarLink.imgURL} />
-                  <Link to={sideBarLink.route}>{sideBarLink.label}</Link>
-                </HStack>
-              </Button>
-            </Box>
-          ))}
-        </VStack>
-      </Box>
-      <Flex direction="column" padding={5} gap={4}>
-        <Box>
-          <Link to="/create-post">
-            <Button
-              bg="purpleBg"
-              width="100%"
-              borderRadius="50px"
-              _hover={{ backgroundColor: 'lightPurpleBg' }}
-            >
-              <Text>Post</Text>
-            </Button>
-          </Link>
-        </Box>
-        <Box>
-          <Popover placement="bottom-start">
-            <PopoverTrigger>
-              <Button
-                variant="outline"
-                width="100%"
-                height="60px"
-                borderRadius="50px"
-              >
-                <HStack>
-                  <Avatar name={user?.name} src={user?.image} size="sm" />
-                  <Flex direction="column" rowGap={1} paddingLeft={1}>
-                    <Text fontSize="md">{user?.name}</Text>
-                    <Text fontSize="sm" color="gray">
-                      @{user?.username}
-                    </Text>
-                  </Flex>
-                  <Box paddingLeft={2}>
-                    <FaGear size="1.2rem" />
-                  </Box>
-                </HStack>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent
-              paddingLeft={3}
-              paddingY={2}
-              borderRadius="10px"
-              width={{ base: 'auto', md: '250px', lg: '300px' }}
-              maxW="100%"
-              bg="none"
-              border="unset"
-            >
-              <Flex direction="column" gap={2}>
-                <Link to={`/profile/${user?.id}`}>
-                  <Button
-                    borderRadius="50px"
-                    _hover={{
-                      background: 'cyan.600',
-                    }}
-                    width="100%"
-                  >
-                    Profile
-                  </Button>
-                </Link>
-                <Button
-                  borderRadius="50px"
-                  _hover={{
-                    background: 'red.500',
-                  }}
-                  width="100%"
-                  onClick={handleSignout}
-                >
-                  Logout
-                </Button>
-              </Flex>
-            </PopoverContent>
-          </Popover>
-        </Box>
-      </Flex>
+      <VStack spacing={4} align="stretch" flex={1} paddingX={3}>
+        {sidebarLinks.map((sideBarLink) => (
+          <Button
+            variant={
+              location.pathname === '/'
+                ? 'ghost'
+                : location.pathname != sideBarLink.route
+                ? 'ghost'
+                : 'solid'
+            }
+            key={sideBarLink.route}
+            as={Link}
+            to={sideBarLink.route}
+            borderRadius="20px"
+            textAlign="left"
+            justifyContent="flex-start"
+            w="100%"
+          >
+            <HStack spacing={4} alignItems="center">
+              <Image src={sideBarLink.imgURL} boxSize="20px" />
+              <Text>{sideBarLink.label}</Text>
+            </HStack>
+          </Button>
+        ))}
+        <Button
+          variant={
+            location.pathname === `/profile/${user?.id}` ? 'solid' : 'ghost'
+          }
+          as={Link}
+          to={`/profile/${user?.id}`}
+          borderRadius="20px"
+          w="100%"
+          justifyContent="flex-start"
+        >
+          <HStack spacing={3} alignItems="center">
+            <Avatar src={user?.image} size="xs" />
+            <Text>Profile</Text>
+          </HStack>
+        </Button>
+      </VStack>
+      <VStack padding={3} spacing={3}>
+        <Button
+          as={Link}
+          to="/create"
+          variant="solid"
+          w="100%"
+          borderRadius="20px"
+          bg="purpleBg"
+          _hover={{
+            bg: 'lightPurpleBg',
+          }}
+        >
+          Post
+        </Button>
+      </VStack>
     </Flex>
   );
 };

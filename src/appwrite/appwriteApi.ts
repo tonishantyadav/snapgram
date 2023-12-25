@@ -139,6 +139,19 @@ class AppwriteApi {
       throw new Error(`File deletion failed: ${error.message}`);
     }
   }
+
+  async getPosts() {
+    try {
+      const posts = await database.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        [Query.orderDesc('$createdAt'), Query.limit(20)]
+      );
+      return posts.documents;
+    } catch (error: any) {
+      throw new Error(`Fetch posts failed: ${error.message}`);
+    }
+  }
 }
 
 export default AppwriteApi;
