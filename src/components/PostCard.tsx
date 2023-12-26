@@ -12,6 +12,7 @@ import {
   Image,
   Stack,
   Text,
+  background,
   useTheme,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
@@ -82,8 +83,28 @@ const PostCard = ({ post }: Props) => {
                 <Image src={post.image} alt={post.caption} borderRadius="lg" />
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">
-                    <Image src="/assets/icons/like.svg" width="20px" />
-                    <Image src="/assets/icons/save.svg" width="20px" />
+                    <HStack gap={5}>
+                      <Image
+                        src="/assets/icons/like.svg"
+                        width="20px"
+                        alt="like"
+                      />
+                      <Image
+                        src="/assets/icons/comment.svg"
+                        width="20px"
+                        alt="comment"
+                      />
+                      <Image
+                        src="/assets/icons/post-share.svg"
+                        width="20px"
+                        alt="share"
+                      />
+                    </HStack>
+                    <Image
+                      src="/assets/icons/save.svg"
+                      width="20px"
+                      alt="save"
+                    />
                   </Flex>
                   <HStack>
                     <Text>
