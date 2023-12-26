@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardBody,
   Center,
@@ -10,9 +11,11 @@ import {
   Heading,
   Image,
   Stack,
-  Text
+  Text,
+  useTheme
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../hooks';
 
@@ -21,7 +24,18 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
+  const [showFullCaption, setShowFullCaption] = useState(false);
   const { user } = useUser();
+  const theme = useTheme();
+
+  const handleToogleCaption = () => {
+    setShowFullCaption(!showFullCaption);
+  };
+
+  const truncatedCaption = showFullCaption
+    ? post.caption
+    : `${post.caption.slice(0, 150)}...`;
+
   return (
     <Box>
       <Center paddingY={2}>
@@ -61,10 +75,21 @@ const PostCard = ({ post }: Props) => {
                 </Flex>
                 <Image src={post.image} alt={post.caption} borderRadius="lg" />
                 <Stack spacing="3" pt={2}>
-                  <Text>{post.caption}</Text>
-                  <Text color="blue.600" fontSize="2xl">
-                    $450
-                  </Text>
+                  <HStack>
+                    <Text>
+                      {truncatedCaption}{' '}
+                      {post.caption.length > 150 && (
+                        <Button
+                          variant="unstyled"
+                          onClick={handleToogleCaption}
+                          size="xs"
+                          color={theme.colors.gray[500]}
+                        >
+                          {showFullCaption ? 'less' : 'more'}
+                        </Button>
+                      )}
+                    </Text>
+                  </HStack>
                 </Stack>
               </Stack>
             </CardBody>
