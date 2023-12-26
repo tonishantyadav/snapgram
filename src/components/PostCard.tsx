@@ -12,12 +12,15 @@ import {
   Image,
   Stack,
   Text,
-  useTheme
+  VStack,
+  useTheme,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../hooks';
+import { HiDotsHorizontal } from 'react-icons/hi';
+import { multiFormatDateString } from '../utils/formatter';
 
 interface Props {
   post: Models.Document;
@@ -57,24 +60,25 @@ const PostCard = ({ post }: Props) => {
                     <Box borderRadius="full">
                       <Avatar src={post.creator.image} size="sm" />
                     </Box>
-                    <Heading size="sm">{post.creator.name}</Heading>
+                    <Flex direction="column"  >
+                      <Heading size="sm">{post.creator.name}</Heading>
+                      <Text
+                        fontSize="x-small"
+                        color={theme.colors.gray[600]}
+                        fontWeight="bold"
+                      >
+                        {multiFormatDateString(post.$createdAt)}
+                      </Text>
+                    </Flex>
                   </HStack>
-                  {user?.id === post.creator.$id && (
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <Image
-                        src="/assets/icons/edit.svg"
-                        width="20px"
-                        height="20px"
-                      />
-                    </Box>
-                  )}
+                  <HiDotsHorizontal />
                 </Flex>
                 <Image src={post.image} alt={post.caption} borderRadius="lg" />
                 <Stack spacing="3" pt={2}>
+                  <Flex justifyContent="space-between">
+                    <Image src="/assets/icons/like.svg" width="20px" />
+                    <Image src="/assets/icons/save.svg" width="20px" />
+                  </Flex>
                   <HStack>
                     <Text>
                       {truncatedCaption}{' '}
