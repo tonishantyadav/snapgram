@@ -6,7 +6,7 @@ import {
   HStack,
   Show,
   SimpleGrid,
-  Spinner
+  Spinner,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useEffect } from 'react';
@@ -28,8 +28,6 @@ const HomePage = () => {
   if (isPostsLoading) return <Spinner />;
 
   if (isPostsFailed) return <p>Fetching post list failed!</p>;
-
-  console.log('posts: ', posts);
 
   return (
     <>

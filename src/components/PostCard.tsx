@@ -88,16 +88,19 @@ const PostCard = ({ post }: Props) => {
                         src="/assets/icons/like.svg"
                         width="20px"
                         alt="like"
+                        _hover={{ filter: 'grayscale(100%)' }}
                       />
                       <Image
                         src="/assets/icons/comment.svg"
                         width="20px"
                         alt="comment"
+                        _hover={{ filter: 'grayscale(100%)' }}
                       />
                       <Image
                         src="/assets/icons/post-share.svg"
                         width="20px"
                         alt="share"
+                        _hover={{ filter: 'grayscale(100%)' }}
                       />
                     </HStack>
                     <Image
