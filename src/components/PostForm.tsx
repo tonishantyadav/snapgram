@@ -70,6 +70,7 @@ const PostForm = () => {
         textAlign="center"
         bg="none"
         marginTop={3}
+        boxShadow="none"
       >
         <CardHeader>
           <Flex gap={2}>
