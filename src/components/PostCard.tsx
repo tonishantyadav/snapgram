@@ -12,14 +12,13 @@ import {
   Image,
   Stack,
   Text,
-  VStack,
   useTheme,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { HiDotsHorizontal } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { useUser } from '../hooks';
-import { HiDotsHorizontal } from 'react-icons/hi';
 import { multiFormatDateString } from '../utils/formatter';
 
 interface Props {
@@ -27,6 +26,7 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
+  const [caption, setCaption] = useState('');
   const [showFullCaption, setShowFullCaption] = useState(false);
   const { user } = useUser();
   const theme = useTheme();
@@ -37,7 +37,13 @@ const PostCard = ({ post }: Props) => {
 
   const truncatedCaption = showFullCaption
     ? post.caption
-    : `${post.caption.slice(0, 150)}...`;
+    : `${post.caption.slice(0, 150)}`;
+
+  useEffect(() => {
+    if (truncatedCaption) {
+      setCaption(`${truncatedCaption}...`);
+    }
+  }, [truncatedCaption, caption]);
 
   return (
     <Box>
@@ -60,7 +66,7 @@ const PostCard = ({ post }: Props) => {
                     <Box borderRadius="full">
                       <Avatar src={post.creator.image} size="sm" />
                     </Box>
-                    <Flex direction="column"  >
+                    <Flex direction="column">
                       <Heading size="sm">{post.creator.name}</Heading>
                       <Text
                         fontSize="x-small"
@@ -81,13 +87,14 @@ const PostCard = ({ post }: Props) => {
                   </Flex>
                   <HStack>
                     <Text>
-                      {truncatedCaption}{' '}
-                      {post.caption.length > 150 && (
+                      {caption}
+                      {caption.length > 150 && (
                         <Button
                           variant="unstyled"
                           onClick={handleToogleCaption}
                           size="xs"
                           color={theme.colors.gray[500]}
+                          paddingLeft={1}
                         >
                           {showFullCaption ? 'less' : 'more'}
                         </Button>

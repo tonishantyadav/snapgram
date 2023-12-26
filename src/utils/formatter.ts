@@ -31,7 +31,7 @@ export const multiFormatDateString = (timestamp: string): string => {
     case Math.floor(diffInDays) >= 30:
       return formatDateString(timestamp);
     case Math.floor(diffInDays) > 1 && diffInDays < 30:
-      return `${Math.floor(diffInDays)}d`;
+      return `${Math.floor(diffInDays)} d`;
     case Math.floor(diffInHours) >= 1:
       return `${Math.floor(diffInHours)}h`;
     case Math.floor(diffInMinutes) >= 1:
