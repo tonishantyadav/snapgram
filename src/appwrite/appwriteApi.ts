@@ -152,6 +152,49 @@ class AppwriteApi {
       throw new Error(`Fetch posts failed: ${error.message}`);
     }
   }
+
+  async likePost(postId: string, likes: string[]) {
+    try {
+      return await database.updateDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        postId,
+        {
+          like: likes,
+        }
+      );
+    } catch (error: any) {
+      throw new Error(`Failed to like the post: ${error.message}`);
+    }
+  }
+
+  async savePost(postId: string, userId: string) {
+    try {
+      return await database.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.saveCollectionId,
+        ID.unique(),
+        {
+          user: userId,
+          post: postId,
+        }
+      );
+    } catch (error: any) {
+      throw new Error(`Failed to save the post: ${error.message}`);
+    }
+  }
+
+  async unSavePost(savedPostId: string) {
+    try {
+      return await database.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        savedPostId
+      );
+    } catch (error: any) {
+      throw new Error(`Failed to unsave the post: ${error.message}`);
+    }
+  }
 }
 
 export default AppwriteApi;

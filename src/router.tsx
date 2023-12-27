@@ -4,6 +4,7 @@ import {
   ErrorPage,
   HomePage,
   Layout,
+  PostDetailPage,
   ProfilePage,
   SavePostsPage,
   SigninFormPage,
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: '/profile/:id', element: <ProfilePage /> },
       { path: '/create', element: <CreatePostPage /> },
       { path: '/saved', element: <SavePostsPage /> },
+      { path: '/post/:id', element: <PostDetailPage /> },
     ],
   },
 ]);

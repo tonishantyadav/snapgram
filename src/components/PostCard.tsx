@@ -27,8 +27,9 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
-  const [caption, setCaption] = useState('');
+  const [postCaption, setPostCaption] = useState('');
   const [isPostLiked, setIsPostLiked] = useState(false);
+  const [isPostSaved, setIsPostSaved] = useState(false);
   const [showFullCaption, setShowFullCaption] = useState(false);
   const { user } = useUser();
   const theme = useTheme();
@@ -43,9 +44,9 @@ const PostCard = ({ post }: Props) => {
 
   useEffect(() => {
     if (truncatedCaption) {
-      setCaption(`${truncatedCaption}...`);
+      setPostCaption(`${truncatedCaption}...`);
     }
-  }, [truncatedCaption, caption]);
+  }, [truncatedCaption, postCaption]);
 
   return (
     <Box>
@@ -81,7 +82,13 @@ const PostCard = ({ post }: Props) => {
                   </HStack>
                   <HiDotsHorizontal />
                 </Flex>
-                <Image src={post.image} alt={post.caption} borderRadius="lg" />
+                <Box as={Link} to={`/post/${post.$id}`}>
+                  <Image
+                    src={post.image}
+                    alt={post.caption}
+                    borderRadius="lg"
+                  />
+                </Box>
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">
                     <HStack gap={5}>
@@ -101,13 +108,6 @@ const PostCard = ({ post }: Props) => {
                           onClick={() => setIsPostLiked(!isPostLiked)}
                         />
                       )}
-
-                      <Image
-                        src="/assets/icons/comment.svg"
-                        width="20px"
-                        alt="comment"
-                        _hover={{ filter: 'grayscale(100%)' }}
-                      />
                       <Image
                         src="/assets/icons/post-share.svg"
                         width="20px"
@@ -115,28 +115,43 @@ const PostCard = ({ post }: Props) => {
                         _hover={{ filter: 'grayscale(100%)' }}
                       />
                     </HStack>
-                    <Image
-                      src="/assets/icons/save.svg"
-                      width="20px"
-                      alt="save"
-                    />
+                    {isPostSaved ? (
+                      <Image
+                        src="/assets/icons/saved.svg"
+                        width="20px"
+                        alt="saved"
+                        onClick={() => setIsPostSaved(!isPostSaved)}
+                      />
+                    ) : (
+                      <Image
+                        src="/assets/icons/save.svg"
+                        width="20px"
+                        alt="save"
+                        onClick={() => setIsPostSaved(!isPostSaved)}
+                      />
+                    )}
                   </Flex>
-                  <HStack>
-                    <Text>
-                      {caption}
-                      {caption.length > 150 && (
-                        <Button
-                          variant="unstyled"
-                          onClick={handleToogleCaption}
-                          size="xs"
-                          color={theme.colors.gray[500]}
-                          paddingLeft={1}
-                        >
-                          {showFullCaption ? 'less' : 'more'}
-                        </Button>
-                      )}
+                  <Flex direction="column">
+                    <Text fontSize="sm" fontWeight="bold">
+                      100 likes
                     </Text>
-                  </HStack>
+                    <HStack>
+                      <Text>
+                        {postCaption}
+                        {postCaption.length > 150 && (
+                          <Button
+                            variant="unstyled"
+                            onClick={handleToogleCaption}
+                            size="xs"
+                            color={theme.colors.gray[500]}
+                            paddingLeft={1}
+                          >
+                            {showFullCaption ? 'less' : 'more'}
+                          </Button>
+                        )}
+                      </Text>
+                    </HStack>
+                  </Flex>
                 </Stack>
                 {post.tags && <PostTags tags={post.tags} />}
               </Stack>

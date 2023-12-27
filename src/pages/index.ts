@@ -6,3 +6,4 @@ export { default as SavePostsPage } from './SavePostsPage';
 export { default as SigninFormPage } from './SigninFormPage';
 export { default as SignupFormPage } from './SignupFormPage';
 export { default as CreatePostPage } from './CreatePostPage';
+export { default as PostDetailPage } from './PostDetailPage';

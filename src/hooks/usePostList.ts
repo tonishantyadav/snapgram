@@ -4,7 +4,7 @@ import { QUERY_KEY } from '../query-key';
 
 const api = new AppwriteApi();
 
-const usePosts = () => {
+const usePostList = () => {
   const { data, isSuccess, isError, isLoading } = useQuery({
     queryKey: [QUERY_KEY.POSTS],
     queryFn: () => api.getPosts(),
@@ -18,4 +18,4 @@ const usePosts = () => {
   };
 };
 
-export default usePosts;
+export default usePostList;

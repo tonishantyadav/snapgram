@@ -19,7 +19,7 @@ import {
 import { useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { FileDropzone } from '.';
-import { useCreatePost, useForm, useUser } from '../hooks';
+import { useForm, usePostCreate, useUser } from '../hooks';
 import { Post } from '../types';
 import { PostFormSchema } from '../utils/validation';
 
@@ -33,7 +33,7 @@ const PostForm = () => {
     formState: { errors },
   } = useForm(PostFormSchema);
   const { user } = useUser();
-  const { isPostCreationLoading, handleCreatePost } = useCreatePost();
+  const { isPostCreatedLoading, handlePostCreate } = usePostCreate();
 
   const handleFileUpload = (acceptedFiles: File[]) => {
     setUploadFile(acceptedFiles);
@@ -55,7 +55,7 @@ const PostForm = () => {
 
   const onSubmit = (formData: FieldValues) => {
     handleFormData(formData);
-    handleCreatePost(postData);
+    handlePostCreate(postData);
   };
 
   return (
@@ -147,7 +147,7 @@ const PostForm = () => {
               type="submit"
               isDisabled={!uploadFile.length ? true : false}
             >
-              {isPostCreationLoading ? <Spinner /> : 'Submit'}
+              {isPostCreatedLoading ? <Spinner /> : 'Submit'}
             </Button>
           </ButtonGroup>
         </CardFooter>

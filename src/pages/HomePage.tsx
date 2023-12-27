@@ -12,12 +12,13 @@ import { Models } from 'appwrite';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PostCard } from '../components';
-import { usePosts } from '../hooks';
+import { usePostList } from '../hooks';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const userSession = localStorage.getItem('userSession');
-  const { posts, isPostsSuccess, isPostsFailed, isPostsLoading } = usePosts();
+  const { posts, isPostsSuccess, isPostsFailed, isPostsLoading } =
+    usePostList();
 
   useEffect(() => {
     if (userSession) {

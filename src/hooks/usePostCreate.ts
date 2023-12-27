@@ -7,7 +7,7 @@ import { QUERY_KEY } from '../query-key';
 
 const api = new AppwriteApi();
 
-const useCreatePost = () => {
+const usePostCreate = () => {
   const toast = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const useCreatePost = () => {
     },
   });
 
-  const handleCreatePost = (data: Post | null) => {
+  const handlePostCreate = (data: Post | null) => {
     try {
       if (data) postMutation.mutate(data);
     } catch (error: any) {
@@ -46,10 +46,10 @@ const useCreatePost = () => {
   };
 
   return {
-    handleCreatePost,
-    isPostCreationSuccess: postMutation.isSuccess,
-    isPostCreationLoading: postMutation.isLoading,
+    handlePostCreate,
+    isPostCreated: postMutation.isSuccess,
+    isPostCreatedLoading: postMutation.isLoading,
   };
 };
 
-export default useCreatePost;
+export default usePostCreate;
