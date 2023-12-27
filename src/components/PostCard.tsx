@@ -12,7 +12,6 @@ import {
   Image,
   Stack,
   Text,
-  background,
   useTheme,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
@@ -21,6 +20,7 @@ import { HiDotsHorizontal } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import { useUser } from '../hooks';
 import { multiFormatDateString } from '../utils/formatter';
+import PostTags from './PostTags';
 
 interface Props {
   post: Models.Document;
@@ -28,6 +28,7 @@ interface Props {
 
 const PostCard = ({ post }: Props) => {
   const [caption, setCaption] = useState('');
+  const [isPostLiked, setIsPostLiked] = useState(false);
   const [showFullCaption, setShowFullCaption] = useState(false);
   const { user } = useUser();
   const theme = useTheme();
@@ -84,12 +85,23 @@ const PostCard = ({ post }: Props) => {
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">
                     <HStack gap={5}>
-                      <Image
-                        src="/assets/icons/like.svg"
-                        width="20px"
-                        alt="like"
-                        _hover={{ filter: 'grayscale(100%)' }}
-                      />
+                      {isPostLiked ? (
+                        <Image
+                          src="/assets/icons/liked.svg"
+                          width="20px"
+                          alt="liked"
+                          onClick={() => setIsPostLiked(!isPostLiked)}
+                        />
+                      ) : (
+                        <Image
+                          src="/assets/icons/like.svg"
+                          width="20px"
+                          alt="like"
+                          _hover={{ filter: 'grayscale(100%)' }}
+                          onClick={() => setIsPostLiked(!isPostLiked)}
+                        />
+                      )}
+
                       <Image
                         src="/assets/icons/comment.svg"
                         width="20px"
@@ -126,6 +138,7 @@ const PostCard = ({ post }: Props) => {
                     </Text>
                   </HStack>
                 </Stack>
+                {post.tags && <PostTags tags={post.tags} />}
               </Stack>
             </CardBody>
           </Card>
