@@ -38,7 +38,7 @@ const PostCard = ({ post }: Props) => {
                 <PostBody post={post} user={user} />
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">
-                    <PostLike postId={post.$id} userId={user?.id || ''} />
+                    <PostLike post={post} userId={user?.id || ''} />
                     <PostSave postId={post.$id} userId={user?.id || ''} />
                   </Flex>
                   <Flex direction="column">
