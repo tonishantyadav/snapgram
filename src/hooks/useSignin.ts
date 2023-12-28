@@ -18,7 +18,7 @@ const useSignin = () => {
   useEffect(() => {
     const handleUser = async () => {
       try {
-        const userData = await api.getCurrentUserDetails();
+        const userData = await api.currentUserDetails();
 
         setUser({
           id: userData.$id,

@@ -1,4 +1,7 @@
 export enum QUERY_KEY {
   POST = 'post',
-  POSTS = 'posts',
+  POST_LIST = 'postList',
+  POST_LIKE = 'postLike',
+  USER_POST = 'userPost',
+  FILE_PREVIEW = 'filePreview',
 }

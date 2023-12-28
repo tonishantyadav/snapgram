@@ -12,7 +12,7 @@ const usePostCreate = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const postMutation = useMutation((data: Post) => api.createPost(data), {
+  const postMutation = useMutation((data: Post) => api.postCreate(data), {
     onSuccess: () => {
       toast({
         title: 'Post Upload Success',

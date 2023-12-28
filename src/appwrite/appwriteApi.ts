@@ -1,43 +1,9 @@
-import { ID, Query } from 'appwrite';
-import { AuthUser, Post } from '../types';
+import { ID, Models, Query } from 'appwrite';
+import { AuthUser, Post, User } from '../types';
 import { account, appwriteConfig, avatars, database, storage } from './config';
 
 class AppwriteApi {
-  async getCurrentUserDetails() {
-    try {
-      const userAccount = await account.get();
-
-      if (!userAccount) throw new Error('User account not found.');
-
-      const currentUser = await database.listDocuments(
-        appwriteConfig.databaseId,
-        appwriteConfig.userCollectionId,
-        [Query.equal('email', userAccount.email)]
-      );
-
-      if (!currentUser) throw new Error('Current user not found.');
-
-      return currentUser.documents[0];
-    } catch (error: any) {
-      throw new Error(`Fetching current user details failed: ${error.message}`);
-    }
-  }
-
-  async getFilePreview(fileId: string) {
-    try {
-      return await storage.getFilePreview(
-        appwriteConfig.storageId,
-        fileId,
-        2000,
-        2000,
-        'top',
-        100
-      );
-    } catch (error: any) {
-      throw new Error(`Fetching file URL failed: ${error.message}`);
-    }
-  }
-
+  // User related operations
   async register(user: AuthUser) {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
@@ -82,16 +48,85 @@ class AppwriteApi {
     }
   }
 
-  async createPost(post: Post) {
+  async currentUserDetails() {
     try {
-      const file = await this.uploadFile(post.file[0]);
+      const userAccount = await account.get();
+
+      if (!userAccount) throw new Error('User account not found.');
+
+      const currentUser = await database.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,
+        [Query.equal('email', userAccount.email)]
+      );
+
+      if (!currentUser) throw new Error('Current user not found.');
+
+      return currentUser.documents[0];
+    } catch (error: any) {
+      throw new Error(`Fetching current user details failed: ${error.message}`);
+    }
+  }
+
+  // File related operations
+  async filePreview(fileId: string) {
+    try {
+      return await storage.getFilePreview(
+        appwriteConfig.storageId,
+        fileId,
+        2000,
+        2000,
+        'top',
+        100
+      );
+    } catch (error: any) {
+      throw new Error(`Fetching file URL failed: ${error.message}`);
+    }
+  }
+
+  async fileUpload(file: File) {
+    try {
+      return await storage.createFile(
+        appwriteConfig.storageId,
+        ID.unique(),
+        file
+      );
+    } catch (error: any) {
+      throw new Error(`File upload failed: ${error.message}`);
+    }
+  }
+
+  async fileUploadDelete(fileId: string) {
+    try {
+      await storage.deleteFile(appwriteConfig.storageId, fileId);
+    } catch (error: any) {
+      throw new Error(`File deletion failed: ${error.message}`);
+    }
+  }
+
+  // Post related operations
+  async getPost(postId: string) {
+    try {
+      return await database.getDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        postId
+      );
+    } catch (error: any) {
+      throw new Error(`Post not found: ${error.messsage}`);
+    }
+  }
+
+  async postCreate(post: Post) {
+    try {
+      const file = await this.fileUpload(post.file[0]);
 
       if (!file) throw new Error('File upload failed.');
 
-      const fileURL = await this.getFilePreview(file.$id);
+      const fileURL = await this.filePreview(file.$id);
 
       if (!fileURL) {
-        await this.deleteUploadFile(file.$id);
+        await this.fileUploadDelete(file.$id);
         throw new Error('File URL retrieval failed.');
       }
 
@@ -112,7 +147,7 @@ class AppwriteApi {
       );
 
       if (!newPost) {
-        await this.deleteUploadFile(file.$id);
+        await this.fileUploadDelete(file.$id);
         throw new Error('Post creation failed.');
       }
     } catch (error: any) {
@@ -120,27 +155,7 @@ class AppwriteApi {
     }
   }
 
-  async uploadFile(file: File) {
-    try {
-      return await storage.createFile(
-        appwriteConfig.storageId,
-        ID.unique(),
-        file
-      );
-    } catch (error: any) {
-      throw new Error(`File upload failed: ${error.message}`);
-    }
-  }
-
-  async deleteUploadFile(fileId: string) {
-    try {
-      await storage.deleteFile(appwriteConfig.storageId, fileId);
-    } catch (error: any) {
-      throw new Error(`File deletion failed: ${error.message}`);
-    }
-  }
-
-  async getPosts() {
+  async postList() {
     try {
       const posts = await database.listDocuments(
         appwriteConfig.databaseId,
@@ -153,46 +168,51 @@ class AppwriteApi {
     }
   }
 
-  async likePost(postId: string, likes: string[]) {
+  async postLike(post: Models.Document, user: User) {
     try {
-      return await database.updateDocument(
+      let likes = post.like || [];
+      if (!likes.includes(user.id)) {
+        likes.push(user.id);
+      }
+
+      console.log('likes: ', likes);
+
+      const response = await database.updateDocument(
         appwriteConfig.databaseId,
         appwriteConfig.postCollectionId,
-        postId,
+        post.$id,
         {
           like: likes,
         }
       );
+
+      console.log('like response: ', response);
     } catch (error: any) {
       throw new Error(`Failed to like the post: ${error.message}`);
     }
   }
 
-  async savePost(postId: string, userId: string) {
+  async postUnlike(post: Models.Document, user: User) {
     try {
-      return await database.createDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.saveCollectionId,
-        ID.unique(),
-        {
-          user: userId,
-          post: postId,
-        }
-      );
-    } catch (error: any) {
-      throw new Error(`Failed to save the post: ${error.message}`);
-    }
-  }
+      let likes = post.like || [];
+      if (likes.includes(user.id)) {
+        likes = likes.filter((like: any) => like.id !== user.id);
+      }
 
-  async unSavePost(savedPostId: string) {
-    try {
-      return await database.deleteDocument(
+      console.log('unLikes: ', likes);
+
+      const response = await database.updateDocument(
         appwriteConfig.databaseId,
         appwriteConfig.postCollectionId,
-        savedPostId
+        post.$id,
+        {
+          like: likes,
+        }
       );
+
+      console.log('unlike response: ', response);
     } catch (error: any) {
-      throw new Error(`Failed to unsave the post: ${error.message}`);
+      throw new Error(`Failed to unlike the post: ${error.message}`);
     }
   }
 }

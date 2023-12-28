@@ -6,8 +6,8 @@ const api = new AppwriteApi();
 
 const usePostList = () => {
   const { data, isSuccess, isError, isLoading } = useQuery({
-    queryKey: [QUERY_KEY.POSTS],
-    queryFn: () => api.getPosts(),
+    queryKey: [QUERY_KEY.POST_LIST],
+    queryFn: () => api.postList(),
   });
 
   return {
