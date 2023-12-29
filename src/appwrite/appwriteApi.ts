@@ -6,11 +6,11 @@ class AppwriteApi {
   /**
    * Registers a new user account with Appwrite.
    *
-   * Accepts an AuthUser object containing the user's email, password, and name.
-   * Calls the Appwrite SDK account.create() method to create the user account.
-   * Throws an error if account creation fails.
+   * @param {AuthUser} user - Object containing user's email, password, and name.
+   * @throws {Error} - Throws an error if account creation fails.
+   * @returns {Promise<void>}
    */
-  async register(user: AuthUser) {
+  async register(user: AuthUser): Promise<void> {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
     } catch (error: any) {
@@ -20,8 +20,12 @@ class AppwriteApi {
 
   /**
    * Logs the user in by creating an email session using their email and password.
+   *
+   * @param {AuthUser} user - Object containing user's email and password.
+   * @throws {Error} - Throws an error if sign-in fails.
+   * @returns {Promise<void>}
    */
-  async login(user: AuthUser) {
+  async login(user: AuthUser): Promise<void> {
     try {
       await account.createEmailSession(user.email, user.password);
     } catch (error: any) {
@@ -31,8 +35,11 @@ class AppwriteApi {
 
   /**
    * Logs the user out by deleting their current session.
+   *
+   * @throws {Error} - Throws an error if sign-out fails.
+   * @returns {Promise<void>}
    */
-  async logout() {
+  async logout(): Promise<void> {
     try {
       await account.deleteSession('current');
     } catch (error: any) {
@@ -43,13 +50,11 @@ class AppwriteApi {
   /**
    * Saves a new user account to the Appwrite database.
    *
-   * Accepts an AuthUser object containing the user's details.
-   * Generates a unique ID and avatar initials.
-   * Creates a new document in the users collection.
-   * Returns the created user document.
-   * Throws an error if saving to the database fails.
+   * @param {AuthUser} user - Object containing user's details.
+   * @throws {Error} - Throws an error if saving to the database fails.
+   * @returns {Promise<any>} - Returns the created user document.
    */
-  async saveUserToDB(user: AuthUser) {
+  async saveUserToDB(user: AuthUser): Promise<any> {
     const avatar = avatars.getInitials(user.name);
 
     try {
@@ -72,12 +77,10 @@ class AppwriteApi {
   /**
    * Fetches details for the currently logged in user from Appwrite.
    *
-   * Gets the current user account from the Appwrite SDK.
-   * Queries the users collection to find the user document matching the account email.
-   * Returns the user document.
-   * Throws errors if the account or user document can't be found.
+   * @throws {Error} - Throws an error if user details retrieval fails.
+   * @returns {Promise<any>} - Returns the user document.
    */
-  async currentUserDetails() {
+  async currentUserDetails(): Promise<any> {
     try {
       const userAccount = await account.get();
 
@@ -100,10 +103,9 @@ class AppwriteApi {
   /**
    * Retrieves a preview URL for the given file ID.
    *
-   * Calls the Appwrite SDK to generate a preview URL for the file.
-   * The preview is constrained to a max width and height.
-   * Returns the preview URL string if successful.
-   * Throws an error if the preview URL can't be generated.
+   * @param {string} fileId - ID of the file to retrieve the preview URL.
+   * @throws {Error} - Throws an error if the preview URL retrieval fails.
+   * @returns {Promise<string>} - Returns the preview URL string.
    */
   async filePreview(fileId: string) {
     try {
@@ -123,12 +125,11 @@ class AppwriteApi {
   /**
    * Uploads a file to Appwrite storage.
    *
-   * Takes a File object as input.
-   * Calls the Appwrite SDK to upload the file.
-   * Returns the new file object if successful.
-   * Throws an error if the upload fails.
+   * @param {File} file - File object to upload.
+   * @throws {Error} - Throws an error if the file upload fails.
+   * @returns {Promise<any>} - Returns the new file object.
    */
-  async fileUpload(file: File) {
+  async fileUpload(file: File): Promise<any> {
     try {
       return await storage.createFile(
         appwriteConfig.storageId,
@@ -143,11 +144,11 @@ class AppwriteApi {
   /**
    * Deletes a previously uploaded file by its ID.
    *
-   * Calls the Appwrite SDK to delete the file with the given ID.
-   * Returns nothing if successful.
-   * Throws an error if the file deletion fails.
+   * @param {string} fileId - ID of the file to delete.
+   * @throws {Error} - Throws an error if the file deletion fails.
+   * @returns {Promise<void>}
    */
-  async fileUploadDelete(fileId: string) {
+  async fileUploadDelete(fileId: string): Promise<void> {
     try {
       await storage.deleteFile(appwriteConfig.storageId, fileId);
     } catch (error: any) {
@@ -158,11 +159,11 @@ class AppwriteApi {
   /**
    * Retrieves a post document from the database by ID.
    *
-   * Calls the Appwrite SDK to get a post document by its ID from the database.
-   * Returns the post document if found.
-   * Throws an error if the post is not found.
+   * @param {string} postId - ID of the post document to retrieve.
+   * @throws {Error} - Throws an error if the post retrieval fails.
+   * @returns {Promise<any>} - Returns the post document.
    */
-  async getPost(postId: string) {
+  async getPost(postId: string): Promise<any> {
     try {
       return await database.getDocument(
         appwriteConfig.databaseId,
@@ -170,19 +171,18 @@ class AppwriteApi {
         postId
       );
     } catch (error: any) {
-      throw new Error(`Post not found: ${error.messsage}`);
+      throw new Error(`Post not found: ${error.message}`);
     }
   }
 
   /**
    * Creates a new post document in the database.
    *
-   * Uploads the post image file, generates a preview URL, creates the post document, and handles errors.
-   *
-   * @param post - The Post object with user ID, caption, tags, etc.
-   * @throws Error if any step of the post creation fails.
+   * @param {Post} post - Post object containing user ID, caption, tags, etc.
+   * @throws {Error} - Throws an error if the post creation fails.
+   * @returns {Promise<void>}
    */
-  async postCreate(post: Post) {
+  async postCreate(post: Post): Promise<void> {
     try {
       const file = await this.fileUpload(post.file[0]);
 
@@ -223,12 +223,10 @@ class AppwriteApi {
   /**
    * Retrieves a list of post documents from the database.
    *
-   * Queries the post collection, sorting by descending createdAt timestamp and limiting to 20 results.
-   *
-   * @returns An array of post document objects.
-   * @throws Error if the query fails.
+   * @throws {Error} - Throws an error if post retrieval fails.
+   * @returns {Promise<any[]>} - Returns an array of post document objects.
    */
-  async postList() {
+  async postList(): Promise<any[]> {
     try {
       const posts = await database.listDocuments(
         appwriteConfig.databaseId,
@@ -244,12 +242,12 @@ class AppwriteApi {
   /**
    * Updates a post document to add user IDs to the 'like' array field.
    *
-   * @param postId - The ID of the post document to update
-   * @param likes - Array of user IDs to add to the 'like' field
-   * @returns The updated post document
-   * @throws Error if the post is not found or the update fails
+   * @param {string} postId - ID of the post document to update.
+   * @param {string[]} likes - Array of user IDs to add to the 'like' field.
+   * @throws {Error} - Throws an error if the post update fails.
+   * @returns {Promise<any>} - Returns the updated post document.
    */
-  async postLike(postId: string, likes: string[]) {
+  async postLike(postId: string, likes: string[]): Promise<any> {
     try {
       const post = await database.updateDocument(
         appwriteConfig.databaseId,
@@ -262,6 +260,54 @@ class AppwriteApi {
       return post;
     } catch (error: any) {
       throw new Error(`Post like failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Saves a post by creating a document in the 'saves' collection
+   * associating the post ID with the user ID.
+   *
+   * @param {string} postId - ID of the post to save.
+   * @param {string} userId - ID of the user saving the post.
+   * @throws {Error} - Throws an error if the save fails.
+   * @returns {Promise<any>} - Returns the newly created save document.
+   */
+  async postSave(postId: string, userId: string): Promise<any> {
+    try {
+      const response = await database.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.saveCollectionId,
+        ID.unique(),
+        {
+          post: postId,
+          user: userId,
+        }
+      );
+      if (!response) throw new Error('Post not found.');
+
+      return response;
+    } catch (error: any) {
+      throw new Error(`Post save failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Deletes a saved post document from the 'saves' collection.
+   *
+   * @param {string} postSavedId - ID of the saved post document to delete.
+   * @throws {Error} - Throws an error if the delete operation fails.
+   * @returns {Promise<void>}
+   */
+  async postUnsave(postSavedId: string): Promise<void> {
+    try {
+      const response = await database.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.saveCollectionId,
+        postSavedId
+      );
+      if (!response) throw new Error('Post not found.');
+    } catch (error: any) {
+      throw new Error(`Post unsave failed: ${error.message}`);
     }
   }
 }

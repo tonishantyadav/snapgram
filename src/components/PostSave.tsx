@@ -1,20 +1,47 @@
 import { Image } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Models } from 'appwrite';
+import { useEffect, useState } from 'react';
+import { usePostUnsave, useUserAll } from '../hooks';
+import usePostSave from '../hooks/usePostSave';
 
 interface Props {
-  postId: string;
+  post: Models.Document;
   userId: string;
 }
 
-const PostSave = ({ postId, userId }: Props) => {
-  const [isPostSaved, setIsPostSaved] = useState(false);
+const PostSave = ({ post, userId }: Props) => {
+  const [isSaved, setIsSaved] = useState(false);
+  const { user } = useUserAll();
+  const { handlePostSave } = usePostSave();
+  const { handlePostUnsave } = usePostUnsave();
+
+  const allSavedPosts = user?.save || [];
+  const savedPost = allSavedPosts.find(
+    (saved: Models.Document) => saved.post.$id === post.$id
+  );
+
+  useEffect(() => {
+    if (savedPost) {
+      setIsSaved(true);
+    }
+  }, [user]);
+
+  const handleSave = () => {
+    if (isSaved) {
+      setIsSaved(false);
+      handlePostUnsave({ postId: post.$id, postSavedId: savedPost.$id });
+    } else {
+      setIsSaved(true);
+      handlePostSave({ userId: userId, postId: post.$id });
+    }
+  };
 
   return (
     <Image
-      src={isPostSaved ? '/assets/icons/saved.svg' : '/assets/icons/save.svg'}
+      src={isSaved ? '/assets/icons/saved.svg' : '/assets/icons/save.svg'}
       width="20px"
       alt="saved"
-      onClick={() => setIsPostSaved(!isPostSaved)}
+      onClick={handleSave}
     />
   );
 };

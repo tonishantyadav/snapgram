@@ -4,30 +4,35 @@ import { QUERY_KEY } from '../query-key';
 import { Models } from 'appwrite';
 
 /**
- * usePostLike is a React hook that handles liking/unliking posts.
+ * usePostSave is a React hook that handles saving posts for a user.
  *
- * It utilizes the react-query library's useMutation hook to perform the API call
- * to like/unlike a post. It also manages optimistic updates for the post list cache
- * based on the like action.
+ * It uses the react-query library to make the API call to save the post.
+ *
+ * The hook handles optimistic updates to temporarily update the cache,
+ * invalidating queries on success to refetch fresh data, and rolling back
+ * the optimistic update on error.
+ *
+ * The returned object contains the save post handler function, as well as
+ * booleans representing the status of the save mutation.
  *
  * @returns {{
- *   handlePostLike: (args: PostLike) => void;
- *   isPostLikeSuccess: boolean;
- *   isPostLikeError: boolean;
+ *   handlePostSave: (args: PostSave) => void;
+ *   isPostSaveSuccess: boolean;
+ *   isPostSaveFailed: boolean;
  * }}
  */
-interface PostLike {
+interface PostSave {
   postId: string;
-  likes: string[];
+  userId: string;
 }
 
 const api = new AppwriteApi();
 
-const usePostLike = () => {
+const usePostSave = () => {
   const queryClient = useQueryClient();
-  const postLikeMutation = useMutation({
-    mutationFn: ({ postId, likes }: PostLike) => api.postLike(postId, likes),
-    onMutate: async ({ postId, likes }: PostLike) => {
+  const postSaveMutation = useMutation({
+    mutationFn: ({ postId, userId }: PostSave) => api.postSave(postId, userId),
+    onMutate: async ({ postId, userId }: PostSave) => {
       try {
         // Retrieve cachedPosts and handle the type
         const cachedPosts = queryClient.getQueryData<Models.Document[]>([
@@ -51,10 +56,9 @@ const usePostLike = () => {
           [QUERY_KEY.POST_LIST],
           (oldData) => {
             if (!oldData) return []; // Return empty array if oldData is undefined
-
             return oldData.map((post) => {
               if (post.$id === postId) {
-                return { ...post, like: likes }; // Update like count optimistically
+                return { ...post, save: [...post.save, userId] }; // Update save count optimistically
               }
               return post;
             });
@@ -67,8 +71,9 @@ const usePostLike = () => {
         throw new Error('Optimistic update failed');
       }
     },
-    onSuccess: ({ postId }) => {
-      queryClient.invalidateQueries([QUERY_KEY.POST, postId]);
+    onSuccess: () => {
+      queryClient.invalidateQueries([QUERY_KEY.POST_LIST]);
+      queryClient.invalidateQueries([QUERY_KEY.USER_ALL]);
     },
     onError: (_, __, rollbackData: any) => {
       // Revert optimistic update on error
@@ -76,15 +81,15 @@ const usePostLike = () => {
     },
   });
 
-  const handlePostLike = ({ postId, likes }: PostLike) => {
-    postLikeMutation.mutate({ postId, likes });
+  const handlePostSave = ({ postId, userId }: PostSave) => {
+    postSaveMutation.mutate({ postId, userId });
   };
 
   return {
-    handlePostLike,
-    isPostLikeSuccess: postLikeMutation.isSuccess,
-    isPostLikeError: postLikeMutation.isError,
+    handlePostSave,
+    isPostSaveSuccess: postSaveMutation.isSuccess,
+    isPostSaveFailed: postSaveMutation.isError,
   };
 };
 
-export default usePostLike;
+export default usePostSave;

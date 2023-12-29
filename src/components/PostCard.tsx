@@ -39,7 +39,7 @@ const PostCard = ({ post }: Props) => {
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">
                     <PostLike post={post} userId={user?.id || ''} />
-                    <PostSave postId={post.$id} userId={user?.id || ''} />
+                    <PostSave post={post} userId={user?.id || ''} />
                   </Flex>
                   <Flex direction="column">
                     <Text fontSize="sm" fontWeight="bold">
