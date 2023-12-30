@@ -25,9 +25,9 @@ const PostCaption = ({ caption }: Props) => {
   };
 
   return (
-    <Box>
-      <HStack paddingX={2}>
-        <Text>
+    <Box paddingLeft={2}>
+      <HStack>
+        <Text fontSize={showFullCaption ? 'sm' : ''}>
           {postCaption}
           {postCaption.length > 150 && (
             <Button

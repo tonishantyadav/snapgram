@@ -11,7 +11,12 @@ const PostBody = ({ post }: Props) => {
     <>
       <Box as={Link} to={`/post/${post.$id}`}>
         <Box paddingX={2}>
-          <Image src={post.image} alt="post image" borderRadius="20px" />
+          <Image
+            src={post.image}
+            alt="post image"
+            borderRadius="20px"
+            objectFit="cover"
+          />
         </Box>
       </Box>
     </>

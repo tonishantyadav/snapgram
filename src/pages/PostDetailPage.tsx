@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PostCard } from '../components';
+import { PostCommentBox, PostDetailCard } from '../components';
 import { usePost, useUser } from '../hooks';
 
 const PostDetailPage = () => {
@@ -52,7 +52,7 @@ const PostDetailPage = () => {
       </GridItem>
       <GridItem area="main">
         <SimpleGrid
-          templateRows={'1fr 1fr'}
+          templateRows={'1fr 1px 1fr'}
           maxH="100vh"
           overflowY="scroll"
           sx={{
@@ -63,9 +63,12 @@ const PostDetailPage = () => {
           }}
         >
           <Box width="100%">
-            {isPostSuccess && <PostCard post={post} edit={edit} />}
+            {isPostSuccess && <PostDetailCard post={post} edit={edit} />}
           </Box>
-          <Box></Box>
+          <Box>
+            <Divider />
+          </Box>
+          <Box>{isPostSuccess && <PostCommentBox post={post} />}</Box>
         </SimpleGrid>
       </GridItem>
       <GridItem area="rightDivider" height="100%">
