@@ -51,7 +51,7 @@ const PostCard = ({ post }: Props) => {
                   <Flex justifyContent="space-between">
                     <HStack>
                       <PostLike post={post} userId={user?.id || ''} />
-                      <PostShare />
+                      <PostShare post={post} />
                     </HStack>
                     <PostSave post={post} userId={user?.id || ''} />
                   </Flex>

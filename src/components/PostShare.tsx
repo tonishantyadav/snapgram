@@ -1,6 +1,13 @@
 import { Box, Image } from '@chakra-ui/react';
+import { Models } from 'appwrite';
+import { usePostShare } from '../hooks';
 
-const PostShare = () => {
+interface Props {
+  post: Models.Document;
+}
+
+const PostShare = ({ post }: Props) => {
+  const { handleShare } = usePostShare(post);
   return (
     <Box
       boxSize="40px"
@@ -13,7 +20,12 @@ const PostShare = () => {
         backgroundColor: 'gray.700',
       }}
     >
-      <Image src="/assets/icons/share.svg" width="20px" alt="share" />
+      <Image
+        src="/assets/icons/share.svg"
+        width="20px"
+        alt="share"
+        onClick={handleShare}
+      />
     </Box>
   );
 };

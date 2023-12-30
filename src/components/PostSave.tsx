@@ -1,4 +1,4 @@
-import { Box, Center, Image } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useEffect, useState } from 'react';
 import { usePostSave, usePostUnsave, useUserAll } from '../hooks';
