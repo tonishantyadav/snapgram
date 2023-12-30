@@ -23,9 +23,10 @@ import PostHeading from './PostHeading';
 
 interface Props {
   post: Models.Document;
+  edit: boolean;
 }
 
-const PostCard = ({ post }: Props) => {
+const PostCard = ({ post, edit }: Props) => {
   const { user } = useUser();
 
   return (
@@ -45,7 +46,7 @@ const PostCard = ({ post }: Props) => {
           >
             <CardBody>
               <Stack gap={2}>
-                <PostHeading post={post} user={user} />
+                <PostHeading post={post} user={user} edit={edit} />
                 <PostBody post={post} />
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">

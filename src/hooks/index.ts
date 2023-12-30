@@ -1,5 +1,6 @@
 export { default as useFileUpload } from './useFileUpload';
 export { default as useForm } from './useForm';
+export { default as usePost } from './usePost';
 export { default as usePostCreate } from './usePostCreate';
 export { default as usePostLike } from './usePostLike';
 export { default as usePostList } from './usePostList';

@@ -17,9 +17,10 @@ import { multiFormatDateString } from '../utils/formatter';
 interface Props {
   post: Models.Document;
   user: User | null;
+  edit: boolean;
 }
 
-const PostHeading = ({ post, user }: Props) => {
+const PostHeading = ({ post, user, edit }: Props) => {
   return (
     <Box>
       <Flex justifyContent="space-between" paddingX={2}>
@@ -38,21 +39,23 @@ const PostHeading = ({ post, user }: Props) => {
             </Text>
           </Flex>
         </HStack>
-        <Center>
-          <Box
-            display="flex"
-            _hover={{
-              cursor: 'pointer',
-              background: 'gray.700',
-            }}
-            boxSize="35px"
-            borderRadius="50%"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <HiDotsHorizontal />
-          </Box>
-        </Center>
+        {edit ? (
+          <Center>
+            <Box
+              display="flex"
+              _hover={{
+                cursor: 'pointer',
+                background: 'gray.700',
+              }}
+              boxSize="35px"
+              borderRadius="50%"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <HiDotsHorizontal />
+            </Box>
+          </Center>
+        ) : null}
       </Flex>
     </Box>
   );

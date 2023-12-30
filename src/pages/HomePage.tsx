@@ -79,7 +79,6 @@ const HomePage = () => {
             <Box
               width="100%"
               overflowY="scroll"
-              overflowX="hidden"
               sx={{
                 '::-webkit-scrollbar': {
                   display: 'none',
@@ -89,7 +88,7 @@ const HomePage = () => {
             >
               {isPostsSuccess &&
                 posts?.map((post: Models.Document) => (
-                  <PostCard post={post} key={post.$id} />
+                  <PostCard post={post} edit={false} key={post.$id} />
                 ))}
             </Box>
           </SimpleGrid>
