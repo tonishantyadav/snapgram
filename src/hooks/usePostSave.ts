@@ -56,7 +56,7 @@ const usePostSave = () => {
           [QUERY_KEY.POST_LIST],
           (oldData) => {
             if (!oldData) return []; // Return empty array if oldData is undefined
-            return oldData.map((post) => {
+            return oldData.map((post: Models.Document) => {
               if (post.$id === postId) {
                 return { ...post, save: [...post.save, userId] }; // Update save count optimistically
               }
@@ -68,7 +68,7 @@ const usePostSave = () => {
         // Return a rollback function to revert the optimistic update if the mutation fails
         return { postId, cachedPosts };
       } catch (error) {
-        throw new Error('Optimistic update failed');
+        throw new Error('Post Save: Optimistic update failed');
       }
     },
     onSuccess: () => {

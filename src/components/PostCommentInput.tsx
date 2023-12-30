@@ -1,0 +1,91 @@
+import {
+  Avatar,
+  Box,
+  Button,
+  ButtonGroup,
+  HStack,
+  Text,
+  Textarea,
+} from '@chakra-ui/react';
+import { Models } from 'appwrite';
+import { useRef, useState } from 'react';
+import { usePostComment, useUser } from '../hooks';
+
+interface Props {
+  post: Models.Document;
+}
+
+const PostCommentInput = ({ post }: Props) => {
+  const [comment, setComment] = useState<string>('');
+  const { user } = useUser();
+  const { handlePostComment } = usePostComment();
+
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const handleTextAreaChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setComment(event.target.value);
+  };
+
+  const handleReply = () => {
+    if (textAreaRef.current) {
+      console.log(user);
+      handlePostComment({
+        comment: comment,
+        postId: post.$id,
+        userId: user?.id || '',
+      });
+    }
+  };
+
+  return (
+    <>
+      <HStack>
+        <Avatar size="sm" src={user?.image} />
+        <Text fontSize="sm" color="gray">
+          Replying to
+        </Text>
+        <Text color="lightPurpleBg" fontSize="sm">
+          @{post.creator.username}
+        </Text>
+      </HStack>
+      <Textarea
+        placeholder="Post your reply..."
+        ref={textAreaRef}
+        value={comment}
+        onChange={handleTextAreaChange}
+      />
+      <Box display="flex" justifyContent="flex-end">
+        <ButtonGroup>
+          <Button
+            borderRadius="20px"
+            variant="outline"
+            _hover={{
+              background: 'red.500',
+            }}
+            type="reset"
+            onClick={() => setComment('')}
+          >
+            Cancel
+          </Button>
+          <Button
+            borderRadius="20px"
+            variant="solid"
+            bg="purpleBg"
+            _hover={{
+              background: 'lightPurpleBg',
+            }}
+            type="submit"
+            onClick={handleReply}
+            isDisabled={!comment.trim()}
+          >
+            Reply
+          </Button>
+        </ButtonGroup>
+      </Box>
+    </>
+  );
+};
+
+export default PostCommentInput;

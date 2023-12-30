@@ -310,6 +310,23 @@ class AppwriteApi {
       throw new Error(`Post unsave failed: ${error.message}`);
     }
   }
+
+  async postComment(comment: string, postId: string, userId: string) {
+    try {
+      await database.createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.commentCollectionId,
+        ID.unique(),
+        {
+          comment: comment,
+          post: postId,
+          user: userId,
+        }
+      );
+    } catch (error: any) {
+      throw new Error(`Post comment failed ${error.message}`);
+    }
+  }
 }
 
 export default AppwriteApi;

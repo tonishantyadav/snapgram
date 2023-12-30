@@ -5,6 +5,8 @@ export { default as PostBody } from './PostBody';
 export { default as PostCaption } from './PostCaption';
 export { default as PostCard } from './PostCard';
 export { default as PostCommentBox } from './PostCommentBox';
+export { default as PostCommentInput } from './PostCommentInput';
+export { default as PostCommentList } from './PostCommentList';
 export { default as PostDetailCard } from './PostDetailCard';
 export { default as PostForm } from './PostForm';
 export { default as PostLike } from './PostLike';
@@ -13,3 +15,4 @@ export { default as PostShare } from './PostShare';
 export { default as PostTags } from './PostTags';
 export { default as Settings } from './Settings';
 export { default as Sidebar } from './Sidebar';
+

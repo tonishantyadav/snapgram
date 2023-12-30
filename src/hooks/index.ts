@@ -12,4 +12,4 @@ export { default as useSignout } from './useSignout';
 export { default as useSignup } from './useSignup';
 export { default as useUser } from './useUser';
 export { default as useUserAll } from './useUserAll';
-
+export { default as usePostComment } from './usePostComment';

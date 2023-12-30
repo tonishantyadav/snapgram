@@ -20,7 +20,7 @@ const Sidebar = () => {
 
   return (
     <Flex direction="column" bg="none">
-      <Box paddingY={6} paddingLeft={5} as={Link} to="/">
+      <Box paddingY={6} paddingX={5} as={Link} to="/">
         <Image
           src="/assets/logo.svg"
           alt="logo"

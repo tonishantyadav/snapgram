@@ -25,7 +25,7 @@ const PostCaption = ({ caption }: Props) => {
   };
 
   return (
-    <Box paddingLeft={2}>
+    <Box paddingX={2}>
       <HStack>
         <Text fontSize={showFullCaption ? 'sm' : ''}>
           {postCaption}
@@ -35,7 +35,7 @@ const PostCaption = ({ caption }: Props) => {
               onClick={handleToogleCaption}
               size="xs"
               color={theme.colors.gray[500]}
-              paddingLeft={1}
+              paddingX={1}
             >
               {showFullCaption ? 'less' : 'more'}
             </Button>
