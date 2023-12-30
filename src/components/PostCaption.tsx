@@ -1,4 +1,4 @@
-import { Button, HStack, Text, useTheme } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, useTheme } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -25,22 +25,24 @@ const PostCaption = ({ caption }: Props) => {
   };
 
   return (
-    <HStack>
-      <Text>
-        {postCaption}
-        {postCaption.length > 150 && (
-          <Button
-            variant="unstyled"
-            onClick={handleToogleCaption}
-            size="xs"
-            color={theme.colors.gray[500]}
-            paddingLeft={1}
-          >
-            {showFullCaption ? 'less' : 'more'}
-          </Button>
-        )}
-      </Text>
-    </HStack>
+    <Box>
+      <HStack paddingX={2}>
+        <Text>
+          {postCaption}
+          {postCaption.length > 150 && (
+            <Button
+              variant="unstyled"
+              onClick={handleToogleCaption}
+              size="xs"
+              color={theme.colors.gray[500]}
+              paddingLeft={1}
+            >
+              {showFullCaption ? 'less' : 'more'}
+            </Button>
+          )}
+        </Text>
+      </HStack>
+    </Box>
   );
 };
 

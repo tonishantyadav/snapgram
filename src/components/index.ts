@@ -8,6 +8,6 @@ export { default as PostForm } from './PostForm';
 export { default as PostLike } from './PostLike';
 export { default as PostSave } from './PostSave';
 export { default as PostTags } from './PostTags';
+export { default as PostShare } from './PostShare';
 export { default as Settings } from './Settings';
 export { default as Sidebar } from './Sidebar';
-

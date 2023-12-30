@@ -1,7 +1,7 @@
-import { Heading } from '@chakra-ui/react';
-
 const PostDetailPage = () => {
-  return <Heading>Post Detail</Heading>;
-};
+  return (
+    <div>PostDetailPage</div>
+  )
+}
 
-export default PostDetailPage;
+export default PostDetailPage

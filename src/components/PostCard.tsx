@@ -5,12 +5,21 @@ import {
   Center,
   Divider,
   Flex,
+  HStack,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { PostBody, PostCaption, PostLike, PostSave, PostTags } from '.';
+import {
+  PostBody,
+  PostCaption,
+  PostLike,
+  PostSave,
+  PostShare,
+  PostTags,
+} from '.';
 import { useUser } from '../hooks';
+import PostHeading from './PostHeading';
 
 interface Props {
   post: Models.Document;
@@ -32,19 +41,31 @@ const PostCard = ({ post }: Props) => {
             bg="none"
             boxShadow="none"
             cursor="pointer"
+            paddingX={2}
           >
             <CardBody>
               <Stack gap={2}>
-                <PostBody post={post} user={user} />
+                <PostHeading post={post} user={user} />
+                <PostBody post={post} />
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">
-                    <PostLike post={post} userId={user?.id || ''} />
+                    <HStack>
+                      <PostLike post={post} userId={user?.id || ''} />
+                      <PostShare />
+                    </HStack>
                     <PostSave post={post} userId={user?.id || ''} />
                   </Flex>
                   <Flex direction="column">
-                    <Text fontSize="sm" fontWeight="bold">
-                      {post.like.length} likes
-                    </Text>
+                    <Box>
+                      <Text
+                        fontSize="sm"
+                        fontWeight="bold"
+                        paddingX={2}
+                        paddingBottom={2}
+                      >
+                        {post.like.length} likes
+                      </Text>
+                    </Box>
                     <PostCaption caption={post.caption} />
                   </Flex>
                 </Stack>

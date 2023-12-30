@@ -1,4 +1,4 @@
-import { HStack, Image } from '@chakra-ui/react';
+import { Box, Image, Center } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useState } from 'react';
 import { usePostLike } from '../hooks';
@@ -32,7 +32,17 @@ const PostLike = ({ post, userId }: Props) => {
   };
 
   return (
-    <HStack gap={5}>
+    <Box
+      display="flex"
+      borderRadius="50%"
+      _hover={{
+        cursor: 'pointer',
+        backgroundColor: 'gray.700',
+      }}
+      boxSize="40px"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Image
         src={
           // Checks if the userId is included in the likes array
@@ -40,11 +50,11 @@ const PostLike = ({ post, userId }: Props) => {
             ? '/assets/icons/liked.svg'
             : '/assets/icons/like.svg'
         }
-        width="20px"
-        alt="liked"
+        alt="like"
         onClick={handleLike}
+        width={likes.includes(userId) ? '23px' : '20px'}
       />
-    </HStack>
+    </Box>
   );
 };
 

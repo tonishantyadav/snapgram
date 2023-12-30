@@ -1,8 +1,7 @@
-import { Image } from '@chakra-ui/react';
+import { Box, Center, Image } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useEffect, useState } from 'react';
-import { usePostUnsave, useUserAll } from '../hooks';
-import usePostSave from '../hooks/usePostSave';
+import { usePostSave, usePostUnsave, useUserAll } from '../hooks';
 
 interface Props {
   post: Models.Document;
@@ -37,12 +36,24 @@ const PostSave = ({ post, userId }: Props) => {
   };
 
   return (
-    <Image
-      src={isSaved ? '/assets/icons/saved.svg' : '/assets/icons/save.svg'}
-      width="20px"
-      alt="saved"
-      onClick={handleSave}
-    />
+    <Box
+      display="flex"
+      borderRadius="50%"
+      _hover={{
+        cursor: 'pointer',
+        backgroundColor: 'gray.700',
+      }}
+      boxSize="40px"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Image
+        src={isSaved ? '/assets/icons/saved.svg' : '/assets/icons/save.svg'}
+        width="20px"
+        alt="save"
+        onClick={handleSave}
+      />
+    </Box>
   );
 };
 
