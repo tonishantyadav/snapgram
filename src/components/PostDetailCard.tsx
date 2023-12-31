@@ -1,6 +1,14 @@
-import { Card, CardBody, Center, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Card,
+  CardBody,
+  CardFooter,
+  Center,
+  Divider,
+  Stack,
+} from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { PostBody } from '.';
+import { PostBody, PostCaption } from '.';
 import PostHeading from './PostHeading';
 import { useUser } from '../hooks';
 
@@ -30,6 +38,9 @@ const PostDetailCard = ({ post, edit }: Props) => {
             <PostBody post={post} />
           </Stack>
         </CardBody>
+        <Box paddingStart={5} paddingBottom={4}>
+          <PostCaption caption={post.caption} />
+        </Box>
       </Card>
     </Center>
   );

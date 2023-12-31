@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Center,
   Flex,
   HStack,
   Heading,
@@ -9,8 +8,9 @@ import {
   theme,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { HiDotsHorizontal } from 'react-icons/hi';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { PostEditOptions } from '.';
 import { User } from '../types';
 import { multiFormatDateString } from '../utils/formatter';
 
@@ -39,23 +39,7 @@ const PostHeading = ({ post, user, edit }: Props) => {
             </Text>
           </Flex>
         </HStack>
-        {edit ? (
-          <Center>
-            <Box
-              display="flex"
-              _hover={{
-                cursor: 'pointer',
-                background: 'gray.700',
-              }}
-              boxSize="35px"
-              borderRadius="50%"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <HiDotsHorizontal />
-            </Box>
-          </Center>
-        ) : null}
+        {edit ? <PostEditOptions /> : null}
       </Flex>
     </Box>
   );

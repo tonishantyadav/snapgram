@@ -33,6 +33,7 @@ const PostCommentList = ({ post }: Props) => {
       spacing={4}
       align="stretch"
       paddingTop={5}
+      paddingBottom={8}
     >
       {isPostCommentsSuccess &&
         postComments &&

@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useRef, useState } from 'react';
-import { usePostComment, useUser, useUserAll } from '../hooks';
+import { usePostComment, useUserAll } from '../hooks';
 
 interface Props {
   post: Models.Document;
@@ -19,12 +19,7 @@ interface Props {
 const PostCommentInput = ({ post }: Props) => {
   const [comment, setComment] = useState<string>('');
   const { user } = useUserAll();
-  const {
-    isPostCommentLoading,
-    isPostCommentSuccess,
-    isPostCommentFailed,
-    handlePostComment,
-  } = usePostComment();
+  const { isPostCommentLoading, handlePostComment } = usePostComment();
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -41,6 +36,7 @@ const PostCommentInput = ({ post }: Props) => {
         post: post,
         user: user,
       });
+      setComment('');
     }
   };
 
@@ -85,7 +81,7 @@ const PostCommentInput = ({ post }: Props) => {
             onClick={handleReply}
             isDisabled={!comment.trim()}
           >
-            {isPostCommentLoading ? <Spinner /> : 'Reply'}
+            Reply
           </Button>
         </ButtonGroup>
       </Box>

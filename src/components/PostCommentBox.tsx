@@ -15,7 +15,7 @@ interface Props {
 
 const PostCommentBox = ({ post }: Props) => {
   return (
-    <SimpleGrid row={2}>
+    <SimpleGrid row={2} cursor="pointer">
       <Box>
         <Card bg="none">
           <CardBody>
