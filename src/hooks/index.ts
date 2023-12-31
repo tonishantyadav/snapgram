@@ -1,6 +1,8 @@
 export { default as useFileUpload } from './useFileUpload';
 export { default as useForm } from './useForm';
 export { default as usePost } from './usePost';
+export { default as usePostComment } from './usePostComment';
+export { default as usePostCommentList } from './usePostCommentList';
 export { default as usePostCreate } from './usePostCreate';
 export { default as usePostLike } from './usePostLike';
 export { default as usePostList } from './usePostList';
@@ -12,4 +14,4 @@ export { default as useSignout } from './useSignout';
 export { default as useSignup } from './useSignup';
 export { default as useUser } from './useUser';
 export { default as useUserAll } from './useUserAll';
-export { default as usePostComment } from './usePostComment';
+

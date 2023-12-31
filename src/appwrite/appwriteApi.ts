@@ -311,6 +311,16 @@ class AppwriteApi {
     }
   }
 
+  /**
+   * Creates a new comment document in the 'comments' collection,
+   * associating the comment text with the given post ID and user ID.
+   *
+   * @param comment - The text content of the comment.
+   * @param postId - The ID of the post being commented on.
+   * @param userId - The ID of the user creating the comment.
+   *
+   * @throws Error if the database insert fails.
+   */
   async postComment(comment: string, postId: string, userId: string) {
     try {
       await database.createDocument(
@@ -324,7 +334,27 @@ class AppwriteApi {
         }
       );
     } catch (error: any) {
-      throw new Error(`Post comment failed ${error.message}`);
+      throw new Error(`Post comment failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Fetches a list of comment documents for the given post ID.
+   *
+   * @param postId - The ID of the post to get comments for.
+   * @returns A promise resolving to the list of comment documents.
+   * @throws Error if the database query fails.
+   */
+  async postCommentList(postId: string) {
+    try {
+      const response = await database.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.commentCollectionId,
+        [Query.equal('post', [postId]), Query.orderDesc('$createdAt')]
+      );
+      return response.documents;
+    } catch (error: any) {
+      throw new Error(`Fetch post comments failed: ${error.message}`);
     }
   }
 }

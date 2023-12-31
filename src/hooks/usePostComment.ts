@@ -5,8 +5,8 @@ import { QUERY_KEY } from '../query-key';
 
 interface PostComment {
   comment: string;
-  postId: string;
-  userId: string;
+  post: Models.Document;
+  user: Models.Document;
 }
 
 const api = new AppwriteApi();
@@ -15,53 +15,70 @@ const usePostComment = () => {
   const queryClient = useQueryClient();
 
   const postCommentMutation = useMutation({
-    mutationFn: ({ comment, postId, userId }: PostComment) =>
-      api.postComment(comment, postId, userId),
-    onMutate: ({ comment, postId }: PostComment) => {
+    mutationFn: ({ comment, post, user }: PostComment) =>
+      api.postComment(comment, post.$id, user.$id),
+    onMutate: ({ comment, post, user }: PostComment) => {
       try {
         const cachedPost = queryClient.getQueryData<Models.Document>([
           QUERY_KEY.POST,
-          postId,
+          post.$id,
         ]);
-        console.log(cachedPost);
+        const cachedPostCommentList = queryClient.getQueryData<
+          Models.Document[]
+        >([QUERY_KEY.POST_COMMENT_LIST, post.$id]);
 
-        if (!cachedPost) {
+        if (!cachedPost && !cachedPostCommentList) {
           throw new Error('No cached data found');
         }
-        queryClient.setQueryData<Models.Document>(
-          [QUERY_KEY.POST, postId],
-          (oldData) => {
-            if (!oldData) return oldData;
-            console.log('oldData: ', oldData);
 
+        queryClient.setQueryData<Models.Document>(
+          [QUERY_KEY.POST, post.$id],
+          (oldData: any) => {
+            if (!oldData) return oldData;
             return { ...oldData, comment: [...oldData.comment, comment] };
           }
         );
-        return { cachedPost, postId };
+
+        queryClient.setQueryData<Models.Document[]>(
+          [QUERY_KEY.POST_COMMENT_LIST, post.$id],
+          (oldData: any) => {
+            if (!oldData) return [];
+            return [
+              {
+                comment: comment,
+                $createdAt: Date.now(),
+                user: { ...user },
+              },
+              ...oldData,
+            ];
+          }
+        );
+
+        return { cachedPost, post };
       } catch (error) {
         throw new Error('Post comment: Optimistic updated failed');
       }
     },
-    onSuccess: (_, { postId }: PostComment) => {
-      queryClient.invalidateQueries([QUERY_KEY.POST, postId]);
+    onSuccess: (_, { post }: PostComment) => {
+      queryClient.invalidateQueries([QUERY_KEY.POST, post.$id]);
     },
-    onError: (_, { postId }: PostComment, rollbackData: any) => {
+    onError: (_, { post }: PostComment, rollbackData: any) => {
       queryClient.setQueryData(
-        [QUERY_KEY.POST, postId],
+        [QUERY_KEY.POST, post.$id],
         rollbackData.cachedPost
       );
     },
   });
 
-  const handlePostComment = ({ comment, postId, userId }: PostComment) => {
-    postCommentMutation.mutate({ comment, postId, userId });
+  const handlePostComment = ({ comment, post, user }: PostComment) => {
+    postCommentMutation.mutate({ comment, post, user });
   };
 
   return {
-    handlePostComment,
     isPostCommentLoading: postCommentMutation.isLoading,
     isPostCommentSuccess: postCommentMutation.isSuccess,
     isPostCommentFailed: postCommentMutation.error,
+    handlePostComment,
   };
 };
 
