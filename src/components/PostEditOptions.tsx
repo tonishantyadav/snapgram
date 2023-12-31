@@ -35,10 +35,12 @@ const PostEditOptions = () => {
       </PopoverTrigger>
       <PopoverContent
         outline="none"
-        borderRadius="25px"
-        boxSize="140px"
+        borderRadius="20px"
+        boxSize="110px"
         width="200px"
         justifyContent="center"
+        marginTop={2}
+        marginEnd={2}
       >
         <PopoverBody>
           <VStack spacing={2} align="stretch">
