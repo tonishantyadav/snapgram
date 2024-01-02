@@ -9,8 +9,8 @@ import theme from './theme.ts';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: Infinity,
-      cacheTime: Infinity,
+      staleTime: 300000,
+      cacheTime: 300000,
     },
   },
 });

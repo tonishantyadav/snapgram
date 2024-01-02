@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import {
-  CreatePostPage,
   ErrorPage,
   HomePage,
   Layout,
+  PostCreatePage,
   PostDetailPage,
   ProfilePage,
   SavePostsPage,
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       { path: '/signin', element: <SigninFormPage /> },
       { path: '/signup', element: <SignupFormPage /> },
       { path: '/profile/:id', element: <ProfilePage /> },
-      { path: '/create', element: <CreatePostPage /> },
+      { path: '/create', element: <PostCreatePage /> },
       { path: '/saved', element: <SavePostsPage /> },
       { path: '/post/:id', element: <PostDetailPage /> },
     ],

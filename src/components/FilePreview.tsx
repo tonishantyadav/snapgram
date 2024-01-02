@@ -1,18 +1,35 @@
 import { Image, Text } from '@chakra-ui/react';
 
 interface FilePreviewProps {
-  file: File | undefined;
+  url?: string;
+  file?: File;
 }
 
-const FilePreview = ({ file }: FilePreviewProps) => {
-  if (!file) return null;
-
-  if (file.type.startsWith('image/')) {
+const FilePreview = ({ url, file }: FilePreviewProps) => {
+  if (url) {
     return (
-      <Image src={URL.createObjectURL(file)} alt="Uploaded" width="100%" />
+      <Image
+        src={url}
+        alt="Uploaded"
+        width="100%"
+        objectFit="cover"
+        borderRadius="10px"
+      />
     );
-  } else if (file.type.startsWith('video/')) {
-    return <video src={URL.createObjectURL(file)} controls width="100%" />;
+  } else if (file) {
+    if (!file) return null;
+    if (file.type.startsWith('image/')) {
+      return (
+        <Image
+          src={URL.createObjectURL(file)}
+          alt="Uploaded"
+          width="100%"
+          borderRadius="10px"
+        />
+      );
+    } else if (file.type.startsWith('video/')) {
+      return <video src={URL.createObjectURL(file)} controls width="100%" />;
+    }
   }
 
   return <Text>File type not supported</Text>;

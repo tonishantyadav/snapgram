@@ -2,8 +2,8 @@ import { useToast } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import AppwriteApi from '../appwrite/appwriteApi';
-import { Post } from '../types';
 import { QUERY_KEY } from '../query-key';
+import { PostCreate } from '../types';
 
 const api = new AppwriteApi();
 
@@ -12,7 +12,8 @@ const usePostCreate = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const postMutation = useMutation((data: Post) => api.postCreate(data), {
+  const postMutation = useMutation({
+    mutationFn: (data: PostCreate) => api.postCreate(data),
     onSuccess: () => {
       toast({
         title: 'Post Upload Success',
@@ -37,18 +38,19 @@ const usePostCreate = () => {
     },
   });
 
-  const handlePostCreate = (data: Post | null) => {
+  const handlePostCreate = (data: PostCreate | null) => {
     try {
       if (data) postMutation.mutate(data);
-    } catch (error: any) {
-      console.log(`Post data is empty: ${error.message}`);
+    } catch (error) {
+      throw new Error('Create post data is empty');
     }
   };
 
   return {
     handlePostCreate,
-    isPostCreated: postMutation.isSuccess,
-    isPostCreatedLoading: postMutation.isLoading,
+    isLoading: postMutation.isLoading,
+    isSuccess: postMutation.isSuccess,
+    isError: postMutation.isError,
   };
 };
 

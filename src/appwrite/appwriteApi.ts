@@ -1,5 +1,5 @@
 import { ID, Query } from 'appwrite';
-import { AuthUser, Post } from '../types';
+import { AuthUser, PostCreate, PostUpdate } from '../types';
 import { account, appwriteConfig, avatars, database, storage } from './config';
 
 class AppwriteApi {
@@ -176,47 +176,123 @@ class AppwriteApi {
   }
 
   /**
+   * Retrieves the URL for a previously uploaded file.
+   *
+   * Uploads the first file in the array, gets a preview URL for it,
+   * and returns the file object and URL. If any step fails, attempts
+   * to clean up by deleting the uploaded file before throwing an error.
+   *
+   * @param uploadedFile - Array containing the file object to upload and get a URL for.
+   * @throws {Error} If the upload, preview URL retrieval, or cleanup fails.
+   * @returns {Object} The uploaded file object and preview URL.
+   */
+  async getFileUrl(uploadedFile: File[]) {
+    try {
+      const file = await this.fileUpload(uploadedFile[0]);
+      if (!file) throw new Error('File upload failed.');
+
+      const fileUrl = await this.filePreview(file.$id);
+      if (!fileUrl) {
+        await this.fileUploadDelete(file.$id);
+        throw new Error(
+          'The uploaded file is being removed as there was an issue retrieving the file URL.'
+        );
+      }
+      return { file, fileUrl };
+    } catch (error: any) {
+      throw new Error('File URL retrieval failed.');
+    }
+  }
+
+  /**
    * Creates a new post document in the database.
    *
-   * @param {Post} post - Post object containing user ID, caption, tags, etc.
+   * @param {PostCreate} post - Post object containing user ID, caption, tags, etc.
    * @throws {Error} - Throws an error if the post creation fails.
    * @returns {Promise<void>}
    */
-  async postCreate(post: Post): Promise<void> {
+  async postCreate(post: PostCreate): Promise<void> {
     try {
-      const file = await this.fileUpload(post.file[0]);
-
-      if (!file) throw new Error('File upload failed.');
-
-      const fileURL = await this.filePreview(file.$id);
-
-      if (!fileURL) {
-        await this.fileUploadDelete(file.$id);
-        throw new Error('File URL retrieval failed.');
-      }
-
+      const { file, fileUrl } = await this.getFileUrl(post.file);
       const tags = post.tags?.replace(/ /g, '').split(',') || [];
 
-      const newPost = await database.createDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.postCollectionId,
-        ID.unique(),
-        {
-          creator: post.userId,
-          caption: post.caption,
-          image: fileURL,
-          imageId: file.$id,
-          location: post.location,
-          tags: tags,
-        }
-      );
+      if (file && fileUrl) {
+        const newPost = await database.createDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.postCollectionId,
+          ID.unique(),
+          {
+            creator: post.userId,
+            caption: post.caption,
+            imageId: file.$id,
+            image: fileUrl,
+            location: post.location,
+            tags: tags,
+          }
+        );
 
-      if (!newPost) {
-        await this.fileUploadDelete(file.$id);
-        throw new Error('Post creation failed.');
+        if (!newPost) {
+          await this.fileUploadDelete(file.$id);
+          throw new Error('Post creation failed.');
+        }
       }
     } catch (error: any) {
-      throw new Error(`Post creation failed: ${error.message}`);
+      throw new Error(`Failed to create the post: ${error.message}`);
+    }
+  }
+
+  /**
+   * Updates a post document with new data.
+   *
+   * @param post - The PostUpdate object containing the updated data.
+   * @throws {Error} If the update fails at any stage.
+   * @returns {Promise<void>}
+   */
+  async postUpdate(post: PostUpdate) {
+    try {
+      const tags = post.tags?.replace(/ /g, '').split(',') || [];
+
+      if (post.file.length > 0) {
+        const { file, fileUrl } = await this.getFileUrl(post.file);
+        if (file && fileUrl) {
+          const updatePost = await database.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.postCollectionId,
+            post.id,
+            {
+              caption: post.caption,
+              imageId: file.$id,
+              image: fileUrl,
+              location: post.location,
+              tags: tags,
+            }
+          );
+          if (!updatePost) {
+            await this.fileUploadDelete(file.$id);
+            throw new Error('Post updation failed.');
+          }
+        }
+      } else if (post.image) {
+        const updatePost = await database.updateDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.postCollectionId,
+          post.id,
+          {
+            caption: post.caption,
+            imageId: post.imageId,
+            image: post.image,
+            location: post.location,
+            tags: tags,
+          }
+        );
+        if (!updatePost) {
+          throw new Error('Post updation failed.');
+        }
+      } else {
+        throw new Error('No file found in a post.');
+      }
+    } catch (error: any) {
+      throw new Error(`Failed to update the post: ${error.message}`);
     }
   }
 

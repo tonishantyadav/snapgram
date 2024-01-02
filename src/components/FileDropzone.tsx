@@ -4,12 +4,18 @@ import { useFileUpload } from '../hooks';
 import FilePreview from './FilePreview';
 
 interface FileDropzoneProps {
-  uploadFile: File[];
+  isFileUrl?: string;
+  isFileUpload: File[];
   onFileUpload: (acceptedFiles: File[], rejectedFiles: FileRejection[]) => void;
 }
 
-const FileDropzone = ({ uploadFile, onFileUpload }: FileDropzoneProps) => {
+const FileDropzone = ({
+  isFileUrl,
+  isFileUpload,
+  onFileUpload,
+}: FileDropzoneProps) => {
   const { getRootProps, getInputProps } = useFileUpload(onFileUpload);
+  const isFileExist = isFileUrl && !isFileUpload.length;
 
   return (
     <Box
@@ -25,15 +31,19 @@ const FileDropzone = ({ uploadFile, onFileUpload }: FileDropzoneProps) => {
     >
       <VStack spacing={2}>
         <input {...getInputProps()} />
-        {!uploadFile.length ? (
+        {isFileExist && <FilePreview url={isFileUrl} />}
+        {!isFileUpload.length ? (
           <>
-            <Image src="/assets/icons/file-upload.svg" />
+            <Image
+              src="/assets/icons/file-upload.svg"
+              boxSize={isFileExist ? '50px' : ''}
+            />
             <Text fontWeight="bold" color="gray">
               Drag and drop an image or video file here, or click to browse
             </Text>
           </>
         ) : (
-          <FilePreview file={uploadFile[0]} />
+          <FilePreview file={isFileUpload[0]} />
         )}
       </VStack>
     </Box>

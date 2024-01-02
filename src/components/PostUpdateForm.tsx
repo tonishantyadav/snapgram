@@ -11,52 +11,71 @@ import {
   Heading,
   Image,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
   Stack,
   Text,
   Textarea,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { FileDropzone } from '.';
-import { useForm, usePostCreate, useUser } from '../hooks';
-import { Post } from '../types';
+import { useForm, usePost, usePostUpdate } from '../hooks';
 import { PostFormSchema } from '../utils/validation';
 
-const PostForm = () => {
+const PostUpdateForm = () => {
   const [uploadFile, setUploadFile] = useState<File[]>([]);
-  const [postData, setPostData] = useState<Post | null>(null);
-
+  const [formData, setFormData] = useState<FieldValues | null>(null);
+  const { id: postId } = useParams();
+  const { post } = usePost(postId ?? '');
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm(PostFormSchema);
-  const { user } = useUser();
-  const { isPostCreatedLoading, handlePostCreate } = usePostCreate();
+  } = useForm(PostFormSchema, {
+    caption: post?.caption || '',
+    file: [],
+    location: post?.location || '',
+    tags: post.tags.length > 0 ? post.tags.join(',') : '',
+  });
+  const { isLoading, isSuccess, handlePostUpdate } = usePostUpdate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleFileUpload = (acceptedFiles: File[]) => {
     setUploadFile(acceptedFiles);
   };
 
-  const handleFormData = (formData: FieldValues) => {
-    if (user?.id && uploadFile.length > 0) {
-      setPostData({
-        userId: user.id,
-        caption: formData.caption,
-        file: uploadFile,
-        location: formData.location,
-        tags: formData.tags,
-      });
-    } else {
-      setPostData(null);
-    }
+  const handleConfirmation = () => {
+    handlePostUpdate({
+      id: post ? post.$id : '',
+      caption: formData?.caption || '',
+      imageId: post ? post.imageId : '',
+      image: post ? post.image : '',
+      file: uploadFile,
+      location: formData?.location || '',
+      tags: formData?.tags || '',
+    });
+    onClose();
   };
 
   const onSubmit = (formData: FieldValues) => {
-    handleFormData(formData);
-    handlePostCreate(postData);
+    onOpen();
+    setFormData(formData);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      window.location.reload();
+    }
+  }, [isSuccess]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,7 +94,7 @@ const PostForm = () => {
         <CardHeader>
           <Flex gap={2}>
             <Image src="/assets/icons/add-post.svg" />
-            <Heading>Create Post</Heading>
+            <Heading>Edit Post</Heading>
           </Flex>
         </CardHeader>
         <CardBody>
@@ -95,7 +114,8 @@ const PostForm = () => {
             <FormControl>
               <FormLabel>Upload image or video</FormLabel>
               <FileDropzone
-                uploadFile={uploadFile}
+                isFileUrl={post.image ? post.image : ''}
+                isFileUpload={uploadFile}
                 onFileUpload={handleFileUpload}
               />
             </FormControl>
@@ -131,12 +151,12 @@ const PostForm = () => {
           <ButtonGroup spacing="2" display="flex">
             <Button
               variant="outline"
+              type="reset"
               _hover={{
                 background: 'red.500',
               }}
-              type="reset"
             >
-              Cancel
+              Clear
             </Button>
             <Button
               variant="solid"
@@ -145,9 +165,31 @@ const PostForm = () => {
                 background: 'lightPurpleBg',
               }}
               type="submit"
-              isDisabled={!uploadFile.length ? true : false}
+              onClick={onOpen}
+              isDisabled={
+                post.image ? false : !uploadFile.length ? true : false
+              }
             >
-              {isPostCreatedLoading ? <Spinner /> : 'Submit'}
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Confirmation</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Text>Are you sure you want to update these details?</Text>
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button colorScheme="red" mr={3} onClick={onClose}>
+                      No
+                    </Button>
+                    <Button colorScheme="whatsapp" onClick={handleConfirmation}>
+                      Yes
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+              {isLoading ? <Spinner /> : 'Submit'}
             </Button>
           </ButtonGroup>
         </CardFooter>
@@ -156,4 +198,4 @@ const PostForm = () => {
   );
 };
 
-export default PostForm;
+export default PostUpdateForm;

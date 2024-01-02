@@ -1,7 +1,7 @@
 import { Divider, Grid, GridItem } from '@chakra-ui/react';
-import { PostForm } from '../components';
+import { PostCreateForm } from '../components';
 
-const CreatePostPage = () => {
+const PostCreatePage = () => {
   return (
     <Grid
       templateAreas={{
@@ -15,10 +15,10 @@ const CreatePostPage = () => {
         <Divider orientation="vertical" />
       </GridItem>
       <GridItem area="main">
-        <PostForm />
+        <PostCreateForm />
       </GridItem>
     </Grid>
   );
 };
 
-export default CreatePostPage;
+export default PostCreatePage;
