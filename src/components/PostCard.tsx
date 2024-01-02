@@ -64,7 +64,7 @@ const PostCard = ({ post, edit }: Props) => {
                         paddingX={2}
                         paddingBottom={2}
                       >
-                        {post.like.length} likes
+                        {post && post.like.length} likes
                       </Text>
                     </Box>
                     <PostCaption caption={post.caption} />

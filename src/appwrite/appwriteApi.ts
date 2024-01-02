@@ -242,6 +242,25 @@ class AppwriteApi {
   }
 
   /**
+   * Retrieves a list of post documents from the database.
+   *
+   * @throws {Error} - Throws an error if post retrieval fails.
+   * @returns {Promise<any[]>} - Returns an array of post document objects.
+   */
+  async postList(): Promise<any[]> {
+    try {
+      const posts = await database.listDocuments(
+        appwriteConfig.databaseId,
+        appwriteConfig.postCollectionId,
+        [Query.orderDesc('$createdAt'), Query.limit(20)]
+      );
+      return posts.documents;
+    } catch (error: any) {
+      throw new Error(`Fetch posts failed: ${error.message}`);
+    }
+  }
+
+  /**
    * Updates a post document with new data.
    *
    * @param post - The PostUpdate object containing the updated data.
@@ -297,21 +316,20 @@ class AppwriteApi {
   }
 
   /**
-   * Retrieves a list of post documents from the database.
+   * Deletes a post document by ID.
    *
-   * @throws {Error} - Throws an error if post retrieval fails.
-   * @returns {Promise<any[]>} - Returns an array of post document objects.
+   * @param {string} postId - The ID of the post document to delete.
+   * @throws {Error} If the deletion fails.
    */
-  async postList(): Promise<any[]> {
+  async postDelete(postId: string) {
     try {
-      const posts = await database.listDocuments(
+      await database.deleteDocument(
         appwriteConfig.databaseId,
         appwriteConfig.postCollectionId,
-        [Query.orderDesc('$createdAt'), Query.limit(20)]
+        postId
       );
-      return posts.documents;
     } catch (error: any) {
-      throw new Error(`Fetch posts failed: ${error.message}`);
+      throw new Error(`Failed to delete the post: ${error.message}`);
     }
   }
 
