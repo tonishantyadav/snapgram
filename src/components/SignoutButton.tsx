@@ -14,7 +14,7 @@ const SignoutButton = () => {
   const { isLoading, handleSignout } = useSignout();
   return (
     <Box>
-      <Popover>
+      <Popover placement="left">
         <PopoverTrigger>
           <Button bg="none" variant="unstyled">
             <Center>
@@ -34,18 +34,17 @@ const SignoutButton = () => {
             </Center>
           </Button>
         </PopoverTrigger>
-        <PopoverContent borderRadius="20px">
-          <Button
-            width="100%"
-            variant="unstyled"
-            _hover={{
-              background: 'red.500',
-            }}
-            borderRadius="20px"
-            onClick={handleSignout}
-          >
-            {isLoading ? <Spinner /> : 'Loading'}
-          </Button>
+        <PopoverContent
+          as={Button}
+          width="115px"
+          variant="unstyled"
+          _hover={{
+            background: 'red.500',
+          }}
+          borderRadius="20px"
+          onClick={handleSignout}
+        >
+          {isLoading ? <Spinner /> : 'Logout'}
         </PopoverContent>
       </Popover>
     </Box>
