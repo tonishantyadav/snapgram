@@ -10,10 +10,11 @@ import {
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../constants';
-import { useUser } from '../hooks';
+import { useAuth, useUser } from '../hooks';
 
 const Sidebar = () => {
-  const { user, isAuthenticated } = useUser();
+  const { user } = useUser();
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
 
   if (!user && !isAuthenticated) return null;

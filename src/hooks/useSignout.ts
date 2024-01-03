@@ -3,13 +3,13 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppwriteApi from '../appwrite/appwriteApi';
-import useUserStore from '../store';
+import useAuthStore from '../store';
 
 const api = new AppwriteApi();
 
 const useSignout = () => {
   const toast = useToast();
-  const { setUser, setIsAuthenticated } = useUserStore();
+  const { setUser, setIsAuthenticated } = useAuthStore();
   const signoutMutation = useMutation(api.logout);
   const navigate = useNavigate();
 

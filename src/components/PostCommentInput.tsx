@@ -4,13 +4,12 @@ import {
   Button,
   ButtonGroup,
   HStack,
-  Spinner,
   Text,
   Textarea,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useRef, useState } from 'react';
-import { usePostComment, useUserAll } from '../hooks';
+import { usePostComment, useUser } from '../hooks';
 
 interface Props {
   post: Models.Document;
@@ -18,8 +17,8 @@ interface Props {
 
 const PostCommentInput = ({ post }: Props) => {
   const [comment, setComment] = useState<string>('');
-  const { user } = useUserAll();
-  const { isPostCommentLoading, handlePostComment } = usePostComment();
+  const { user } = useUser();
+  const { handlePostComment } = usePostComment();
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 

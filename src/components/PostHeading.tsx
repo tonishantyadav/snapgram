@@ -8,7 +8,6 @@ import {
   theme,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PostEditOptions } from '.';
 import { User } from '../types';

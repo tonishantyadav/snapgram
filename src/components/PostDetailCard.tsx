@@ -2,15 +2,13 @@ import {
   Box,
   Card,
   CardBody,
-  CardFooter,
   Center,
-  Divider,
-  Stack,
+  Stack
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { PostBody, PostCaption } from '.';
-import PostHeading from './PostHeading';
 import { useUser } from '../hooks';
+import PostHeading from './PostHeading';
 
 interface Props {
   post: Models.Document;

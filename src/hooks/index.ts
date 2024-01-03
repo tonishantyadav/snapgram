@@ -13,6 +13,6 @@ export { default as usePostUpdate } from './usePostUpdate';
 export { default as useSignin } from './useSignin';
 export { default as useSignout } from './useSignout';
 export { default as useSignup } from './useSignup';
+export { default as useAuth } from './useAuth';
 export { default as useUser } from './useUser';
-export { default as useUserAll } from './useUserAll';
 export { default as usePostDelete } from './usePostDelete';

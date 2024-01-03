@@ -4,13 +4,13 @@ import { useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import AppwriteApi from '../appwrite/appwriteApi';
-import useUserStore, { INITIAL_USER_DATA } from '../store';
+import useAuthStore, { INITIAL_USER_DATA } from '../store';
 import { AuthUser } from '../types';
 
 const api = new AppwriteApi();
 
 const useSignin = () => {
-  const { setUser, setIsAuthenticated } = useUserStore();
+  const { setUser, setIsAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const toast = useToast();
   const signinMutation = useMutation(api.login);
