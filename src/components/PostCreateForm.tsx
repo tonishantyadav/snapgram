@@ -39,7 +39,7 @@ const PostCreateForm = () => {
   const onSubmit = (formData: FieldValues) => {
     if (user?.id && uploadFile.length > 0) {
       handlePostCreate({
-        userId: user.id,
+        userId: user.$id,
         caption: formData.caption,
         file: uploadFile,
         location: formData.location,

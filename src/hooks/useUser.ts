@@ -21,7 +21,7 @@ const api = new AppwriteApi();
 
 const useUser = () => {
   const { data, isLoading, isSuccess, isError } = useQuery({
-    queryKey: [QUERY_KEY.USER_ALL],
+    queryKey: [QUERY_KEY.USER],
     queryFn: () => api.currentUserDetails(),
   });
 

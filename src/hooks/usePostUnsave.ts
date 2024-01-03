@@ -74,7 +74,7 @@ const usePostUnsave = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEY.POST_LIST]);
-      queryClient.invalidateQueries([QUERY_KEY.USER_ALL]);
+      queryClient.invalidateQueries([QUERY_KEY.USER]);
     },
     onError: (_, __, rollbackData: any) => {
       queryClient.setQueryData([QUERY_KEY.POST_LIST], rollbackData.cachedPosts);

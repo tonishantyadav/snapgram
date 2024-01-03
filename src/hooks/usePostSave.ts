@@ -73,7 +73,7 @@ const usePostSave = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEY.POST_LIST]);
-      queryClient.invalidateQueries([QUERY_KEY.USER_ALL]);
+      queryClient.invalidateQueries([QUERY_KEY.USER]);
     },
     onError: (_, __, rollbackData: any) => {
       // Revert optimistic update on error

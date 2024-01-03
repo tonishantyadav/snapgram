@@ -152,11 +152,17 @@ const ProfilePage = () => {
       </GridItem>
       <GridItem area="main">
         <SimpleGrid row={3} cursor="pointer">
-          {isLarge ? (
-            <LargeDeviceHeader user={user} />
-          ) : (
-            <SmallDeviceHeader user={user} />
-          )}
+          <Box>
+            {isLarge ? (
+              <Box display={{ base: 'nome', md: 'block', lg: 'block' }}>
+                <LargeDeviceHeader user={user} />
+              </Box>
+            ) : (
+              <Box display={{ base: 'block', md: 'none', lg: 'none' }}>
+                <SmallDeviceHeader user={user} />
+              </Box>
+            )}
+          </Box>
           <Center>
             <Divider width="90%" />
           </Center>

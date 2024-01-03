@@ -5,5 +5,5 @@ export enum QUERY_KEY {
   POST_FILE_PREVIEW = 'postFilePreview',
   POST_COMMENT_LIST = 'postCommentList',
 
-  USER_ALL = 'userAll',
+  USER = 'user',
 }

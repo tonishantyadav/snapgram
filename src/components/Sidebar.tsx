@@ -58,10 +58,10 @@ const Sidebar = () => {
         ))}
         <Button
           variant={
-            location.pathname === `/profile/${user?.id}` ? 'solid' : 'ghost'
+            location.pathname === `/profile/${user?.$id}` ? 'solid' : 'ghost'
           }
           as={Link}
-          to={`/profile/${user?.id}`}
+          to={`/profile/${user?.$id}`}
           borderRadius="20px"
           w="100%"
           justifyContent="flex-start"
