@@ -85,10 +85,10 @@ const SmallDeviceHeader = ({ user }: Props) => {
 
   return (
     <Box paddingX={4} paddingY={8}>
-      <Flex>
-        <VStack rowGap={4}>
+      <Flex gap={5}>
+        <VStack rowGap={3}>
           <Box>
-            <Avatar size="lg" />
+            <Avatar size="lg" src={user.image} />
           </Box>
           <Box>
             <Text fontSize="sm" fontWeight="semibold" paddingStart={2}>
@@ -96,9 +96,9 @@ const SmallDeviceHeader = ({ user }: Props) => {
             </Text>
           </Box>
         </VStack>
-        <Flex direction="column" gap={2}>
-          <Box>
-            <Text fontSize="sm" fontWeight="semibold" paddingStart={1}>
+        <Flex direction="column" gap={3}>
+          <Box paddingStart={1}>
+            <Text fontSize="sm" fontWeight="semibold">
               @{user.username}
             </Text>
           </Box>
@@ -112,17 +112,17 @@ const SmallDeviceHeader = ({ user }: Props) => {
               >
                 Edit profile
               </Button>
-              <Button borderRadius="20px">Archive</Button>
+              <SignoutButton />
             </ButtonGroup>
           </Box>
+          <Box paddingStart={1}>
+            <Text fontSize="sm">
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. A iusto
+              eos voluptate. Quam dolore laudantium repellendus quidem neque
+              tempora optio.
+            </Text>
+          </Box>
         </Flex>
-        <Box maxW="500px">
-          <Text>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. A iusto
-            eos voluptate. Quam dolore laudantium repellendus quidem neque
-            tempora optio.
-          </Text>
-        </Box>
       </Flex>
     </Box>
   );

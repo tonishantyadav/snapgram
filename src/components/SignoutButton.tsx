@@ -36,7 +36,7 @@ const SignoutButton = () => {
         </PopoverTrigger>
         <PopoverContent
           as={Button}
-          width="115px"
+          width={{ base: '95px', md: '115px', lg: '115px' }}
           variant="unstyled"
           _hover={{
             background: 'red.500',
