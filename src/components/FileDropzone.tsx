@@ -1,7 +1,7 @@
 import { Box, Image, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import { FileRejection } from 'react-dropzone';
 import { useFileUpload } from '../hooks';
-import FilePreview from './FilePreview';
+import { FilePreview } from '.';
 
 interface FileDropzoneProps {
   isFileUrl?: string;

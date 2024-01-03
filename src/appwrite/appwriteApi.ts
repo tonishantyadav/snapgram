@@ -1,5 +1,6 @@
 import { ID, Query } from 'appwrite';
-import { AuthUser, PostCreate, PostUpdate } from '../types';
+import { PostCreate, PostUpdate } from '../post';
+import { AuthUser } from '../user';
 import { account, appwriteConfig, avatars, database, storage } from './config';
 
 class AppwriteApi {

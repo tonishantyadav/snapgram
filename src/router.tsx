@@ -1,15 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import {
-  ErrorPage,
-  HomePage,
-  Layout,
-  PostCreatePage,
-  PostDetailPage,
-  ProfilePage,
-  SavePostsPage,
-  SigninFormPage,
-  SignupFormPage,
-} from './pages';
+import { ErrorPage, HomePage, Layout } from './pages';
+import { PostCreatePage, PostDetailPage, PostSavedPage } from './post';
+import { ProfilePage, SigninFormPage, SignupFormPage } from './user';
 
 const router = createBrowserRouter([
   {
@@ -22,7 +14,7 @@ const router = createBrowserRouter([
       { path: '/signup', element: <SignupFormPage /> },
       { path: '/profile/:id', element: <ProfilePage /> },
       { path: '/create', element: <PostCreatePage /> },
-      { path: '/saved', element: <SavePostsPage /> },
+      { path: '/saved', element: <PostSavedPage /> },
       { path: '/post/:id', element: <PostDetailPage /> },
     ],
   },

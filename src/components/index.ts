@@ -1,23 +1,6 @@
 export { default as FileDropzone } from './FileDropzone';
 export { default as FilePreview } from './FilePreview';
 export { default as Navbar } from './Navbar';
-export { default as PostBody } from './PostBody';
-export { default as PostCaption } from './PostCaption';
-export { default as PostCard } from './PostCard';
-export { default as PostCommentBox } from './PostCommentBox';
-export { default as PostCommentInput } from './PostCommentInput';
-export { default as PostCommentList } from './PostCommentList';
-export { default as PostCreateForm } from './PostCreateForm';
-export { default as postDelete } from './PostDelete';
-export { default as PostDetailCard } from './PostDetailCard';
-export { default as PostEdit } from './PostEdit';
-export { default as PostEditOptions } from './PostEditOptions';
-export { default as PostLike } from './PostLike';
-export { default as PostSave } from './PostSave';
-export { default as PostShare } from './PostShare';
-export { default as PostTags } from './PostTags';
-export { default as PostUpdateForm } from './PostUpdateForm';
 export { default as Settings } from './Settings';
 export { default as Sidebar } from './Sidebar';
-export { default as SignoutButton } from './SignoutButton';
 

@@ -11,8 +11,7 @@ import {
 import { Models } from 'appwrite';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PostCard } from '../components';
-import { usePostList } from '../hooks';
+import { PostCard, usePostList } from '../post';
 
 const HomePage = () => {
   const navigate = useNavigate();
