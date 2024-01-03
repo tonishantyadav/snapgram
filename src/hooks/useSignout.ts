@@ -37,7 +37,7 @@ const useSignout = () => {
     signoutMutation.mutate();
   };
 
-  return { handleSignout };
+  return { isLoading: signoutMutation.isLoading, handleSignout };
 };
 
 export default useSignout;

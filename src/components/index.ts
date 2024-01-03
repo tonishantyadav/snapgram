@@ -19,3 +19,5 @@ export { default as PostTags } from './PostTags';
 export { default as PostUpdateForm } from './PostUpdateForm';
 export { default as Settings } from './Settings';
 export { default as Sidebar } from './Sidebar';
+export { default as SignoutButton } from './SignoutButton';
+
