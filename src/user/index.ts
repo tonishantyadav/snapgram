@@ -5,8 +5,8 @@ export { default as SigninFormPage } from './pages/SigninFormPage';
 export { default as SignupFormPage } from './pages/SignupFormPage';
 
 export { default as SignoutButton } from './components/SignoutButton';
-export { default as UserProfileUpdateForm } from './components/UserProfileUpdateForm';
-export { default as UserProfileUpdateModal } from './components/UserProfileUpdateModal';
+export { default as ProfileUpdateForm } from './components/ProfileUpdateForm';
+export { default as ProfileUpdateModal } from './components/ProfileUpdateModal';
 
 export { default as useAuth } from './hooks/useAuth';
 export { default as useAuthStore } from './hooks/useAuthStore';

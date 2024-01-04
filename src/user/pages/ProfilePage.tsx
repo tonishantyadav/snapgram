@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Center,
   Divider,
   Flex,
@@ -11,14 +10,9 @@ import {
   SimpleGrid,
   Text,
   VStack,
-  useBreakpointValue,
+  useBreakpointValue
 } from '@chakra-ui/react';
-import {
-  SignoutButton,
-  User,
-  UserProfileUpdateForm,
-  useAuth
-} from '../';
+import { ProfileUpdateModal, SignoutButton, User, useAuth } from '../';
 
 interface Props {
   user: User | null;
@@ -43,14 +37,7 @@ const LargeDeviceHeader = ({ user }: Props) => {
           <HStack gap={8}>
             <Text fontWeight="semibold">@{user.username}</Text>
             <HStack>
-              <Button
-                borderRadius="20px"
-                _hover={{
-                  background: 'lightPurpleBg',
-                }}
-              >
-                Edit profile
-              </Button>
+              <ProfileUpdateModal />
               <SignoutButton />
             </HStack>
           </HStack>
@@ -105,7 +92,7 @@ const SmallDeviceHeader = ({ user }: Props) => {
             </Text>
           </Box>
           <Box>
-            <UserProfileUpdateForm />
+            <ProfileUpdateModal />
             <SignoutButton />
           </Box>
           <Box paddingStart={1}>
