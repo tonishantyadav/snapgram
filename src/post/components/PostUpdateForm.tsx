@@ -94,18 +94,15 @@ const PostUpdateForm = () => {
       >
         <CardHeader>
           <Flex gap={2}>
-            <Image src="/assets/icons/add-post.svg" />
+            <Image src="/assets/icons/edit.svg" />
             <Heading>Edit Post</Heading>
           </Flex>
         </CardHeader>
         <CardBody>
           <Stack spacing={4}>
             <FormControl>
-              <FormLabel>Caption</FormLabel>
-              <Textarea
-                placeholder="Enter caption here"
-                {...register('caption')}
-              />
+              <FormLabel fontWeight="semibold">Caption</FormLabel>
+              <Textarea placeholder="Enter caption" {...register('caption')} />
               {errors.caption && (
                 <Text color="red.300" paddingTop={2}>
                   {errors.caption.message}
@@ -113,7 +110,7 @@ const PostUpdateForm = () => {
               )}
             </FormControl>
             <FormControl>
-              <FormLabel>Upload image or video</FormLabel>
+              <FormLabel fontWeight="semibold">Upload image or video</FormLabel>
               <FileDropzone
                 isFileUrl={post.image ? post.image : ''}
                 isFileUpload={uploadFile}
@@ -121,7 +118,7 @@ const PostUpdateForm = () => {
               />
             </FormControl>
             <FormControl>
-              <FormLabel>Location</FormLabel>
+              <FormLabel fontWeight="semibold">Location</FormLabel>
               <Input
                 type="text"
                 placeholder="Enter location"
@@ -134,7 +131,7 @@ const PostUpdateForm = () => {
               )}
             </FormControl>
             <FormControl>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel fontWeight="semibold">Tags</FormLabel>
               <Input
                 type="text"
                 placeholder="Enter tags separated by commas"

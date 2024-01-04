@@ -5,15 +5,16 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
   useDisclosure,
+  useTheme,
 } from '@chakra-ui/react';
-import { ProfileUpdateForm } from '..';
+import { ProfileUpdateForm, useAuth } from '..';
 
 const ProfileUpdateModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { user } = useAuth();
+  const theme = useTheme();
   return (
     <Box>
       <Button
@@ -26,18 +27,19 @@ const ProfileUpdateModal = () => {
         Edit profile
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
+          <ModalContent
+            maxW={{
+              base: 'sm',
+              md: 'lg',
+              lg: 'xl',
+            }}
+            bg={theme.colors.gray[900]}
+            boxShadow="none"
+          >
             <ModalCloseButton />
             <ModalBody>
-              <ProfileUpdateForm />
+              <ProfileUpdateForm user={user} />
             </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="ghost">Secondary Action</Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
       </Button>

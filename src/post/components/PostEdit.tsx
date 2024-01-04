@@ -36,6 +36,7 @@ const PostEdit = () => {
             lg: 'xl',
           }}
           bg={theme.colors.gray[900]}
+          boxShadow="none"
         >
           <ModalCloseButton />
           <ModalBody>
