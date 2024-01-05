@@ -71,7 +71,7 @@ const usePostUnsave = () => {
 
         return { postSavedId, cachedPosts };
       } catch (error) {
-        throw new Error('Optimistic update failed');
+        throw new Error('Post unsave: Optimistic update failed');
       }
     },
     onSuccess: () => {

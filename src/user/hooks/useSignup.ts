@@ -1,30 +1,21 @@
 import { useToast } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { useSignin } from '..';
+import { UserSignup, useSignin } from '..';
 import AppwriteApi from '../../appwrite/appwriteApi';
-import { AuthUser, INITIAL_USER_DATA } from '../';
 
 const api = new AppwriteApi();
 
 const useSignup = () => {
-  const userMutation = useMutation({
-    mutationFn: (data: AuthUser) => api.register(data),
+  const { handleSignin } = useSignin();
+  const toast = useToast();
+  const signupMutation = useMutation({
+    mutationFn: (user: UserSignup) => api.register(user),
     onSuccess: (_, data) => {
       api.saveUserToDB(data);
-    },
-  });
-  const toast = useToast();
-  const { handleSignin } = useSignin();
-  const [data, setData] = useState<FieldValues>(INITIAL_USER_DATA);
-  const [isSignedUp, setIsSignedUp] = useState(false);
-
-  useEffect(() => {
-    if (userMutation.isSuccess) {
-      setIsSignedUp(!isSignedUp);
       handleSignin(data);
-    } else if (userMutation.isError) {
+    },
+    onError: () => {
       toast({
         title: 'Sign up failed',
         description:
@@ -34,15 +25,19 @@ const useSignup = () => {
         duration: 3000,
         position: 'top',
       });
-    }
-  }, [userMutation.isSuccess, userMutation.isError]);
+    },
+  });
 
   const handleSignup = (formData: FieldValues) => {
-    setData(formData);
-    userMutation.mutate(formData as AuthUser);
+    signupMutation.mutate(formData as UserSignup);
   };
 
-  return { handleSignup, isSignedUp: userMutation.isLoading };
+  return {
+    isLoading: signupMutation.isLoading,
+    isSuccess: signupMutation.isSuccess,
+    isError: signupMutation.isError,
+    handleSignup,
+  };
 };
 
 export default useSignup;

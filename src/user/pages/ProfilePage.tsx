@@ -10,12 +10,13 @@ import {
   SimpleGrid,
   Text,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
 } from '@chakra-ui/react';
-import { ProfileUpdateModal, SignoutButton, User, useAuth } from '../';
+import { Models } from 'appwrite';
+import { ProfileUpdateModal, SignoutButton, useUserCache } from '../';
 
 interface Props {
-  user: User | null;
+  user: Models.Document | null;
 }
 
 const LargeDeviceHeader = ({ user }: Props) => {
@@ -57,11 +58,7 @@ const LargeDeviceHeader = ({ user }: Props) => {
           </HStack>
           <Text fontWeight="semibold">{user.name}</Text>
           <Box maxW="500px">
-            <Text>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. A iusto
-              eos voluptate. Quam dolore laudantium repellendus quidem neque
-              tempora optio.
-            </Text>
+            <Text>{user.bio}</Text>
           </Box>
         </Flex>
       </HStack>
@@ -87,20 +84,18 @@ const SmallDeviceHeader = ({ user }: Props) => {
         </VStack>
         <Flex direction="column" gap={3}>
           <Box paddingStart={1}>
-            <Text fontSize="sm" fontWeight="semibold">
+            <Text fontSize="sm" fontWeight="semibold" paddingStart={1}>
               @{user.username}
             </Text>
           </Box>
           <Box>
-            <ProfileUpdateModal />
-            <SignoutButton />
+            <HStack>
+              <ProfileUpdateModal />
+              <SignoutButton />
+            </HStack>
           </Box>
           <Box paddingStart={1}>
-            <Text fontSize="sm">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. A iusto
-              eos voluptate. Quam dolore laudantium repellendus quidem neque
-              tempora optio.
-            </Text>
+            <Text fontSize="sm">{user.bio}</Text>
           </Box>
         </Flex>
       </Flex>
@@ -109,12 +104,13 @@ const SmallDeviceHeader = ({ user }: Props) => {
 };
 
 const ProfilePage = () => {
-  const { user } = useAuth();
+  const { user } = useUserCache();
   const isLarge = useBreakpointValue({
     base: false,
     md: true,
     lg: true,
   });
+
   return (
     <Grid
       templateAreas={{

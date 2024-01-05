@@ -1,18 +1,18 @@
+import { Models } from 'appwrite';
 import { create } from 'zustand';
-import { User } from '../';
 
-interface AuthStore {
-  user: User | null;
+interface UserStore {
+  user: Models.Document | null;
   isAuthenticated: boolean;
-  setUser: (user: User | null) => void;
+  setUser: (user: Models.Document | null) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
-const useAuthStore = create<AuthStore>((set) => ({
+const useUserStore = create<UserStore>((set) => ({
   user: null,
   isAuthenticated: false,
   setUser: (user) => set({ user }),
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 }));
 
-export default useAuthStore;
+export default useUserStore;

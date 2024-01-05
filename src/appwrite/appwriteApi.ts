@@ -1,17 +1,17 @@
 import { ID, Query } from 'appwrite';
 import { PostCreate, PostUpdate } from '../post';
-import { AuthUser } from '../user';
+import { UserSignin, UserSignup, UserUpdate } from '../user';
 import { account, appwriteConfig, avatars, database, storage } from './config';
 
 class AppwriteApi {
   /**
    * Registers a new user account with Appwrite.
    *
-   * @param {AuthUser} user - Object containing user's email, password, and name.
+   * @param {UserSignup} user - Object containing user's email, password, and name.
    * @throws {Error} - Throws an error if account creation fails.
    * @returns {Promise<void>}
    */
-  async register(user: AuthUser): Promise<void> {
+  async register(user: UserSignup): Promise<void> {
     try {
       await account.create(ID.unique(), user.email, user.password, user.name);
     } catch (error: any) {
@@ -22,11 +22,11 @@ class AppwriteApi {
   /**
    * Logs the user in by creating an email session using their email and password.
    *
-   * @param {AuthUser} user - Object containing user's email and password.
+   * @param {UserSignin} user - Object containing user's email and password.
    * @throws {Error} - Throws an error if sign-in fails.
    * @returns {Promise<void>}
    */
-  async login(user: AuthUser): Promise<void> {
+  async login(user: UserSignin): Promise<void> {
     try {
       await account.createEmailSession(user.email, user.password);
     } catch (error: any) {
@@ -51,11 +51,11 @@ class AppwriteApi {
   /**
    * Saves a new user account to the Appwrite database.
    *
-   * @param {AuthUser} user - Object containing user's details.
+   * @param {UserSignup} user - Object containing user's details.
    * @throws {Error} - Throws an error if saving to the database fails.
    * @returns {Promise<any>} - Returns the created user document.
    */
-  async saveUserToDB(user: AuthUser): Promise<any> {
+  async saveUserToDB(user: UserSignup): Promise<any> {
     const avatar = avatars.getInitials(user.name);
 
     try {
@@ -98,6 +98,52 @@ class AppwriteApi {
       return currentUser.documents[0];
     } catch (error: any) {
       throw new Error(`Fetching current user details failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Updates the user profile in the database.
+   *
+   * @param user - The user object containing the updated details.
+   * @throws {Error} If the update fails.
+   */
+  async userProfileUpdate(user: UserUpdate) {
+    console.log('userUpdate');
+
+    try {
+      if (user.file.length > 0) {
+        const { file, fileUrl } = await this.getFileUrl(user.file);
+        const updatedUser = await database.updateDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.userCollectionId,
+          user.id,
+          {
+            username: user.username,
+            image: fileUrl,
+            bio: user.bio,
+          }
+        );
+        if (!updatedUser) {
+          await this.fileUploadDelete(file.$id);
+          throw new Error('Failed to update the user details');
+        }
+      } else if (user.image) {
+        const updatedUser = await database.updateDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.userCollectionId,
+          user.id,
+          {
+            username: user.username,
+            image: user.image,
+            bio: user.bio,
+          }
+        );
+        if (!updatedUser) {
+          throw new Error('Failed to update the user details');
+        }
+      }
+    } catch (error: any) {
+      throw new Error(`No user details found for updating: ${error.message}`);
     }
   }
 

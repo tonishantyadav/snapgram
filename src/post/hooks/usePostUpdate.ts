@@ -29,12 +29,8 @@ const usePostUpdate = () => {
     },
   });
 
-  const handlePostUpdate = (data: PostUpdate | null) => {
-    try {
-      if (data) postUpdateMutation.mutate(data);
-    } catch (error) {
-      throw new Error('Post update data is empty');
-    }
+  const handlePostUpdate = (data: PostUpdate) => {
+    postUpdateMutation.mutate(data);
   };
 
   return {

@@ -1,23 +1,19 @@
-export interface BaseUser {
+export interface UserSignup {
   name: string;
-  email: string;
   username: string;
-}
-
-export interface AuthUser extends BaseUser {
+  email: string;
   password: string;
 }
 
-export interface User extends BaseUser {
-  id: string;
-  imageId?: string;
-  image?: string;
-  bio?: string;
+export interface UserSignin {
+  email: string;
+  password: string;
 }
 
-export const INITIAL_USER_DATA = {
-  id: '',
-  name: '',
-  email: '',
-  username: '',
-};
+export interface UserUpdate {
+  id: string;
+  username: string;
+  image: string;
+  file: File[];
+  bio: string;
+}

@@ -29,7 +29,6 @@ const usePostLike = () => {
     mutationFn: ({ postId, likes }: PostLike) => api.postLike(postId, likes),
     onMutate: async ({ postId, likes }: PostLike) => {
       try {
-        // Retrieve cachedPosts and handle the type
         const cachedPosts = queryClient.getQueryData<Models.Document[]>([
           QUERY.POST_LIST,
         ]);
@@ -46,32 +45,29 @@ const usePostLike = () => {
           throw new Error('Liked post not found in cache');
         }
 
-        // Perform optimistic update
         queryClient.setQueryData<Models.Document[]>(
           [QUERY.POST_LIST],
           (oldData) => {
-            if (!oldData) return []; // Return empty array if oldData is undefined
+            if (!oldData) return [];
 
             return oldData.map((post) => {
               if (post.$id === postId) {
-                return { ...post, like: likes }; // Update like count optimistically
+                return { ...post, like: likes };
               }
               return post;
             });
           }
         );
 
-        // Return a rollback function to revert the optimistic update if the mutation fails
         return { postId, cachedPosts };
       } catch (error) {
-        throw new Error('Optimistic update failed');
+        throw new Error('Post like: Optimistic update failed');
       }
     },
     onSuccess: ({ postId }) => {
       queryClient.invalidateQueries([QUERY.POST, postId]);
     },
     onError: (_, __, rollbackData: any) => {
-      // Revert optimistic update on error
       queryClient.setQueryData([QUERY.POST_LIST], rollbackData.cachedPosts);
     },
   });

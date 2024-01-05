@@ -1,11 +1,10 @@
 import { Box, Card, CardBody, Center, Stack } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { PostBody, PostCaption, PostHeading } from '..';
-import { User } from '../../user';
 
 interface Props {
   post: Models.Document;
-  user: User | null;
+  user: Models.Document;
   edit: boolean;
 }
 

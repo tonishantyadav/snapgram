@@ -1,73 +1,52 @@
 import { useToast } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '..';
+import { UserSignin } from '..';
 import AppwriteApi from '../../appwrite/appwriteApi';
-import { AuthUser, INITIAL_USER_DATA } from '../';
+import { QUERY } from '../../utils/query';
 
 const api = new AppwriteApi();
 
 const useSignin = () => {
-  const { setUser, setIsAuthenticated } = useAuthStore();
-  const navigate = useNavigate();
   const toast = useToast();
-  const signinMutation = useMutation(api.login);
-
-  useEffect(() => {
-    const handleUser = async () => {
-      try {
-        const userData = await api.currentUserDetails();
-
-        setUser({
-          id: userData.$id,
-          name: userData.name,
-          email: userData.email,
-          username: userData.username,
-          image: userData.image,
-        });
-        setIsAuthenticated(true);
-        localStorage.setItem('userData', JSON.stringify(userData));
-        localStorage.setItem('userAuthenticated', JSON.stringify(true));
-      } catch (error) {
-        setUser(INITIAL_USER_DATA);
-        setIsAuthenticated(false);
-        localStorage.setItem('userData', JSON.stringify(null));
-        localStorage.setItem('userAuthenticated', JSON.stringify(false));
-      }
-    };
-
-    if (signinMutation.isSuccess) {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const signinMutation = useMutation({
+    mutationFn: (user: UserSignin) => api.login(user),
+    onSuccess: async () => {
+      const user: any = await api.currentUserDetails();
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('isAuthenticated', JSON.stringify(true));
       localStorage.setItem('userSession', JSON.stringify(true));
-      handleUser();
+      queryClient.setQueryData([QUERY.USER], user);
       navigate('/');
-    } else if (signinMutation.isError) {
+    },
+    onError: () => {
       toast({
         title: 'Sign in failed',
-        description:
-          'Sign in unsuccessful. Please check your email and password and try again',
+        description: 'Check your email or password and try again.',
         status: 'error',
         isClosable: true,
         duration: 3000,
         position: 'top',
       });
+      localStorage.setItem('user', JSON.stringify(null));
+      localStorage.setItem('isAuthenticated', JSON.stringify(false));
+      localStorage.setItem('userSession', JSON.stringify(false));
       navigate('/signin');
-    }
-  }, [
-    signinMutation.isSuccess,
-    signinMutation.isError,
-    setUser,
-    setIsAuthenticated,
-    navigate,
-    toast,
-  ]);
+    },
+  });
 
   const handleSignin = (formData: FieldValues) => {
-    signinMutation.mutate(formData as AuthUser);
+    signinMutation.mutate(formData as UserSignin);
   };
 
-  return { handleSignin, isSignedIn: signinMutation.isLoading };
+  return {
+    isLoading: signinMutation.isLoading,
+    isSuccess: signinMutation.isSuccess,
+    handleSignin,
+  };
 };
 
 export default useSignin;

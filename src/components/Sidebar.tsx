@@ -10,14 +10,11 @@ import {
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../constants';
-import { useAuth } from '../user';
+import useUserLocal from '../user/hooks/useUserLocal';
 
 const Sidebar = () => {
-  const { user } = useAuth();
-  const { isAuthenticated } = useAuth();
+  const { user } = useUserLocal();
   const location = useLocation();
-
-  if (!user && !isAuthenticated) return null;
 
   return (
     <Flex direction="column" bg="none">
@@ -58,10 +55,10 @@ const Sidebar = () => {
         ))}
         <Button
           variant={
-            location.pathname === `/profile/${user?.id}` ? 'solid' : 'ghost'
+            location.pathname === `/profile/${user?.$id}` ? 'solid' : 'ghost'
           }
           as={Link}
-          to={`/profile/${user?.id}`}
+          to={`/profile/${user?.$id}`}
           borderRadius="20px"
           w="100%"
           justifyContent="flex-start"

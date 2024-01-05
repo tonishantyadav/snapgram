@@ -24,7 +24,7 @@ const SignupFormPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm(SignupFormSchema);
-  const { handleSignup, isSignedUp } = useSignup();
+  const { isLoading, handleSignup } = useSignup();
 
   const onSubmit = (formData: FieldValues) => {
     handleSignup(formData);
@@ -109,7 +109,7 @@ const SignupFormPage = () => {
                     background: 'lightPurpleBg',
                   }}
                 >
-                  {isSignedUp ? <Spinner /> : 'Sign up'}
+                  {isLoading ? <Spinner /> : 'Sign up'}
                 </Button>
                 <HStack justify="center">
                   <Text textAlign="center">Have an account?</Text>

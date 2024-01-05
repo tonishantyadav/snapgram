@@ -19,10 +19,10 @@ import { QUERY } from '../../utils/query';
  */
 const api = new AppwriteApi();
 
-const useUser = () => {
+const useUserCache = () => {
   const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: [QUERY.USER],
-    queryFn: () => api.currentUserDetails(),
+    queryFn: async () => await api.currentUserDetails(),
   });
 
   return {
@@ -33,4 +33,4 @@ const useUser = () => {
   };
 };
 
-export default useUser;
+export default useUserCache;

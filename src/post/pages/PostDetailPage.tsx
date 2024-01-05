@@ -11,23 +11,23 @@ import {
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { PostCommentBox, PostDetailCard, usePost } from '..';
-import { useAuth } from '../../user';
+import { useUserCache } from '../../user';
 
 const PostDetailPage = () => {
   const [edit, setEdit] = useState(false);
   const { id: postId } = useParams();
-  const { user } = useAuth();
+  const { user } = useUserCache();
   const { post, isPostLoading, isPostSuccess, isPostFailed } = usePost(
     postId ?? ''
   );
 
   useEffect(() => {
     if (post && isPostSuccess) {
-      if (post.creator.$id === user?.id) {
+      if (post.creator.$id === user?.$id) {
         setEdit(true);
       }
     }
-  }, [post, isPostSuccess]);
+  }, [post, user, isPostSuccess]);
 
   if (isPostLoading) return <Spinner />;
   if (isPostFailed)
@@ -63,7 +63,7 @@ const PostDetailPage = () => {
           }}
         >
           <Box width="100%">
-            {isPostSuccess && (
+            {isPostSuccess && user && (
               <PostDetailCard post={post} user={user} edit={edit} />
             )}
           </Box>

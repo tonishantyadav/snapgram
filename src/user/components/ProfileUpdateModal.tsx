@@ -9,12 +9,13 @@ import {
   useDisclosure,
   useTheme,
 } from '@chakra-ui/react';
-import { ProfileUpdateForm, useAuth } from '..';
+import { ProfileUpdateForm, useUserCache } from '..';
 
 const ProfileUpdateModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user } = useAuth();
+  const { user } = useUserCache();
   const theme = useTheme();
+
   return (
     <Box>
       <Button
@@ -37,8 +38,8 @@ const ProfileUpdateModal = () => {
             boxShadow="none"
           >
             <ModalCloseButton />
-            <ModalBody>
-              <ProfileUpdateForm user={user} />
+            <ModalBody cursor="pointer">
+              {user && <ProfileUpdateForm user={user} />}
             </ModalBody>
           </ModalContent>
         </Modal>

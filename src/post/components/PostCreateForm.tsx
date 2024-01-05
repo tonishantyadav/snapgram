@@ -21,7 +21,7 @@ import { FieldValues } from 'react-hook-form';
 import { usePostCreate } from '..';
 import { FileDropzone } from '../../components';
 import { useForm } from '../../hooks';
-import { useUser } from '../../user';
+import { useUserCache } from '../../user';
 import { PostFormSchema } from '../../utils/validation';
 
 const PostCreateForm = () => {
@@ -31,7 +31,7 @@ const PostCreateForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm(PostFormSchema);
-  const { user } = useUser();
+  const { user } = useUserCache();
   const { isLoading, handlePostCreate } = usePostCreate();
 
   const handleFileUpload = (acceptedFiles: File[]) => {

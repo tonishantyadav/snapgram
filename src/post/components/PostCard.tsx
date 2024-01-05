@@ -19,7 +19,7 @@ import {
   PostShare,
   PostTags,
 } from '..';
-import { useUser } from '../../user';
+import { useUserCache } from '../../user';
 
 interface Props {
   post: Models.Document;
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const PostCard = ({ post, edit }: Props) => {
-  const { user } = useUser();
+  const { user } = useUserCache();
 
   return (
     <Box>
@@ -46,7 +46,7 @@ const PostCard = ({ post, edit }: Props) => {
           >
             <CardBody>
               <Stack gap={2}>
-                <PostHeading post={post} user={user} edit={edit} />
+                {user && <PostHeading post={post} user={user} edit={edit} />}
                 <PostBody post={post} />
                 <Stack spacing="3" pt={2}>
                   <Flex justifyContent="space-between">

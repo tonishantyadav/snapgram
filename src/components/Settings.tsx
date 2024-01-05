@@ -21,11 +21,11 @@ import { FaBookmark, FaEdit } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
 import { IoMdLogOut } from 'react-icons/io';
 import { Link } from 'react-router-dom';
-import { useAuth, useSignout, useUser } from '../user';
+import { useSignout } from '../user';
+import useUserLocal from '../user/hooks/useUserLocal';
 
 const Settings = () => {
-  const { user } = useUser();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useUserLocal();
   const { handleSignout } = useSignout();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = useTheme();

@@ -14,30 +14,38 @@ import {
   Heading,
   Image,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+  Spinner,
   Stack,
   Text,
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { User } from '..';
+import { Models } from 'appwrite';
+import React, { useEffect, useState } from 'react';
+import { FieldValues } from 'react-hook-form';
+import { useProfile } from '..';
+import { Confirmation } from '../../components';
+import { useForm } from '../../hooks';
+import { ProfileUpdateSchema } from '../../utils/validation';
 
 interface Props {
-  user: User | null;
+  user: Models.Document;
 }
 
 const ProfileUpdateForm = ({ user }: Props) => {
+  const [username, setUsername] = useState(user?.username || '');
+  const [bio, setBio] = useState(user?.bio || '');
+  const [imageFile, setImageFile] = useState<FileList | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(user?.image || null);
+  const [formData, setFormData] = useState<FieldValues | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(ProfileUpdateSchema);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [username, setUsername] = useState(user?.username ?? '');
-  const [bio, setBio] = useState(user?.bio ?? '');
-  const [image, setImage] = useState<File | null>(null);
+  const { isLoading, isSuccess, handleProfileUpdate } = useProfile();
 
   const maxCharacters = 150;
 
@@ -54,13 +62,49 @@ const ProfileUpdateForm = ({ user }: Props) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      setImage(file);
+      const imageUrl = URL.createObjectURL(files[0]);
+      setImageFile(files);
+      setImageUrl(imageUrl);
     }
   };
 
+  const handleInputClear = () => {
+    setUsername('');
+    setBio('');
+  };
+
+  const handleConfirmation = () => {
+    if (user && formData) {
+      let files: File[] = [];
+
+      if (imageFile) {
+        files = Array.from(imageFile);
+      }
+
+      handleProfileUpdate({
+        id: user?.$id,
+        username: formData?.username,
+        image: user?.image || '',
+        file: files,
+        bio: formData?.bio,
+      });
+    }
+    onClose();
+  };
+
+  const onSubmit = (formData: FieldValues) => {
+    onOpen();
+    setFormData(formData);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      window.location.reload();
+    }
+  }, [isSuccess]);
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Card
         maxW={{
           sm: 'md',
@@ -91,10 +135,7 @@ const ProfileUpdateForm = ({ user }: Props) => {
                   rowGap={5}
                 >
                   <HStack justifyContent="center" alignItems="center" gap={4}>
-                    <Avatar
-                      size="lg"
-                      src={image ? URL.createObjectURL(image) : user?.image}
-                    />
+                    <Avatar size="lg" src={imageUrl || user?.image} />
                     <Flex direction="column" fontSize="sm" paddingTop={2}>
                       <Text fontWeight="semibold">@{user?.username}</Text>
                       <Text color="gray.500">{user?.name}</Text>
@@ -127,19 +168,31 @@ const ProfileUpdateForm = ({ user }: Props) => {
               <Input
                 type="text"
                 placeholder="Enter username"
+                {...register('username')}
                 value={username}
                 onChange={handleUsernameChange}
               />
+              {errors.username && (
+                <Text color="red.500" paddingTop={2}>
+                  {errors.username.message}
+                </Text>
+              )}
             </FormControl>
             <FormControl>
               <FormLabel fontWeight="semibold">Bio</FormLabel>
               <Textarea
                 placeholder="Enter bio"
-                onChange={handleBioChange}
+                {...register('bio')}
                 value={bio}
                 resize="none"
                 focusBorderColor={bio.length > maxCharacters ? 'red.500' : ''}
+                onChange={handleBioChange}
               />
+              {errors.bio && (
+                <Text color="red.500" paddingTop={2}>
+                  {errors.bio.message}
+                </Text>
+              )}
               <Text
                 mt={2}
                 position="absolute"
@@ -153,47 +206,31 @@ const ProfileUpdateForm = ({ user }: Props) => {
           </Stack>
         </CardBody>
         <CardFooter justifyContent="flex-end">
-          <ButtonGroup spacing="2" display="flex">
+          <ButtonGroup>
             <Button
               variant="outline"
-              type="reset"
               _hover={{
                 background: 'red.500',
               }}
+              onClick={handleInputClear}
             >
               Clear
             </Button>
             <Button
-              variant="solid"
               bg="purpleBg"
+              type="submit"
               _hover={{
                 background: 'lightPurpleBg',
               }}
-              type="submit"
               onClick={onOpen}
-              // isDisabled={
-              //   post.image ? false : !uploadFile.length ? true : false
-              // }
             >
-              <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Confirmation</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <Text>Are you sure you want to update these details?</Text>
-                  </ModalBody>
-
-                  <ModalFooter>
-                    <Button colorScheme="red" mr={3} onClick={onClose}>
-                      No
-                    </Button>
-                    <Button colorScheme="whatsapp">Yes</Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-              {/* {isLoading ? <Spinner /> : 'Submit'} */}
-              Submit
+              <Confirmation
+                action="update"
+                isOpen={isOpen}
+                onClose={onClose}
+                handleConfirmation={handleConfirmation}
+              />
+              {isLoading ? <Spinner /> : 'Submit'}
             </Button>
           </ButtonGroup>
         </CardFooter>

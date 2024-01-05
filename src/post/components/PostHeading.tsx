@@ -11,11 +11,10 @@ import { Models } from 'appwrite';
 import { Link } from 'react-router-dom';
 import { PostEditOptions } from '..';
 import { multiFormatDateString } from '../../utils/formatter';
-import { User } from '../../user';
 
 interface Props {
   post: Models.Document;
-  user: User | null;
+  user: Models.Document;
   edit: boolean;
 }
 

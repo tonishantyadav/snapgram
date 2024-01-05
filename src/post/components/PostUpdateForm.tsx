@@ -11,30 +11,24 @@ import {
   Heading,
   Image,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spinner,
   Stack,
   Text,
   Textarea,
-  useDisclosure,
+  useDisclosure
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { usePost, usePostUpdate } from '..';
+import { Confirmation, FileDropzone } from '../../components';
 import { useForm } from '../../hooks';
 import { PostFormSchema } from '../../utils/validation';
-import { FileDropzone } from '../../components';
 
 const PostUpdateForm = () => {
   const [uploadFile, setUploadFile] = useState<File[]>([]);
   const [formData, setFormData] = useState<FieldValues | null>(null);
+
   const { id: postId } = useParams();
   const { post } = usePost(postId ?? '');
   const {
@@ -146,7 +140,7 @@ const PostUpdateForm = () => {
           </Stack>
         </CardBody>
         <CardFooter justifyContent="flex-end">
-          <ButtonGroup spacing="2" display="flex">
+          <ButtonGroup>
             <Button
               variant="outline"
               type="reset"
@@ -157,36 +151,22 @@ const PostUpdateForm = () => {
               Clear
             </Button>
             <Button
-              variant="solid"
               bg="purpleBg"
-              _hover={{
-                background: 'lightPurpleBg',
-              }}
               type="submit"
-              onClick={onOpen}
               isDisabled={
                 post.image ? false : !uploadFile.length ? true : false
               }
+              _hover={{
+                background: 'lightPurpleBg',
+              }}
+              onClick={onOpen}
             >
-              <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Confirmation</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <Text>Are you sure you want to update these details?</Text>
-                  </ModalBody>
-
-                  <ModalFooter>
-                    <Button colorScheme="red" mr={3} onClick={onClose}>
-                      No
-                    </Button>
-                    <Button colorScheme="whatsapp" onClick={handleConfirmation}>
-                      Yes
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
+              <Confirmation
+                action="update"
+                isOpen={isOpen}
+                onClose={onClose}
+                handleConfirmation={handleConfirmation}
+              />
               {isLoading ? <Spinner /> : 'Submit'}
             </Button>
           </ButtonGroup>

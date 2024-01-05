@@ -35,14 +35,13 @@ const usePostDelete = (postId: string, onClose: () => void) => {
         return { cachedPosts };
       } catch (error: any) {
         onClose();
-        throw new Error('Optimistic updated failed');
+        throw new Error('Post delete: Optimistic update failed');
       }
     },
     onSuccess: () => {
       queryClient.invalidateQueries([QUERY.POST_LIST]);
       toast({
-        title: 'Post Delete Success',
-        description: 'Your post has been deleted.',
+        title: 'Your post is been deleted',
         status: 'success',
         isClosable: true,
         duration: 3000,

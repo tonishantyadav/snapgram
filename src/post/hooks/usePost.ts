@@ -15,20 +15,18 @@ const usePost = (postId: string) => {
   >({
     mutationFn: (postId) => api.getPost(postId),
     onSuccess: (response) => {
-      queryClient.setQueryData([QUERY.POST, postId], response); // Update or set the query data
+      queryClient.setQueryData([QUERY.POST, postId], response);
     },
   });
 
-  // Trigger the mutation on component mount or when postId changes
   useEffect(() => {
     if (postId && !existingData) {
-      // Check if data is not already present in the cache
       mutate(postId);
     }
   }, [postId, mutate, existingData]);
 
   return {
-    post: data || existingData, // Use existingData if available to prevent unnecessary re-renders
+    post: data || existingData,
     isPostLoading: !existingData ? isLoading : false,
     isPostSuccess: !existingData ? isSuccess : true,
     isPostFailed: !existingData ? isError : false,

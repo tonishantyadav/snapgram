@@ -1,43 +1,45 @@
 import { useToast } from '@chakra-ui/react';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import AppwriteApi from '../../appwrite/appwriteApi';
-import useAuthStore from './useAuthStore';
 
 const api = new AppwriteApi();
 
 const useSignout = () => {
   const toast = useToast();
-  const { setUser, setIsAuthenticated } = useAuthStore();
-  const signoutMutation = useMutation(api.logout);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (signoutMutation.isSuccess) {
-      setUser(null);
-      setIsAuthenticated(false);
-      localStorage.setItem('userSession', JSON.stringify(false));
-      localStorage.setItem('userData', JSON.stringify(null));
-      localStorage.setItem('userAuthenticated', JSON.stringify(false));
+  const queryClient = useQueryClient();
+  const signoutMutation = useMutation({
+    mutationFn: () => api.logout(),
+    onSuccess: () => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userSession');
+      queryClient.removeQueries();
       navigate('/signin');
-    } else if (signoutMutation.isError) {
+    },
+    onError: () => {
       toast({
         title: 'Sign out failed',
-        description: 'Sign out unsuccessfull',
+        description: 'Please try again after sometime.',
         status: 'error',
         isClosable: true,
         duration: 3000,
         position: 'top',
       });
-    }
-  }, [signoutMutation.isSuccess, signoutMutation.isError]);
+    },
+  });
 
   const handleSignout = () => {
     signoutMutation.mutate();
   };
 
-  return { isLoading: signoutMutation.isLoading, handleSignout };
+  return {
+    isLoading: signoutMutation.isLoading,
+    isSuccess: signoutMutation.isSuccess,
+    isError: signoutMutation.isError,
+    handleSignout,
+  };
 };
 
 export default useSignout;

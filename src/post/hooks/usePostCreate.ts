@@ -12,12 +12,11 @@ const usePostCreate = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const postMutation = useMutation({
+  const postCreateMutation = useMutation({
     mutationFn: (data: PostCreate) => api.postCreate(data),
     onSuccess: () => {
       toast({
-        title: 'Post Upload Success',
-        description: 'Post upload successful. Scroll to view more posts.',
+        title: 'Post upload successful. Scroll to view more posts.',
         status: 'success',
         isClosable: true,
         duration: 3000,
@@ -28,8 +27,7 @@ const usePostCreate = () => {
     },
     onError: () => {
       toast({
-        title: 'Post Upload Failed',
-        description: 'Post upload unsuccessful. Please try again!',
+        title: 'Post upload failed',
         status: 'error',
         isClosable: true,
         duration: 3000,
@@ -41,7 +39,7 @@ const usePostCreate = () => {
   const handlePostCreate = (data: PostCreate | null) => {
     try {
       console.log(data);
-      if (data) postMutation.mutate(data);
+      if (data) postCreateMutation.mutate(data);
     } catch (error) {
       throw new Error('Create post data is empty');
     }
@@ -49,9 +47,9 @@ const usePostCreate = () => {
 
   return {
     handlePostCreate,
-    isLoading: postMutation.isLoading,
-    isSuccess: postMutation.isSuccess,
-    isError: postMutation.isError,
+    isLoading: postCreateMutation.isLoading,
+    isSuccess: postCreateMutation.isSuccess,
+    isError: postCreateMutation.isError,
   };
 };
 

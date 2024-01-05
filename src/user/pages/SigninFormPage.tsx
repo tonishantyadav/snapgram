@@ -23,7 +23,7 @@ const SigninFormPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm(SigninFormSchema);
-  const { handleSignin, isSignedIn } = useSignin();
+  const { handleSignin, isLoading } = useSignin();
 
   const onSubmit = (formData: FieldValues) => {
     handleSignin(formData);
@@ -76,7 +76,7 @@ const SigninFormPage = () => {
                   background: 'lightPurpleBg',
                 }}
               >
-                {isSignedIn ? <Spinner /> : 'Sign in'}
+                {isLoading ? <Spinner /> : 'Sign in'}
               </Button>
               <HStack justify="center">
                 <Text>Don't have an account?</Text>

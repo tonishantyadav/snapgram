@@ -4,13 +4,14 @@ import {
   Button,
   ButtonGroup,
   HStack,
+  Spinner,
   Text,
   Textarea,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useRef, useState } from 'react';
 import { usePostComment } from '..';
-import { useUser } from '../../user';
+import { useUserCache } from '../../user';
 
 interface Props {
   post: Models.Document;
@@ -18,8 +19,8 @@ interface Props {
 
 const PostCommentInput = ({ post }: Props) => {
   const [comment, setComment] = useState<string>('');
-  const { user } = useUser();
-  const { handlePostComment } = usePostComment();
+  const { user } = useUserCache();
+  const { isLoading, handlePostComment } = usePostComment();
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -30,7 +31,7 @@ const PostCommentInput = ({ post }: Props) => {
   };
 
   const handleReply = () => {
-    if (textAreaRef.current) {
+    if (user && textAreaRef.current) {
       handlePostComment({
         comment: comment,
         post: post,
@@ -68,7 +69,7 @@ const PostCommentInput = ({ post }: Props) => {
             type="reset"
             onClick={() => setComment('')}
           >
-            Cancel
+            Clear
           </Button>
           <Button
             borderRadius="20px"
@@ -81,7 +82,7 @@ const PostCommentInput = ({ post }: Props) => {
             onClick={handleReply}
             isDisabled={!comment.trim()}
           >
-            Reply
+            {isLoading ? <Spinner /> : 'Reply'}
           </Button>
         </ButtonGroup>
       </Box>

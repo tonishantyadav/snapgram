@@ -20,3 +20,11 @@ export const PostFormSchema = z.object({
   location: z.string().max(2200, 'Location is too long'),
   tags: z.string().max(2200, 'Tags are too long'),
 });
+
+export const ProfileUpdateSchema = z.object({
+  username: z
+    .string()
+    .min(0, 'Username is too short')
+    .max(2200, 'Username is too long'),
+  bio: z.string().max(2200, 'Bio is too long'),
+});

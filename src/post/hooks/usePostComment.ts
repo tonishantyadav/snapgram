@@ -56,7 +56,7 @@ const usePostComment = () => {
 
         return { cachedPost, post };
       } catch (error) {
-        throw new Error('Post comment: Optimistic updated failed');
+        throw new Error('Post comment: Optimistic update failed');
       }
     },
     onSuccess: (_, { post }: PostComment) => {
@@ -72,9 +72,9 @@ const usePostComment = () => {
   };
 
   return {
-    isPostCommentLoading: postCommentMutation.isLoading,
-    isPostCommentSuccess: postCommentMutation.isSuccess,
-    isPostCommentFailed: postCommentMutation.error,
+    isLoading: postCommentMutation.isLoading,
+    isSuccess: postCommentMutation.isSuccess,
+    isError: postCommentMutation.error,
     handlePostComment,
   };
 };
