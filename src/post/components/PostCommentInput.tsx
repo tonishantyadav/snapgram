@@ -11,7 +11,7 @@ import {
 import { Models } from 'appwrite';
 import { useRef, useState } from 'react';
 import { usePostComment } from '..';
-import { useUserCache } from '../../user';
+import { useUserStore } from '../../user';
 
 interface Props {
   post: Models.Document;
@@ -19,7 +19,7 @@ interface Props {
 
 const PostCommentInput = ({ post }: Props) => {
   const [comment, setComment] = useState<string>('');
-  const { user } = useUserCache();
+  const { user } = useUserStore();
   const { isLoading, handlePostComment } = usePostComment();
 
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);

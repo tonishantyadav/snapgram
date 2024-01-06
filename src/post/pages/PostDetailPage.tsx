@@ -11,12 +11,12 @@ import {
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { PostCommentBox, PostDetailCard, usePost } from '..';
-import { useUserCache } from '../../user';
+import { useUserStore } from '../../user';
 
 const PostDetailPage = () => {
   const [edit, setEdit] = useState(false);
   const { id: postId } = useParams();
-  const { user } = useUserCache();
+  const { user } = useUserStore();
   const { post, isPostLoading, isPostSuccess, isPostFailed } = usePost(
     postId ?? ''
   );

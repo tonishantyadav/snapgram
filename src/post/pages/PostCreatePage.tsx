@@ -11,7 +11,7 @@ const PostCreatePage = () => {
       }}
       templateColumns={`1px 1fr`}
     >
-      <GridItem area="divider" height="100vh">
+      <GridItem area="divider" height="100%">
         <Divider orientation="vertical" />
       </GridItem>
       <GridItem area="main">

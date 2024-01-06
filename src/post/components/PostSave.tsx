@@ -2,7 +2,7 @@ import { Box, Image } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useEffect, useState } from 'react';
 import { usePostSave, usePostUnsave } from '..';
-import { useUserCache } from '../../user';
+import { useUserStore } from '../../user';
 
 interface Props {
   post: Models.Document;
@@ -10,7 +10,7 @@ interface Props {
 
 const PostSave = ({ post }: Props) => {
   const [isSaved, setIsSaved] = useState(false);
-  const { user } = useUserCache();
+  const { user } = useUserStore();
   const { handlePostSave } = usePostSave();
   const { handlePostUnsave } = usePostUnsave();
 

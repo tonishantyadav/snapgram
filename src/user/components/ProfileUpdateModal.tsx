@@ -9,11 +9,11 @@ import {
   useDisclosure,
   useTheme,
 } from '@chakra-ui/react';
-import { ProfileUpdateForm, useUserCache } from '..';
+import { ProfileUpdateForm, useUserStore } from '..';
 
 const ProfileUpdateModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user } = useUserCache();
+  const { user } = useUserStore();
   const theme = useTheme();
 
   return (

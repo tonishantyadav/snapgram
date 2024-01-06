@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FieldValues } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { UserSignin } from '..';
+import { UserSignin, useUserStore } from '..';
 import AppwriteApi from '../../appwrite/appwriteApi';
 import { QUERY } from '../../utils/query';
 
@@ -12,14 +12,15 @@ const useSignin = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { setUser, setIsAuthenticated } = useUserStore();
   const signinMutation = useMutation({
     mutationFn: (user: UserSignin) => api.login(user),
     onSuccess: async () => {
       const user: any = await api.currentUserDetails();
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('isAuthenticated', JSON.stringify(true));
       localStorage.setItem('userSession', JSON.stringify(true));
       queryClient.setQueryData([QUERY.USER], user);
+      setUser(user);
+      setIsAuthenticated(true);
       navigate('/');
     },
     onError: () => {
@@ -31,9 +32,6 @@ const useSignin = () => {
         duration: 3000,
         position: 'top',
       });
-      localStorage.setItem('user', JSON.stringify(null));
-      localStorage.setItem('isAuthenticated', JSON.stringify(false));
-      localStorage.setItem('userSession', JSON.stringify(false));
       navigate('/signin');
     },
   });

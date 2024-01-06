@@ -22,7 +22,7 @@ const usePostCreate = () => {
         duration: 3000,
         position: 'top',
       });
-      queryClient.invalidateQueries([QUERY.POST]);
+      queryClient.invalidateQueries([QUERY.POST_LIST]);
       navigate('/');
     },
     onError: () => {

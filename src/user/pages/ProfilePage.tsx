@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Center,
   Divider,
   Flex,
@@ -8,16 +9,39 @@ import {
   GridItem,
   HStack,
   SimpleGrid,
+  Spinner,
   Text,
   VStack,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { ProfileUpdateModal, SignoutButton, useUserCache } from '../';
+import {
+  ProfileUpdateModal,
+  useSignout,
+  useUserStore
+} from '../';
 
 interface Props {
   user: Models.Document | null;
 }
+
+const SignoutButton = () => {
+  const { isLoading, handleSignout } = useSignout();
+  return (
+    <Box>
+      <Button
+        variant="outline"
+        borderRadius="20px"
+        _hover={{
+          background: 'red.500',
+        }}
+        onClick={handleSignout}
+      >
+        {isLoading ? <Spinner /> : 'Logout'}
+      </Button>
+    </Box>
+  );
+};
 
 const LargeDeviceHeader = ({ user }: Props) => {
   if (!user) return null;
@@ -77,7 +101,7 @@ const SmallDeviceHeader = ({ user }: Props) => {
             <Avatar size="lg" src={user.image} />
           </Box>
           <Box>
-            <Text fontSize="sm" fontWeight="semibold" paddingStart={2}>
+            <Text fontSize="sm" fontWeight="semibold">
               {user.name}
             </Text>
           </Box>
@@ -104,7 +128,7 @@ const SmallDeviceHeader = ({ user }: Props) => {
 };
 
 const ProfilePage = () => {
-  const { user } = useUserCache();
+  const { user } = useUserStore();
   const isLarge = useBreakpointValue({
     base: false,
     md: true,

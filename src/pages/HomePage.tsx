@@ -15,14 +15,15 @@ import { PostCard, usePostList } from '../post';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { posts, isPostsSuccess, isPostsFailed, isPostsLoading } = usePostList();
+  const { posts, isPostsSuccess, isPostsFailed, isPostsLoading } =
+    usePostList();
   const userSession = localStorage.getItem('userSession');
 
   useEffect(() => {
-    if (userSession) {
-      if (!JSON.parse(userSession)) navigate('/signin');
+    if (!userSession) {
+      navigate('/signin');
     }
-  }, [userSession, navigate]);
+  }, [userSession]);
 
   if (isPostsLoading) return <Spinner />;
 
@@ -55,8 +56,7 @@ const HomePage = () => {
               overflowX="scroll"
               sx={{
                 '::-webkit-scrollbar': {
-                  // For Chrome
-                  display: 'none',
+                  display: 'none', // For Chrome
                 },
                 scrollbarWidth: 'none', // For Firefox
               }}

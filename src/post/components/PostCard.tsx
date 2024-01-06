@@ -19,7 +19,7 @@ import {
   PostShare,
   PostTags,
 } from '..';
-import { useUserCache } from '../../user';
+import { useUserStore } from '../../user';
 
 interface Props {
   post: Models.Document;
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const PostCard = ({ post, edit }: Props) => {
-  const { user } = useUserCache();
+  const { user } = useUserStore();
 
   return (
     <Box>

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import AppwriteApi from '../../appwrite/appwriteApi';
 import { QUERY } from '../../utils/query';
+import { useUserStore } from '..';
 
 /**
  * useUserAll is a custom React hook that fetches details of the current user.
@@ -20,9 +21,14 @@ import { QUERY } from '../../utils/query';
 const api = new AppwriteApi();
 
 const useUserCache = () => {
+  const { setUser, setIsAuthenticated } = useUserStore();
   const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: [QUERY.USER],
     queryFn: async () => await api.currentUserDetails(),
+    onSuccess: (user) => {
+      setUser(user);
+      setIsAuthenticated(true);
+    },
   });
 
   return {

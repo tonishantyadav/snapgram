@@ -12,8 +12,6 @@ const useSignout = () => {
   const signoutMutation = useMutation({
     mutationFn: () => api.logout(),
     onSuccess: () => {
-      localStorage.removeItem('user');
-      localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userSession');
       queryClient.removeQueries();
       navigate('/signin');

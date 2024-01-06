@@ -10,10 +10,10 @@ import {
 } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router-dom';
 import { sidebarLinks } from '../constants';
-import useUserLocal from '../user/hooks/useUserLocal';
+import { useUserCache } from '../user';
 
 const Sidebar = () => {
-  const { user } = useUserLocal();
+  const { user } = useUserCache();
   const location = useLocation();
 
   return (

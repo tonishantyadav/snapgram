@@ -2,7 +2,7 @@ import { Box, Image } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { useState } from 'react';
 import { usePostLike } from '..';
-import { useUserCache } from '../../user';
+import { useUserStore } from '../../user';
 
 interface Props {
   post: Models.Document;
@@ -12,7 +12,7 @@ const PostLike = ({ post }: Props) => {
   const postLikes = post.like.map((user: Models.Document) => user.$id);
 
   const [likes, setLikes] = useState<string[]>(postLikes);
-  const { user } = useUserCache();
+  const { user } = useUserStore();
   const { handlePostLike } = usePostLike();
 
   if (!user) return null;
