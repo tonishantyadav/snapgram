@@ -9,21 +9,11 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { PostCard, usePostList } from '../post';
 
 const HomePage = () => {
-  const navigate = useNavigate();
   const { posts, isPostsSuccess, isPostsFailed, isPostsLoading } =
     usePostList();
-  const userSession = localStorage.getItem('userSession');
-
-  useEffect(() => {
-    if (!userSession) {
-      navigate('/signin');
-    }
-  }, [userSession]);
 
   if (isPostsLoading) return <Spinner />;
 

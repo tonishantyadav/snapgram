@@ -1,14 +1,20 @@
 import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar, Sidebar } from '../components';
+import { useEffect } from 'react';
 
 const Layout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const showSidebar = useBreakpointValue({
     base: false,
     md: true,
     lg: true,
   });
+
+  useEffect(() => {
+    if (!localStorage.getItem('userSession')) navigate('/signin');
+  }, [navigate]);
 
   if (showSidebar) {
     return (
