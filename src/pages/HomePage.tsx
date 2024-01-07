@@ -5,7 +5,7 @@ import {
   GridItem,
   HStack,
   Show,
-  SimpleGrid
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
 import { PostCard, PostCardSkeleton, usePostList } from '../post';

@@ -64,6 +64,7 @@ const usePostComment = () => {
     },
     onError: (_, { post }: PostComment, rollbackData: any) => {
       queryClient.setQueryData([QUERY.POST, post.$id], rollbackData.cachedPost);
+      throw new Error('Fetch post comments failed');
     },
   });
 

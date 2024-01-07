@@ -39,13 +39,15 @@ const PostCreateForm = () => {
   };
 
   const onSubmit = (formData: FieldValues) => {
+    const tags = formData.tags?.replace(/ /g, '').split(',') || [];
+
     if (user && uploadFile.length > 0) {
       handlePostCreate({
         userId: user.$id,
         caption: formData.caption,
         file: uploadFile,
         location: formData.location,
-        tags: formData.tags,
+        tags: tags,
       });
     }
   };

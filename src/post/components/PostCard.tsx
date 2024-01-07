@@ -68,7 +68,6 @@ const PostCard = ({ post, edit }: Props) => {
                       </Text>
                     </Box>
                     <Box>
-                      <Divider />
                       <PostCaption caption={post.caption} />
                     </Box>
                   </Flex>
@@ -79,6 +78,7 @@ const PostCard = ({ post, edit }: Props) => {
           </Card>
         </Box>
       </Center>
+      <Divider width="100%" />
     </Box>
   );
 };

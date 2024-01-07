@@ -3,35 +3,27 @@ import {
   Divider,
   Grid,
   GridItem,
-  Heading,
   Show,
-  SimpleGrid,
-  Spinner,
+  SimpleGrid
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PostCommentBox, PostDetailCard, usePost } from '..';
+import { PostCardSkeleton, PostCommentBox, PostDetailCard, usePost } from '..';
 import { useUserStore } from '../../user';
 
 const PostDetailPage = () => {
   const [edit, setEdit] = useState(false);
   const { id: postId } = useParams();
   const { user } = useUserStore();
-  const { post, isPostLoading, isPostSuccess, isPostFailed } = usePost(
-    postId ?? ''
-  );
+  const { post, isLoading, isSuccess } = usePost(postId ?? '');
 
   useEffect(() => {
-    if (post && isPostSuccess) {
+    if (post && isSuccess) {
       if (post.creator.$id === user?.$id) {
         setEdit(true);
       }
     }
-  }, [post, user, isPostSuccess]);
-
-  if (isPostLoading) return <Spinner />;
-  if (isPostFailed)
-    return <Heading>Failed to get current post details!</Heading>;
+  }, [post, user, isSuccess]);
 
   return (
     <Grid
@@ -47,7 +39,7 @@ const PostDetailPage = () => {
         xl: '1px 1fr 1px 400px',
       }}
     >
-      <GridItem area="leftDivider" height="100%">
+      <GridItem area="leftDivider" height="100vh">
         <Divider orientation="vertical" />
       </GridItem>
       <GridItem area="main">
@@ -63,17 +55,18 @@ const PostDetailPage = () => {
           }}
         >
           <Box width="100%">
-            {isPostSuccess && user && (
+            {isLoading && <PostCardSkeleton />}
+            {isSuccess && user && (
               <PostDetailCard post={post} user={user} edit={edit} />
             )}
           </Box>
           <Box>
             <Divider />
           </Box>
-          <Box>{isPostSuccess && <PostCommentBox post={post} />}</Box>
+          <Box>{isSuccess && <PostCommentBox post={post} />}</Box>
         </SimpleGrid>
       </GridItem>
-      <GridItem area="rightDivider" height="100%">
+      <GridItem area="rightDivider" height="100vh">
         <Divider orientation="vertical" />
       </GridItem>
       <Show above="md">

@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Center,
   Flex,
   HStack,
   Spinner,
@@ -17,15 +18,20 @@ interface Props {
 }
 
 const PostCommentList = ({ post }: Props) => {
-  const {
-    postComments,
-    isPostCommentsLoading,
-    isPostCommentsSuccess,
-    isPostCommentsError,
-  } = usePostCommentList(post.$id);
+  const { postComments, isLoading, isSuccess } = usePostCommentList(post.$id);
 
-  if (isPostCommentsLoading) return <Spinner />;
-  if (isPostCommentsError) return <Text>Failed to load the comments</Text>;
+  if (isLoading)
+    return (
+      <Center paddingY={5}>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="md"
+        />
+      </Center>
+    );
 
   return (
     <VStack
@@ -35,7 +41,7 @@ const PostCommentList = ({ post }: Props) => {
       paddingTop={5}
       paddingBottom={8}
     >
-      {isPostCommentsSuccess &&
+      {isSuccess &&
         postComments &&
         postComments.map((c: Models.Document, index: number) => (
           <Box key={index}>

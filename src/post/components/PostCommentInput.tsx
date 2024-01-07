@@ -56,6 +56,7 @@ const PostCommentInput = ({ post }: Props) => {
         placeholder="Post your reply..."
         ref={textAreaRef}
         value={comment}
+        resize="none"
         onChange={handleTextAreaChange}
       />
       <Box display="flex" justifyContent="flex-end">

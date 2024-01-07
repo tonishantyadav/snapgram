@@ -14,5 +14,5 @@ const useUserStore = create<UserStore>((set) => ({
   setUser: (user) => set({ user }),
   setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 }));
-
+  
 export default useUserStore;

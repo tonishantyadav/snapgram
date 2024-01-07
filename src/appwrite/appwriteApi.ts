@@ -261,7 +261,6 @@ class AppwriteApi {
   async postCreate(post: PostCreate): Promise<void> {
     try {
       const { file, fileUrl } = await this.getFileUrl(post.file);
-      const tags = post.tags?.replace(/ /g, '').split(',') || [];
 
       if (file && fileUrl) {
         const newPost = await database.createDocument(
@@ -274,7 +273,7 @@ class AppwriteApi {
             imageId: file.$id,
             image: fileUrl,
             location: post.location,
-            tags: tags,
+            tags: post.tags,
           }
         );
 
