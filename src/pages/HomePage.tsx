@@ -5,19 +5,17 @@ import {
   GridItem,
   HStack,
   Show,
-  SimpleGrid,
-  Spinner,
+  SimpleGrid
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import { PostCard, usePostList } from '../post';
+import { PostCard, PostCardSkeleton, usePostList } from '../post';
 
 const HomePage = () => {
-  const { posts, isPostsSuccess, isPostsFailed, isPostsLoading } =
-    usePostList();
+  const { posts, isLoading, isError } = usePostList();
 
-  if (isPostsLoading) return <Spinner />;
+  const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
 
-  if (isPostsFailed) return <p>Fetching post list failed!</p>;
+  if (isError) return <p>Fetching post list failed!</p>;
 
   return (
     <>
@@ -74,7 +72,11 @@ const HomePage = () => {
                 scrollbarWidth: 'none',
               }}
             >
-              {isPostsSuccess &&
+              {isLoading &&
+                skeletons.map((skeleton) => (
+                  <PostCardSkeleton key={skeleton} />
+                ))}
+              {posts &&
                 posts?.map((post: Models.Document) => (
                   <PostCard post={post} edit={false} key={post.$id} />
                 ))}

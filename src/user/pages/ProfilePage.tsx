@@ -15,14 +15,10 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { Models } from 'appwrite';
-import {
-  ProfileUpdateModal,
-  useSignout,
-  useUserStore
-} from '../';
+import { ProfileUpdateModal, useSignout, useUserStore } from '../';
 
 interface Props {
-  user: Models.Document | null;
+  user: Models.Document;
 }
 
 const SignoutButton = () => {
@@ -44,8 +40,6 @@ const SignoutButton = () => {
 };
 
 const LargeDeviceHeader = ({ user }: Props) => {
-  if (!user) return null;
-
   return (
     <Box paddingX={8} paddingY={10}>
       <HStack justifyContent="center" gap={20}>
@@ -91,8 +85,6 @@ const LargeDeviceHeader = ({ user }: Props) => {
 };
 
 const SmallDeviceHeader = ({ user }: Props) => {
-  if (!user) return null;
-
   return (
     <Box paddingX={4} paddingY={8}>
       <Flex gap={5}>
@@ -155,11 +147,11 @@ const ProfilePage = () => {
           <Box>
             {isLarge ? (
               <Box display={{ base: 'nome', md: 'block', lg: 'block' }}>
-                <LargeDeviceHeader user={user} />
+                {user && <LargeDeviceHeader user={user} />}
               </Box>
             ) : (
               <Box display={{ base: 'block', md: 'none', lg: 'none' }}>
-                <SmallDeviceHeader user={user} />
+                {user && <SmallDeviceHeader user={user} />}
               </Box>
             )}
           </Box>

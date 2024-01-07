@@ -12,9 +12,9 @@ const usePostList = () => {
 
   return {
     posts: data,
-    isPostsSuccess: isSuccess,
-    isPostsFailed: isError,
-    isPostsLoading: isLoading,
+    isLoading: isLoading,
+    isSuccess: isSuccess,
+    isError: isError,
   };
 };
 

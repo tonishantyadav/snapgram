@@ -7,6 +7,7 @@ export { default as PostSavedPage } from './pages/PostSavedPage';
 export { default as PostBody } from './components/PostBody';
 export { default as PostCaption } from './components/PostCaption';
 export { default as PostCard } from './components/PostCard';
+export { default as PostCardSkeleton } from './components/PostCardSkeleton';
 export { default as PostCommentBox } from './components/PostCommentBox';
 export { default as PostCommentInput } from './components/PostCommentInput';
 export { default as PostCommentList } from './components/PostCommentList';
@@ -33,3 +34,4 @@ export { default as usePostSave } from './hooks/usePostSave';
 export { default as usePostShare } from './hooks/usePostShare';
 export { default as usePostUnsave } from './hooks/usePostUnsave';
 export { default as usePostUpdate } from './hooks/usePostUpdate';
+

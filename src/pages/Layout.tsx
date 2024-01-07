@@ -1,7 +1,7 @@
 import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react';
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Navbar, Sidebar } from '../components';
 import { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Navbar, Sidebar } from '../components';
 
 const Layout = () => {
   const location = useLocation();

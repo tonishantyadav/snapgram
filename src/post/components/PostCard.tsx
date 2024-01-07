@@ -67,7 +67,10 @@ const PostCard = ({ post, edit }: Props) => {
                         {post && post.like.length} likes
                       </Text>
                     </Box>
-                    <PostCaption caption={post.caption} />
+                    <Box>
+                      <Divider />
+                      <PostCaption caption={post.caption} />
+                    </Box>
                   </Flex>
                 </Stack>
                 <PostTags tags={post.tags} />
@@ -76,7 +79,6 @@ const PostCard = ({ post, edit }: Props) => {
           </Card>
         </Box>
       </Center>
-      <Divider width="100%" />
     </Box>
   );
 };
