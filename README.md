@@ -1,12 +1,15 @@
-Explore social media with this user-friendly platform that has a nice look and lots of features. Easily create and explore posts, and enjoy a strong authentication system and quick data fetching using React Query for a smooth user experience.
+# Snapgram
 
-If you're getting started and need assistance or face any bugs, join our active Discord community with over 27k+ members. It's a place where people help each other out.
+Explore social media with this user-friendly platform that has a nice look and lots of features. Easily create and explore posts, and enjoy a strong authentication system and quick data fetching using React Query for a smooth user experience.
 
 ## 📋 <a name="table">Contents</a>
 
 1. ⚙️ [Tech Stack](#tech-stack)
 2. 🔋 [Features](#features)
-3. 🤸 [Quick Start](#quick-start)
+3. 🚀 [Quick Start](#quick-start)
+4. ❤️ [Contributing](#contributing)
+5. 🛡️ [License](#license)
+6. 🙂 [Contact](#contact)
 
 <a href="https://discord.com/invite/n6EdbFJ" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/618f4872-1e10-42da-8213-1d69e486d02e" /></a>
 
@@ -45,7 +48,7 @@ If you're getting started and need assistance or face any bugs, join our active 
 
 and many more, including code architecture and reusability
 
-## <a name="quick-start">🤸 Quick Start</a>
+## <a name="quick-start">🚀 Quick Start</a>
 
 Follow these steps to set up the project locally on your machine.
 
@@ -95,3 +98,17 @@ npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
+
+## <a name="features">❤️ Contributing</a>
+
+We welcome contributions! If you'd like to contribute to this project, please follow our [Contribution Guidelines](CONTRIBUTING.md).
+
+## <a name="features">🛡️ License</a>
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## <a name="features">🙂 Contact</a>
+
+For any questions or feedback, please contact me at [inishantyadav24@gmail.com](mailto:inishantyadav24@gmail.com).
+
+I hope you find Storefront useful for your store management needs. Happy coding!
