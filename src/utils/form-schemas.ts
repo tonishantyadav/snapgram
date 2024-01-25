@@ -12,7 +12,7 @@ export const SignupFormSchema = z.object({
 
 export const SigninFormSchema = z.object({
   email: z.string().email('Invalid email').min(2, 'Email is required'),
-  password: z.string().min(8, ''),
+  password: z.string().min(8, 'Invalid password'),
 });
 
 export const PostFormSchema = z.object({
