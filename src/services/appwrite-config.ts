@@ -11,8 +11,6 @@ export const appwriteConfig = {
   commentCollectionId: import.meta.env.VITE_APPWRITE_COMMENT_COLLECTION_ID,
 };
 
-console.log(appwriteConfig);
-
 export const client = new Client();
 client.setEndpoint(appwriteConfig.url);
 client.setProject(appwriteConfig.projectId);
