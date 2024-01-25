@@ -46,7 +46,7 @@ const PostLike = ({ post }: Props) => {
       <Image
         src={
           // Checks if the userId is included in the likes array
-          likes.includes(user.$id) ? unlike : like
+          likes.includes(user.$id) ? like : unlike
         }
         alt="like"
         onClick={handleLike}
