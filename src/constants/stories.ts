@@ -1,55 +1,55 @@
 export const stories = [
   {
     id: 1,
-    image: './src/assets/stories/1.jpg',
+    image: '/stories/1.jpg',
   },
   {
     id: 2,
-    image: './src/assets/stories/2.jpg',
+    image: '/stories/2.jpg',
   },
   {
     id: 3,
-    image: './src/assets/stories/3.jpg',
+    image: '/stories/3.jpg',
   },
   {
     id: 4,
-    image: './src/assets/stories/4.jpg',
+    image: '/stories/4.jpg',
   },
   {
     id: 5,
-    image: './src/assets/stories/5.jpg',
+    image: '/stories/5.jpg',
   },
   {
     id: 6,
-    image: './src/assets/stories/6.jpg',
+    image: '/stories/6.jpg',
   },
   {
     id: 7,
-    image: './src/assets/stories/7.jpg',
+    image: '/stories/7.jpg',
   },
   {
     id: 8,
-    image: './src/assets/stories/8.jpg',
+    image: '/stories/8.jpg',
   },
   {
     id: 9,
-    image: './src/assets/stories/9.jpg',
+    image: '/stories/9.jpg',
   },
   {
     id: 10,
-    image: './src/assets/stories/10.jpg',
+    image: '/stories/10.jpg',
   },
   {
     id: 11,
-    image: './src/assets/stories/11.jpg',
+    image: '/stories/11.jpg',
   },
   {
     id: 12,
-    image: './src/assets/stories/12.jpg',
+    image: '/stories/12.jpg',
   },
   {
     id: 13,
-    image: './src/assets/stories/13.jpg',
+    image: '/stories/13.jpg',
   },
   {
     id: 14,
