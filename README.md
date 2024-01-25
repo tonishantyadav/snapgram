@@ -109,4 +109,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For any questions or feedback, please contact me at [inishantyadav24@gmail.com](mailto:inishantyadav24@gmail.com)
 
-I hope you find Storefront useful for your store management needs. Happy coding!
+I hope you find Snapgram useful for your store management needs. Happy coding!
