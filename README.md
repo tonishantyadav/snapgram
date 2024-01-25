@@ -99,16 +99,16 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
 
-## <a name="features">❤️ Contributing</a>
+## <a name="contributing">❤️ Contributing</a>
 
-We welcome contributions! If you'd like to contribute to this project, please follow our [Contribution Guidelines](CONTRIBUTING.md).
+We welcome contributions! If you'd like to contribute to this project, please follow our [Contribution Guidelines](CONTRIBUTING.md)
 
-## <a name="features">🛡️ License</a>
+## <a name="license">🛡️ License</a>
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## <a name="features">🙂 Contact</a>
+## <a name="contact">🙂 Contact</a>
 
-For any questions or feedback, please contact me at [inishantyadav24@gmail.com](mailto:inishantyadav24@gmail.com).
+For any questions or feedback, please contact me at [inishantyadav24@gmail.com](mailto:inishantyadav24@gmail.com)
 
 I hope you find Storefront useful for your store management needs. Happy coding!
