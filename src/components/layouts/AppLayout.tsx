@@ -1,14 +1,20 @@
 import { useBreakpointValue } from '@chakra-ui/react';
 import { LargeLayout, SmallLayout } from '@components/layouts';
-import { Outlet, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const AppLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const showSidebar = useBreakpointValue({
     base: false,
     md: true,
     lg: true,
   });
+
+  useEffect(() => {
+    if (!localStorage.getItem('userSession')) navigate('/signin');
+  }, [navigate]);
 
   return (
     <>
