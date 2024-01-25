@@ -53,23 +53,23 @@ export const stories = [
   },
   {
     id: 14,
-    image: './src/assets/stories/14.jpg',
+    image: 'assets/stories/14.jpg',
   },
   {
     id: 15,
-    image: './src/assets/stories/15.jpg',
+    image: 'assets/stories/15.jpg',
   },
   {
     id: 16,
-    image: './src/assets/stories/16.jpg',
+    image: 'assets/stories/16.jpg',
   },
   {
     id: 17,
-    image: './src/assets/stories/17.jpg',
+    image: 'assets/stories/17.jpg',
   },
   {
     id: 18,
-    image: './src/assets/stories/18.jpg',
+    image: 'assets/stories/18.jpg',
   },
   {
     id: 19,
