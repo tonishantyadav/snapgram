@@ -22,7 +22,6 @@
     /* Path mapping */
     "baseUrl": "./src",
     "paths": {
-      "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
       "@constants/*": ["constants/*"],
       "@hooks/*": ["hooks/*"],

@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import usePostSave from '@post/hooks/usePostSave';
 import usePostUnsave from '@post/hooks/usePostUnsave';
 import useUserStore from '@user/hooks/useUserStore';
-import unsave from '@assets/icons/unsave.svg';
-import save from '@assets/icons/save.svg';
 
 interface Props {
   post: Models.Document;
@@ -56,7 +54,7 @@ const PostSave = ({ post }: Props) => {
       alignItems="center"
     >
       <Image
-        src={isSaved ? unsave : save}
+        src={isSaved ? 'assets/icons/unsave.svg' : 'assets/icons/save.svg'}
         width="20px"
         alt="save"
         onClick={handleSave}

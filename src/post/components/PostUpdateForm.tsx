@@ -26,7 +26,6 @@ import ConfirmationModal from '@components/ConfirmationModal';
 import useForm from '@hooks/useForm';
 import usePost from '@post/hooks/usePost';
 import usePostUpdate from '@post/hooks/usePostUpdate';
-import edit from '@assets/icons/edit.svg';
 
 const PostUpdateForm = () => {
   const [uploadFile, setUploadFile] = useState<File[]>([]);
@@ -91,7 +90,7 @@ const PostUpdateForm = () => {
       >
         <CardHeader>
           <Flex gap={2}>
-            <Image src={edit} alt="edit" />
+            <Image src="/assets/icons/edit.svg" alt="edit" />
             <Heading>Edit Post</Heading>
           </Flex>
         </CardHeader>

@@ -1,21 +1,21 @@
 export const lgNavLinks = [
   {
-    imgURL: 'home.svg',
+    imgURL: '/assets/icons/home.svg',
     route: '/',
     label: 'Home',
   },
   {
-    imgURL: 'wallpaper.svg',
+    imgURL: '/assets/icons/wallpaper.svg',
     route: '/explore',
     label: 'Explore',
   },
   {
-    imgURL: 'people.svg',
+    imgURL: '/assets/icons/people.svg',
     route: '/all-users',
     label: 'People',
   },
   {
-    imgURL: 'bookmark.svg',
+    imgURL: '/assets/icons/bookmark.svg',
     route: '/saved',
     label: 'Saved',
   },
@@ -23,22 +23,22 @@ export const lgNavLinks = [
 
 export const smNavLinks = [
   {
-    imgURL: 'home.svg',
+    imgURL: './icons/home.svg',
     route: '/',
     label: 'Home',
   },
   {
-    imgURL: 'wallpaper.svg',
+    imgURL: './icons/wallpaper.svg',
     route: '/explore',
     label: 'Explore',
   },
   {
-    imgURL: 'bookmark.svg',
+    imgURL: './icons/bookmark.svg',
     route: '/saved',
     label: 'Saved',
   },
   {
-    imgURL: 'gallery-add.svg',
+    imgURL: './icons/gallery-add.svg',
     route: '/create-post',
     label: 'Create',
   },

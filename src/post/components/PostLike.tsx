@@ -3,8 +3,6 @@ import { Models } from 'appwrite';
 import { useState } from 'react';
 import usePostLike from '@post/hooks/usePostLike';
 import useUserStore from '@user/hooks/useUserStore';
-import like from '@assets/icons/like.svg';
-import unlike from '@assets/icons/unlike.svg';
 
 interface Props {
   post: Models.Document;
@@ -46,7 +44,9 @@ const PostLike = ({ post }: Props) => {
       <Image
         src={
           // Checks if the userId is included in the likes array
-          likes.includes(user.$id) ? like : unlike
+          likes.includes(user.$id)
+            ? 'assets/icons/like.svg'
+            : 'assets/icons/unlike.svg'
         }
         alt="like"
         onClick={handleLike}

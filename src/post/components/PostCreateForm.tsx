@@ -23,7 +23,6 @@ import FileDropzone from '@components/FileDropZone';
 import useForm from '@hooks/useForm';
 import usePostCreate from '@post/hooks/usePostCreate';
 import useUserStore from '@user/hooks/useUserStore';
-import postAdd from '@assets/icons/post-add.svg';
 
 const PostCreateForm = () => {
   const [uploadFile, setUploadFile] = useState<File[]>([]);
@@ -69,7 +68,7 @@ const PostCreateForm = () => {
       >
         <CardHeader>
           <Flex gap={2}>
-            <Image src={postAdd} />
+            <Image src="assets/icons/post-add.svg" />
             <Heading>Create Post</Heading>
           </Flex>
         </CardHeader>

@@ -1,4 +1,3 @@
-import logo from '@assets/logo.svg';
 import {
   Avatar,
   Box,
@@ -21,7 +20,7 @@ const LeftSideBar = () => {
     <Flex direction="column" bg="none">
       <Box paddingY={6} paddingX={5} as={Link} to="/">
         <Image
-          src={logo}
+          src="/assets/logo.svg"
           alt="logo"
           width={{
             base: '100px',

@@ -1,6 +1,5 @@
 import { Box, Image, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import { FileRejection } from 'react-dropzone';
-import fileUpload from '@assets/icons/file-upload.svg';
 import FilePreview from '@components/FilePreview';
 import useFileUpload from '@hooks/useFileUpload';
 
@@ -35,7 +34,10 @@ const FileDropzone = ({
         {isFileExist && <FilePreview url={isFileUrl} />}
         {!isFileUpload.length ? (
           <>
-            <Image src={fileUpload} boxSize={isFileExist ? '50px' : ''} />
+            <Image
+              src="/assets/icons/file-upload.svg"
+              boxSize={isFileExist ? '50px' : ''}
+            />
             <Text fontWeight="bold" color="gray">
               Drag and drop an image or video file here, or click to browse
             </Text>

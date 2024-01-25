@@ -17,8 +17,6 @@ import { Link } from 'react-router-dom';
 import { SignupFormSchema } from '@utils/form-schemas';
 import useForm from '@hooks/useForm';
 import useSignup from '@user/hooks/useSignup';
-import logo from '@assets/logo.svg';
-import signupVid from '@assets/signup.mp4';
 
 const UserSignupPage = () => {
   const {
@@ -46,14 +44,14 @@ const UserSignupPage = () => {
                 playsInline
                 controlsList="nodownload"
               >
-                <source src={signupVid} type="video/mp4" />
+                <source src="/assets/signup.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </Flex>
           </Show>
           <Flex p={8} flex={1} align="center" justify="center">
             <Stack spacing={4} w="full" maxW="md">
-              <Image src={logo} alt="logo" />
+              <Image src="./assets/logo.svg" alt="logo" />
               <Heading
                 size="sm"
                 textAlign="center"
