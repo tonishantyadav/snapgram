@@ -23,22 +23,22 @@ export const lgNavLinks = [
 
 export const smNavLinks = [
   {
-    imgURL: './icons/home.svg',
+    imgURL: '/assets/icons/home.svg',
     route: '/',
     label: 'Home',
   },
   {
-    imgURL: './icons/wallpaper.svg',
+    imgURL: '/assets/icons/wallpaper.svg',
     route: '/explore',
     label: 'Explore',
   },
   {
-    imgURL: './icons/bookmark.svg',
+    imgURL: '/assets/icons/bookmark.svg',
     route: '/saved',
     label: 'Saved',
   },
   {
-    imgURL: './icons/gallery-add.svg',
+    imgURL: '/assets/icons/gallery-add.svg',
     route: '/create-post',
     label: 'Create',
   },
